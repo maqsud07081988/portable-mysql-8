@@ -44,7 +44,42 @@ namespace PortableMySQL8
 
         private void BtnStartSql_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                if (Directory.Exists(Globals.PathMySqlData))
+                {
+                    List<string> files = Directory.EnumerateFiles(Globals.PathMySqlData, "*", SearchOption.AllDirectories).ToList();
 
+                    if (files.Count <= 0)
+                    {
+                        MessageBoxResult result = MessageBox.Show($"The MySQL data directory at '{Globals.PathMySqlData}' exists but appears to contain no files in it. This directory will need to be DELETED in order for MySQL to sucessfully be initialized.\r\n\r\nAre you SURE you want to do this?", "Warning", MessageBoxButton.YesNo);
+
+                        //User did anything except click "Yes"; stop here
+                        if (result != MessageBoxResult.Yes)
+                            return;
+
+                        Directory.Delete(Globals.PathMySqlData, true);
+                    }
+                }
+
+                string prams = "--defaults-file=" + "\"" + Path.Combine(Environment.CurrentDirectory, Globals.PathMyIniFile) + "\" --standalone --explicit_defaults_for_timestamp";
+
+                //No MySQL data directory found, let's initialize it
+                if (!Directory.Exists(Globals.PathMySqlData))
+                    prams += " --initialize";
+
+                string mysqlpath = "\"" + Path.Combine(Environment.CurrentDirectory, Globals.PathMySqlBase, @"bin", @"mysqld.exe") + "\"";
+
+                Console.WriteLine(mysqlpath +  " " + prams);
+                Console.WriteLine();
+
+                ProcessHelpers.RunCommand(mysqlpath, prams, 0, false);
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
         }
 
         private void BtnStopSql_Click(object sender, RoutedEventArgs e)
@@ -63,8 +98,7 @@ namespace PortableMySQL8
                 if (!Directory.Exists(Globals.PathMySqlBase))
                     Directory.CreateDirectory(Globals.PathMySqlBase);
 
-                if (!Directory.Exists(Globals.PathMySqlData))
-                    Directory.CreateDirectory(Globals.PathMySqlData);
+                //Don't create the data directory here, MySQL does that on initialize
 
                 if (!Directory.Exists(Globals.PathMySqlConfig))
                     Directory.CreateDirectory(Globals.PathMySqlConfig);
