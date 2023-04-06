@@ -5,8 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PortableMySQL8"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Width="450" Height="350" MinWidth="250" MinHeight="150">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0" Margin="10">
+            <Button x:Name="btnStartSql" Content="Start SQL" Margin="0,0,0,10" Click="BtnStartSql_Click"/>
+            <Button x:Name="btnStopSql" Content="Stop SQL" Click="BtnStopSql_Click"/>
+        </StackPanel>
     </Grid>
 </Window>

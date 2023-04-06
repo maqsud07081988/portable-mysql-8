@@ -23,6 +23,26 @@ namespace PortableMySQL8
         public MainWindow()
         {
             InitializeComponent();
+
+            #region Setup
+
+            this.Title = $"{Version.NAME} {Version.VersionPretty}";
+
+            #endregion Setup
         }
+
+        #region Events
+
+        private void BtnStartSql_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtnStopSql_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        #endregion Events
     }
 }
