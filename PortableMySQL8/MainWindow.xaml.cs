@@ -35,6 +35,8 @@ namespace PortableMySQL8
             if (!success)
             {
                 MessageBox.Show("Could not create the required files to start!", "Error");
+                Environment.Exit(0);
+                return;
             }
         }
 
