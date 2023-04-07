@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PortableMySQL8"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
-        Title="MainWindow" Width="515" Height="200" MinWidth="515" MinHeight="200">
+        Title="MainWindow" Width="515" Height="200" ResizeMode="NoResize">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -45,7 +45,7 @@
                 <Label x:Name="labelMySqlStatus" Content="MySQL is NOT running" FontWeight="Bold" Foreground="Red" />
             </StackPanel>
 
-            <StackPanel Grid.Row="1" Margin="5">
+            <StackPanel Grid.Row="1" Margin="10,8,10,0">
                 <Button x:Name="btnStartSql" Content="Start MySQL" Margin="0,0,0,10" Click="BtnStartSql_Click"/>
                 <Button x:Name="btnStopSql" Content="Stop MySQL" Click="BtnStopSql_Click"/>
             </StackPanel>
