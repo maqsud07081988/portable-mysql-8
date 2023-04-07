@@ -38,7 +38,7 @@ namespace PortableMySQL8
 
         #endregion MySQL Paths
 
-        private readonly WindowTheming WindowTheme = new WindowTheming();
+        #region Process Monitor
 
         private DispatcherTimer ProcessCheckTimer = null;
         private const int ProcessCheckTimerInterval = 5000;
@@ -57,6 +57,14 @@ namespace PortableMySQL8
         {
             get { return ProcessHelpers.ProcessExists("OpenSim") || ProcessHelpers.ProcessExists("OpenSim32"); }
         }
+
+        #endregion Process Monitor
+
+        #region Window
+
+        private readonly WindowTheming WindowTheme = new WindowTheming();
+
+        #endregion Window
 
         public MainWindow()
         {
