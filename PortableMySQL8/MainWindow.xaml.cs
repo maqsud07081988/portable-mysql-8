@@ -23,8 +23,13 @@ namespace PortableMySQL8
     /// </summary>
     public partial class MainWindow : Window
     {
-        private string PathMySqlD = "\"" + Path.Combine(Environment.CurrentDirectory, Globals.PathMySqlBase, "bin", "mysqld.exe") + "\"";
-        private string PathMySqlAdmin = "\"" + Path.Combine(Environment.CurrentDirectory, Globals.PathMySqlBase, "bin", "mysqladmin.exe") + "\"";
+        private static string PathMySqlBase = "mysql";
+        private static string PathMySqlData = Path.Combine(PathMySqlBase, "data");
+        private static string PathMySqlConfig = Path.Combine(PathMySqlBase, "config");
+        private static string PathMyIniFile = Path.Combine(PathMySqlConfig, "my.ini");
+
+        private static string PathMySqlD = "\"" + Path.Combine(Environment.CurrentDirectory, PathMySqlBase, "bin", "mysqld.exe") + "\"";
+        private static string PathMySqlAdmin = "\"" + Path.Combine(Environment.CurrentDirectory, PathMySqlBase, "bin", "mysqladmin.exe") + "\"";
 
         public MainWindow()
         {
@@ -126,15 +131,15 @@ namespace PortableMySQL8
         {
             try
             {
-                if (!Directory.Exists(Globals.PathMySqlBase))
-                    Directory.CreateDirectory(Globals.PathMySqlBase);
+                if (!Directory.Exists(PathMySqlBase))
+                    Directory.CreateDirectory(PathMySqlBase);
 
                 //Don't create the data directory here, MySQL does that on initialize
 
-                if (!Directory.Exists(Globals.PathMySqlConfig))
-                    Directory.CreateDirectory(Globals.PathMySqlConfig);
+                if (!Directory.Exists(PathMySqlConfig))
+                    Directory.CreateDirectory(PathMySqlConfig);
 
-                if (!File.Exists(Globals.PathMyIniFile))
+                if (!File.Exists(PathMyIniFile))
                 {
                     //Set up default my.ini file contents
                     //I'm sure there's probably a better way to do this but this is simple enough for now.
@@ -150,10 +155,10 @@ namespace PortableMySQL8
                         "port=3306",
                         "",
                         "#Path to installation directory. All paths are usually resolved relative to this.",
-                        "basedir=" + "\"" + Path.GetFullPath(Globals.PathMySqlBase) + "\"",
+                        "basedir=" + "\"" + Path.GetFullPath(PathMySqlBase) + "\"",
                         "",
                         "#Path to the database root",
-                        "datadir=" + "\"" + Path.GetFullPath(Globals.PathMySqlData) + "\"",
+                        "datadir=" + "\"" + Path.GetFullPath(PathMySqlData) + "\"",
                         "",
                         "#OpenSim needs this on MySQL 8.0.4+",
                         "default-authentication-plugin=mysql_native_password",
@@ -164,7 +169,7 @@ namespace PortableMySQL8
                     };
 
                     //Dump the new my.ini file to the proper location
-                    File.WriteAllLines(Globals.PathMyIniFile, myIni);
+                    File.WriteAllLines(PathMyIniFile, myIni);
                 }
 
                 return true;
@@ -181,19 +186,19 @@ namespace PortableMySQL8
         {
             try
             {
-                if (Directory.Exists(Globals.PathMySqlData))
+                if (Directory.Exists(PathMySqlData))
                 {
-                    List<string> files = Directory.EnumerateFiles(Globals.PathMySqlData, "*", SearchOption.AllDirectories).ToList();
+                    List<string> files = Directory.EnumerateFiles(PathMySqlData, "*", SearchOption.AllDirectories).ToList();
 
                     if (files.Count <= 0)
                     {
-                        MessageBoxResult result = MessageBox.Show($"The MySQL data directory at '{Globals.PathMySqlData}' exists but appears to contain no files in it. This directory will need to be DELETED in order for MySQL to sucessfully be initialized.\r\n\r\nAre you SURE you want to do this?", "Warning", MessageBoxButton.YesNo);
+                        MessageBoxResult result = MessageBox.Show($"The MySQL data directory at '{PathMySqlData}' exists but appears to contain no files in it. This directory will need to be DELETED in order for MySQL to sucessfully be initialized.\r\n\r\nAre you SURE you want to do this?", "Warning", MessageBoxButton.YesNo);
 
                         //User did anything except click "Yes"; stop here
                         if (result != MessageBoxResult.Yes)
                             return false;
 
-                        Directory.Delete(Globals.PathMySqlData, true);
+                        Directory.Delete(PathMySqlData, true);
                     }
                 }
 
@@ -288,12 +293,12 @@ namespace PortableMySQL8
 
         private string GetStartParams()
         {
-            string prams = "--defaults-file=" + "\"" + Path.Combine(Environment.CurrentDirectory, Globals.PathMyIniFile) + "\" --standalone --explicit_defaults_for_timestamp";
+            string prams = "--defaults-file=" + "\"" + Path.Combine(Environment.CurrentDirectory, PathMyIniFile) + "\" --standalone --explicit_defaults_for_timestamp";
 
             //No MySQL data directory found, let's initialize it.
             //Doing an insecure initialization because we will set
             //a password for it immediately after.
-            if (!Directory.Exists(Globals.PathMySqlData))
+            if (!Directory.Exists(PathMySqlData))
                 prams += " --initialize-insecure";
 
             return prams;
