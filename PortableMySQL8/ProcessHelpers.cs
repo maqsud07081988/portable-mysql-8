@@ -10,7 +10,7 @@ namespace PortableMySQL8
 {
     public static class ProcessHelpers
     {
-        public static string RunCommand(string exe, string arguments, int timeout = 0, bool isHidden = true)
+        public static string RunCommand(string exe, string arguments, bool wait = true, bool isHidden = true)
         {
             string output = null;
 
@@ -49,10 +49,7 @@ namespace PortableMySQL8
                 process.BeginOutputReadLine();
             }
 
-            if (timeout > 0)
-                process.WaitForExit(timeout);
-
-            else
+            if(wait)
                 process.WaitForExit();
 
             return output;

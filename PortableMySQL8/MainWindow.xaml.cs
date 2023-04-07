@@ -20,6 +20,8 @@ namespace PortableMySQL8
     /// </summary>
     public partial class MainWindow : Window
     {
+        private string PathMySqlD = "\"" + Path.Combine(Environment.CurrentDirectory, Globals.PathMySqlBase, "bin", "mysqld.exe") + "\"";
+
         public MainWindow()
         {
             InitializeComponent();
@@ -27,6 +29,8 @@ namespace PortableMySQL8
             #region Setup
 
             this.Title = $"{Version.NAME} {Version.VersionPretty}";
+
+            this.ContentRendered += MainWindow_ContentRendered;
 
             #endregion Setup
 
@@ -42,44 +46,15 @@ namespace PortableMySQL8
 
         #region Events
 
+        private void MainWindow_ContentRendered(object sender, EventArgs e)
+        {
+            DoMySqlInitIfNeeded();
+        }
+
         private void BtnStartSql_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                if (Directory.Exists(Globals.PathMySqlData))
-                {
-                    List<string> files = Directory.EnumerateFiles(Globals.PathMySqlData, "*", SearchOption.AllDirectories).ToList();
-
-                    if (files.Count <= 0)
-                    {
-                        MessageBoxResult result = MessageBox.Show($"The MySQL data directory at '{Globals.PathMySqlData}' exists but appears to contain no files in it. This directory will need to be DELETED in order for MySQL to sucessfully be initialized.\r\n\r\nAre you SURE you want to do this?", "Warning", MessageBoxButton.YesNo);
-
-                        //User did anything except click "Yes"; stop here
-                        if (result != MessageBoxResult.Yes)
-                            return;
-
-                        Directory.Delete(Globals.PathMySqlData, true);
-                    }
-                }
-
-                string prams = "--defaults-file=" + "\"" + Path.Combine(Environment.CurrentDirectory, Globals.PathMyIniFile) + "\" --standalone --explicit_defaults_for_timestamp";
-
-                //No MySQL data directory found, let's initialize it
-                if (!Directory.Exists(Globals.PathMySqlData))
-                    prams += " --initialize";
-
-                string mysqlpath = "\"" + Path.Combine(Environment.CurrentDirectory, Globals.PathMySqlBase, @"bin", @"mysqld.exe") + "\"";
-
-                Console.WriteLine(mysqlpath +  " " + prams);
-                Console.WriteLine();
-
-                ProcessHelpers.RunCommand(mysqlpath, prams, 0, false);
-            }
-
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
+            DoMySqlInitIfNeeded();
+            StartMySql();
         }
 
         private void BtnStopSql_Click(object sender, RoutedEventArgs e)
@@ -144,6 +119,83 @@ namespace PortableMySQL8
                 Console.WriteLine(ex.ToString());
                 return false;
             }
+        }
+
+        private void DoMySqlInitIfNeeded()
+        {
+            try
+            {
+                if (Directory.Exists(Globals.PathMySqlData))
+                {
+                    List<string> files = Directory.EnumerateFiles(Globals.PathMySqlData, "*", SearchOption.AllDirectories).ToList();
+
+                    if (files.Count <= 0)
+                    {
+                        MessageBoxResult result = MessageBox.Show($"The MySQL data directory at '{Globals.PathMySqlData}' exists but appears to contain no files in it. This directory will need to be DELETED in order for MySQL to sucessfully be initialized.\r\n\r\nAre you SURE you want to do this?", "Warning", MessageBoxButton.YesNo);
+
+                        //User did anything except click "Yes"; stop here
+                        if (result != MessageBoxResult.Yes)
+                            return;
+
+                        Directory.Delete(Globals.PathMySqlData, true);
+                    }
+                }
+
+                string prams = GetStartParams();
+                bool needsInit = NeedsInit(prams);
+
+                Console.WriteLine($"{PathMySqlD} {prams} Needs Init = {needsInit}");
+                Console.WriteLine();
+
+                if (needsInit)
+                {
+                    Console.WriteLine("Initializing MySQL data directory...");
+                    ProcessHelpers.RunCommand(PathMySqlD, prams, true, false);
+                    Console.WriteLine("Initialization done!");
+                }
+
+                else
+                    Console.WriteLine("MySQL data directory exists with files in it. No need to init.");
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+        }
+
+        private void StartMySql()
+        {
+            string prams = GetStartParams();
+            bool needsInit = NeedsInit(prams);
+
+            Console.WriteLine($"{PathMySqlD} {prams} Needs Init = {needsInit}");
+            Console.WriteLine();
+
+            if (!needsInit)
+            {
+                Console.WriteLine($"Started MySQL");
+                ProcessHelpers.RunCommand(PathMySqlD, prams, false, false);
+            }
+
+            else
+                Console.WriteLine("Could not start MySQL because it needs initialization.");
+        }
+
+        private bool NeedsInit(string prams)
+        {
+            return prams.Contains("--initialize");
+        }
+
+        private string GetStartParams()
+        {
+            string prams = "--defaults-file=" + "\"" + Path.Combine(Environment.CurrentDirectory, Globals.PathMyIniFile) + "\" --standalone --explicit_defaults_for_timestamp";
+
+            //No MySQL data directory found, let's initialize it
+            if (!Directory.Exists(Globals.PathMySqlData))
+                prams += " --initialize";
+
+            return prams;
         }
 
         #endregion Methods
