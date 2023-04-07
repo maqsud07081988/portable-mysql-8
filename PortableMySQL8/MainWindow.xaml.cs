@@ -142,7 +142,7 @@ namespace PortableMySQL8
 
         private void MainWindow_ContentRendered(object sender, EventArgs e)
         {
-            //DoMySqlInitIfNeeded();
+
         }
 
         private void BtnStartSql_Click(object sender, RoutedEventArgs e)
