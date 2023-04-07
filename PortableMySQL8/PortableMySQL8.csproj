@@ -96,9 +96,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BoolExtensions.cs" />
-    <Compile Include="IniFile.cs" />
-    <Compile Include="ProcessHelpers.cs" />
+    <Compile Include="Extensions\BoolExtensions.cs" />
+    <Compile Include="Helpers\IniFile.cs" />
+    <Compile Include="Helpers\ProcessHelpers.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Version.cs" />
     <Page Include="MainWindow.xaml">
