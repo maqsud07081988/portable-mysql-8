@@ -114,13 +114,19 @@ namespace PortableMySQL8
                 return;
             }
 
+            SaveUIConfig();
+
             bool didInit = DoMySqlInitIfNeeded();
 
+            UpdateMyIni();
             StartMySql();
 
             if (didInit)
             {
-                bool success = SetPassword("root", "localhost", String.Empty, passwordBoxMySqlRootPass.Password);
+                bool success = SetPassword(
+                    "root", "localhost",
+                    SettingsGlobal.Config.MySQL.Port.ToString(),
+                    String.Empty, passwordBoxMySqlRootPass.Password);
 
                 if (!success)
                 {
@@ -249,10 +255,16 @@ namespace PortableMySQL8
             }
         }
 
-        private bool SetPassword(string user, string server, string curPass, string newPass)
+        private void UpdateMyIni()
+        {
+            IniFile.WriteValue("client", "port", SettingsGlobal.Config.MySQL.Port.ToString(), PathMyIniFile);
+            IniFile.WriteValue("mysqld", "port", SettingsGlobal.Config.MySQL.Port.ToString(), PathMyIniFile);
+        }
+
+        private bool SetPassword(string user, string server, string port, string curPass, string newPass)
         {
             bool success = false;
-            string connectString = $"server={server};user={user};database=mysql;password={curPass}";
+            string connectString = $"server={server};user={user};database=mysql;port={port};password={curPass}";
             MySqlConnection connection = new MySqlConnection(connectString);
 
             try
@@ -300,7 +312,7 @@ namespace PortableMySQL8
 
         private int StopMySql()
         {
-            string prams = $"-u root -p{passwordBoxMySqlRootPass.Password} shutdown";
+            string prams = $"-u root -p{passwordBoxMySqlRootPass.Password} --port {SettingsGlobal.Config.MySQL.Port} shutdown";
             int code = ProcessHelpers.RunCommand(PathMySqlAdmin, prams, true);
 
             if (code == 0)
@@ -349,12 +361,16 @@ namespace PortableMySQL8
                 this.Left = SettingsGlobal.Config.General.WindowLocation.X;
                 this.Top = SettingsGlobal.Config.General.WindowLocation.Y;
             }
+
+            textBoxPort.Text = SettingsGlobal.Config.MySQL.Port.ToString();
         }
 
         private void SaveUIConfig()
         {
             SettingsGlobal.Config.General.WindowSize = new Size(this.Width, this.Height);
             SettingsGlobal.Config.General.WindowLocation = new Point(this.Left, this.Top);
+
+            SettingsGlobal.Config.MySQL.Port = Convert.ToInt32(textBoxPort.Text);
 
             SettingsGlobal.SaveSettings();
         }

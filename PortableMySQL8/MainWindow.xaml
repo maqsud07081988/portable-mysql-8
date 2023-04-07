@@ -18,11 +18,16 @@
         </StackPanel>
 
         <StackPanel Grid.Column="1" Margin="10">
-            <Label Content="Root Password"/>
+            <Label Content="Root Password" HorizontalAlignment="Left"/>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                <PasswordBox x:Name="passwordBoxMySqlRootPass" PasswordChar="*" Width="200" HorizontalAlignment="Left" Margin="0,0,10,0" />
+                <CheckBox x:Name="checkBoxSavePass" Content="Save Password" HorizontalAlignment="Left"/>
+            </StackPanel>
 
             <StackPanel Orientation="Horizontal">
-                <PasswordBox x:Name="passwordBoxMySqlRootPass" PasswordChar="*" Width="200" Margin="0,0,10,0" />
-                <CheckBox x:Name="checkBoxSavePass" Content="Save Password"/>
+                <Label Content="Port" HorizontalAlignment="Left"/>
+                <TextBox x:Name="textBoxPort" Text="3306" Width="50" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             </StackPanel>
         </StackPanel>
     </Grid>
