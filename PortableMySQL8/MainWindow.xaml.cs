@@ -81,8 +81,13 @@ namespace PortableMySQL8
 
         private void BtnStopSql_Click(object sender, RoutedEventArgs e)
         {
-            string prams = $"-u root -p{passwordBoxMySqlRootPass.Password} shutdown";
-            ProcessHelpers.RunCommand(PathMySqlAdmin, prams, true, false);
+            if (String.IsNullOrWhiteSpace(passwordBoxMySqlRootPass.Password))
+            {
+                MessageBox.Show("Can not stop with no password set!");
+                return;
+            }
+
+            StopMySql();
         }
 
         #endregion Events
@@ -239,6 +244,13 @@ namespace PortableMySQL8
 
             else
                 Console.WriteLine("Could not start MySQL because it needs initialization.");
+        }
+
+        private void StopMySql()
+        {
+            string prams = $"-u root -p{passwordBoxMySqlRootPass.Password} shutdown";
+            ProcessHelpers.RunCommand(PathMySqlAdmin, prams, true, false);
+            Console.WriteLine("Stopped MySQL");
         }
 
         private bool NeedsInit(string prams)
