@@ -68,7 +68,7 @@ namespace PortableMySQL8
 					return sections;
 				}
 
-				capacity = capacity * 2;
+				capacity *= 2;
 			}
 		}
 
@@ -92,7 +92,7 @@ namespace PortableMySQL8
 					return keys;
 				}
 
-				capacity = capacity * 2;
+				capacity *= 2;
 			}
 		}
 
@@ -118,7 +118,7 @@ namespace PortableMySQL8
 				}
 
 				Marshal.FreeCoTaskMem(returnedString);
-				capacity = capacity * 2;
+				capacity *= 2;
 			}
 		}
 	}

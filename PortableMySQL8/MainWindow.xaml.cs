@@ -23,13 +23,13 @@ namespace PortableMySQL8
     /// </summary>
     public partial class MainWindow : Window
     {
-        private static string PathMySqlBase = "mysql";
-        private static string PathMySqlData = Path.Combine(PathMySqlBase, "data");
-        private static string PathMySqlConfig = Path.Combine(PathMySqlBase, "config");
-        private static string PathMyIniFile = Path.Combine(PathMySqlConfig, "my.ini");
+        private static readonly string PathMySqlBase = "mysql";
+        private static readonly string PathMySqlData = Path.Combine(PathMySqlBase, "data");
+        private static readonly string PathMySqlConfig = Path.Combine(PathMySqlBase, "config");
+        private static readonly string PathMyIniFile = Path.Combine(PathMySqlConfig, "my.ini");
 
-        private static string PathMySqlD = "\"" + Path.Combine(Environment.CurrentDirectory, PathMySqlBase, "bin", "mysqld.exe") + "\"";
-        private static string PathMySqlAdmin = "\"" + Path.Combine(Environment.CurrentDirectory, PathMySqlBase, "bin", "mysqladmin.exe") + "\"";
+        private static readonly string PathMySqlD = "\"" + Path.Combine(Environment.CurrentDirectory, PathMySqlBase, "bin", "mysqld.exe") + "\"";
+        private static readonly string PathMySqlAdmin = "\"" + Path.Combine(Environment.CurrentDirectory, PathMySqlBase, "bin", "mysqladmin.exe") + "\"";
 
         public MainWindow()
         {
@@ -148,7 +148,7 @@ namespace PortableMySQL8
                 MessageBox.Show("Could not stop MySQL!");
         }
 
-        private void checkBoxSavePass_Click(object sender, RoutedEventArgs e)
+        private void CheckBoxSavePass_Click(object sender, RoutedEventArgs e)
         {
             if (checkBoxSavePass.IsChecked == true)
             {
@@ -275,7 +275,7 @@ namespace PortableMySQL8
 
         private bool SetPassword(string user, string server, string port, string curPass, string newPass)
         {
-            bool success = false;
+            bool success;
             string connectString = $"server={server};user={user};database=mysql;port={port};password={curPass}";
             MySqlConnection connection = new MySqlConnection(connectString);
 
