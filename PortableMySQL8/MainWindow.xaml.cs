@@ -74,16 +74,21 @@ namespace PortableMySQL8
                 if (result != MessageBoxResult.Yes)
                     return;
 
-                StopMySql();
+                if (StopMySql() == 0)
+                {
 
-                //Wait until mysqld exits
-                Console.WriteLine("Waiting until MySQL has stopped...");
-                System.Threading.SpinWait.SpinUntil(() => !ProcessHelpers.ProcessExists(proc));
-                Console.WriteLine("MySQL stopped! Exiting...");
+                    //Wait until mysqld exits
+                    Console.WriteLine("Waiting until MySQL has stopped...");
+                    System.Threading.SpinWait.SpinUntil(() => !ProcessHelpers.ProcessExists(proc));
+                    Console.WriteLine("MySQL stopped! Exiting...");
 
-                SaveUIConfig();
+                    SaveUIConfig();
 
-                Environment.Exit(0);
+                    Environment.Exit(0);
+                }
+
+                else
+                    MessageBox.Show("Could not stop MySQL!");
             }
 
             else
@@ -133,7 +138,8 @@ namespace PortableMySQL8
                 return;
             }
 
-            StopMySql();
+            if (StopMySql() != 0)
+                MessageBox.Show("Could not stop MySQL!");
         }
 
         #endregion Events
@@ -292,11 +298,18 @@ namespace PortableMySQL8
                 Console.WriteLine("Could not start MySQL because it needs initialization.");
         }
 
-        private void StopMySql()
+        private int StopMySql()
         {
             string prams = $"-u root -p{passwordBoxMySqlRootPass.Password} shutdown";
-            ProcessHelpers.RunCommand(PathMySqlAdmin, prams, true);
-            Console.WriteLine("Stopped MySQL");
+            int code = ProcessHelpers.RunCommand(PathMySqlAdmin, prams, true);
+
+            if (code == 0)
+                Console.WriteLine("Stopped MySQL");
+
+            else
+                Console.WriteLine($"Could not stop MySQL! Command returned code {code}.");
+
+            return code;
         }
 
         private bool NeedsInit(string prams)
