@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PortableMySQL8"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
-        Title="MainWindow" Width="515" Height="200" ResizeMode="NoResize">
+        Title="MainWindow" Width="515" Height="200" ResizeMode="CanMinimize">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
