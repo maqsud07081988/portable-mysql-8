@@ -10,9 +10,11 @@ namespace PortableMySQL8
 {
     public static class ProcessHelpers
     {
-        public static string RunCommand(string exe, string arguments, bool wait = true, bool isHidden = true)
+        public static string RunCommand(string exe, string arguments, bool wait = true)
         {
             string output = null;
+
+            bool isHidden = !IsConsoleMode();
 
             ProcessWindowStyle pws = ProcessWindowStyle.Normal;
 
@@ -26,7 +28,7 @@ namespace PortableMySQL8
                 FileName = exe,
                 Arguments = arguments,
                 UseShellExecute = false,
-                RedirectStandardOutput = isHidden
+                RedirectStandardOutput = true
             };
 
             Process process = new Process()
@@ -36,18 +38,15 @@ namespace PortableMySQL8
 
             process.Start();
 
-            if (isHidden)
+            process.OutputDataReceived += (sender, args) =>
             {
-                process.OutputDataReceived += (sender, args) =>
-                {
-                    Console.WriteLine(args.Data);
+                Console.WriteLine(args.Data);
 
-                    if (args.Data != null /*&& args.Data.Contains(".")*/)
-                        output = args.Data.ToString();
-                };
+                if (args.Data != null /*&& args.Data.Contains(".")*/)
+                    output = args.Data.ToString();
+            };
 
-                process.BeginOutputReadLine();
-            }
+            process.BeginOutputReadLine();
 
             if (wait)
                 process.WaitForExit();
@@ -71,6 +70,11 @@ namespace PortableMySQL8
             {
                 return false;
             }
+        }
+
+        public static bool IsConsoleMode()
+        {
+            return Console.OpenStandardInput(1) != Stream.Null;
         }
     }
 }

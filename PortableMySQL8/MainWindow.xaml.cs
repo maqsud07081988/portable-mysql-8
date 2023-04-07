@@ -204,7 +204,7 @@ namespace PortableMySQL8
                 if (needsInit)
                 {
                     Console.WriteLine("Initializing MySQL data directory...");
-                    ProcessHelpers.RunCommand(PathMySqlD, prams, true, false);
+                    ProcessHelpers.RunCommand(PathMySqlD, prams, true);
                     Console.WriteLine("Initialization done!");
                     return true;
                 }
@@ -265,7 +265,7 @@ namespace PortableMySQL8
             if (!needsInit)
             {
                 Console.WriteLine($"Started MySQL");
-                ProcessHelpers.RunCommand(PathMySqlD, prams, false, false);
+                ProcessHelpers.RunCommand(PathMySqlD, prams, false);
             }
 
             else
@@ -275,7 +275,7 @@ namespace PortableMySQL8
         private void StopMySql()
         {
             string prams = $"-u root -p{passwordBoxMySqlRootPass.Password} shutdown";
-            ProcessHelpers.RunCommand(PathMySqlAdmin, prams, true, false);
+            ProcessHelpers.RunCommand(PathMySqlAdmin, prams, true);
             Console.WriteLine("Stopped MySQL");
         }
 
