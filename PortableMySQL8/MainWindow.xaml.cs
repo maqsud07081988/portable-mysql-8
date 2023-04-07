@@ -35,6 +35,8 @@ namespace PortableMySQL8
         {
             InitializeComponent();
 
+            SettingsGlobal.LoadSettings();
+
             #region Setup
 
             this.Title = $"{Version.NAME} {Version.VersionPretty}";
@@ -43,6 +45,8 @@ namespace PortableMySQL8
             this.ContentRendered += MainWindow_ContentRendered;
 
             #endregion Setup
+
+            LoadUIConfig();
 
             bool success = CreateServiceFiles();
 
@@ -77,6 +81,15 @@ namespace PortableMySQL8
                 System.Threading.SpinWait.SpinUntil(() => !ProcessHelpers.ProcessExists(proc));
                 Console.WriteLine("MySQL stopped! Exiting...");
 
+                SaveUIConfig();
+
+                Environment.Exit(0);
+            }
+
+            else
+            {
+                e.Cancel = true;
+                SaveUIConfig();
                 Environment.Exit(0);
             }
         }
@@ -302,6 +315,35 @@ namespace PortableMySQL8
                 prams += " --initialize-insecure";
 
             return prams;
+        }
+
+        private void LoadUIConfig()
+        {
+            this.Width = SettingsGlobal.Config.General.WindowSize.Width;
+            this.Height = SettingsGlobal.Config.General.WindowSize.Height;
+
+            //Start in the center of the screen if our location is 0
+            if (SettingsGlobal.Config.General.WindowLocation.X == 0
+            && SettingsGlobal.Config.General.WindowLocation.Y == 0)
+            {
+                this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            }
+
+            //Else put the window where it was last
+            else
+            {
+                this.WindowStartupLocation = WindowStartupLocation.Manual;
+                this.Left = SettingsGlobal.Config.General.WindowLocation.X;
+                this.Top = SettingsGlobal.Config.General.WindowLocation.Y;
+            }
+        }
+
+        private void SaveUIConfig()
+        {
+            SettingsGlobal.Config.General.WindowSize = new Size(this.Width, this.Height);
+            SettingsGlobal.Config.General.WindowLocation = new Point(this.Left, this.Top);
+
+            SettingsGlobal.SaveSettings();
         }
 
         #endregion Methods
