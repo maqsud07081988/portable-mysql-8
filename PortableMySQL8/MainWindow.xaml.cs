@@ -144,7 +144,14 @@ namespace PortableMySQL8
 
             bool didInit = DoMySqlInitIfNeeded();
 
-            UpdateMyIni();
+            bool updateIniSuccess = UpdateMyIni();
+
+            if (!updateIniSuccess)
+            {
+                MessageBox.Show("Could not update my.ini! Aborting!", "Error");
+                return;
+            }
+
             StartMySql();
 
             if (didInit)
@@ -338,10 +345,26 @@ namespace PortableMySQL8
             }
         }
 
-        private void UpdateMyIni()
+        private bool UpdateMyIni()
         {
-            IniFile.WriteValue("client", "port", SettingsGlobal.Config.MySQL.Port.ToString(), PathMyIniFile);
-            IniFile.WriteValue("mysqld", "port", SettingsGlobal.Config.MySQL.Port.ToString(), PathMyIniFile);
+            try
+            {
+                Console.WriteLine($"Writing port config to {PathMyIniFile}...");
+                IniFile.WriteValue("client", "port", SettingsGlobal.Config.MySQL.Port.ToString(), PathMyIniFile);
+                IniFile.WriteValue("mysqld", "port", SettingsGlobal.Config.MySQL.Port.ToString(), PathMyIniFile);
+
+                Console.WriteLine($"Updating basedir and datadir in {PathMyIniFile}...");
+                IniFile.WriteValue("mysqld", "basedir", "\"" + Path.GetFullPath(PathMySqlBase) + "\"", PathMyIniFile);
+                IniFile.WriteValue("mysqld", "datadir", "\"" + Path.GetFullPath(PathMySqlData) + "\"", PathMyIniFile);
+
+                return true;
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
         }
 
         private bool SetPassword(string user, string server, string port, string curPass, string newPass)
