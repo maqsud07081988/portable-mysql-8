@@ -83,9 +83,11 @@ namespace PortableMySQL8
 
         private void BtnStartSql_Click(object sender, RoutedEventArgs e)
         {
-            if (String.IsNullOrWhiteSpace(passwordBoxMySqlRootPass.Password))
+            bool needsInit = NeedsInit(GetStartParams());
+
+            if (needsInit && String.IsNullOrWhiteSpace(passwordBoxMySqlRootPass.Password))
             {
-                MessageBox.Show("Can not start with no password set!");
+                MessageBox.Show("MySQL needs to be initialized and can not start with no password set!", "Error");
                 return;
             }
 
