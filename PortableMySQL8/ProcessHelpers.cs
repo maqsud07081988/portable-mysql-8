@@ -49,18 +49,18 @@ namespace PortableMySQL8
                 process.BeginOutputReadLine();
             }
 
-            if(wait)
+            if (wait)
                 process.WaitForExit();
 
             return output;
         }
 
         /// <summary>
-		/// Check if process exists by name
-		/// </summary>
-		/// <param name="name">Name of process (without .exe)</param>
-		/// <returns>true if process is running; false if not</returns>
-		public static bool ProcessExists(string name)
+        /// Check if process exists by name
+        /// </summary>
+        /// <param name="name">Name of process (without .exe)</param>
+        /// <returns>true if process is running; false if not</returns>
+        public static bool ProcessExists(string name)
         {
             try
             {
