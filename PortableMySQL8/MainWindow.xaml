@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PortableMySQL8"
         mc:Ignorable="d"
-        Title="MainWindow" Width="500" Height="350" MinWidth="250" MinHeight="150">
+        Title="MainWindow" Width="515" Height="300" MinWidth="515" MinHeight="150">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.5*"/>
