@@ -386,7 +386,7 @@ namespace PortableMySQL8
 
             passwordBoxMySqlRootPass.Password = SettingsGlobal.Config.MySQL.RootPass;
             checkBoxSavePass.IsChecked = SettingsGlobal.Config.MySQL.SavePass;
-            textBoxPort.Text = SettingsGlobal.Config.MySQL.Port.ToString();
+            nudPort.Value = SettingsGlobal.Config.MySQL.Port;
         }
 
         private void SaveUIConfig()
@@ -401,7 +401,7 @@ namespace PortableMySQL8
                 SettingsGlobal.Config.MySQL.RootPass = String.Empty;
 
             SettingsGlobal.Config.MySQL.SavePass = checkBoxSavePass.IsChecked.TranslateNullableBool();
-            SettingsGlobal.Config.MySQL.Port = Convert.ToInt32(textBoxPort.Text);
+            SettingsGlobal.Config.MySQL.Port = (int)nudPort.Value;
 
             SettingsGlobal.SaveSettings();
         }
