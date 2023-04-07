@@ -16,13 +16,17 @@ using System.IO;
 
 using MySql.Data.MySqlClient;
 
+using PortableMySQL8.Themes;
+
 namespace PortableMySQL8
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
+        #region MySQL Paths
+
         private static readonly string PathMySqlBase = "mysql";
         private static readonly string PathMySqlData = Path.Combine(PathMySqlBase, "data");
         private static readonly string PathMySqlConfig = Path.Combine(PathMySqlBase, "config");
@@ -31,6 +35,10 @@ namespace PortableMySQL8
         private static readonly string PathMySqlD = "\"" + Path.Combine(Environment.CurrentDirectory, PathMySqlBase, "bin", "mysqld.exe") + "\"";
         private static readonly string PathMySqlAdmin = "\"" + Path.Combine(Environment.CurrentDirectory, PathMySqlBase, "bin", "mysqladmin.exe") + "\"";
 
+        #endregion MySQL Paths
+
+        private readonly WindowTheming WindowTheme = new WindowTheming();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -38,6 +46,8 @@ namespace PortableMySQL8
             SettingsGlobal.LoadSettings();
 
             #region Setup
+
+            WindowTheme.ApplyTheme("Blue", "Light");
 
             this.Title = $"{Version.NAME} {Version.VersionPretty}";
 
