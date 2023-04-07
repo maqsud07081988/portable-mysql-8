@@ -148,6 +148,18 @@ namespace PortableMySQL8
                 MessageBox.Show("Could not stop MySQL!");
         }
 
+        private void checkBoxSavePass_Click(object sender, RoutedEventArgs e)
+        {
+            if (checkBoxSavePass.IsChecked == true)
+            {
+                MessageBoxResult result = MessageBox.Show($"Your MySQL root user password will be stored in CLEAR TEXT in {Path.GetFileName(SettingsGlobal.SettingsFilePath)}!\r\n\r\nAre you sure you want to do this?", "Confirm Allow Save Password", MessageBoxButton.YesNo);
+
+                //User did anything but click "Yes"
+                if (result != MessageBoxResult.Yes)
+                    checkBoxSavePass.IsChecked = false;
+            }
+        }
+
         #endregion Events
 
         #region Methods
@@ -362,6 +374,8 @@ namespace PortableMySQL8
                 this.Top = SettingsGlobal.Config.General.WindowLocation.Y;
             }
 
+            passwordBoxMySqlRootPass.Password = SettingsGlobal.Config.MySQL.RootPass;
+            checkBoxSavePass.IsChecked = SettingsGlobal.Config.MySQL.SavePass;
             textBoxPort.Text = SettingsGlobal.Config.MySQL.Port.ToString();
         }
 
@@ -370,6 +384,13 @@ namespace PortableMySQL8
             SettingsGlobal.Config.General.WindowSize = new Size(this.Width, this.Height);
             SettingsGlobal.Config.General.WindowLocation = new Point(this.Left, this.Top);
 
+            if (checkBoxSavePass.IsChecked == true)
+                SettingsGlobal.Config.MySQL.RootPass = passwordBoxMySqlRootPass.Password;
+
+            else
+                SettingsGlobal.Config.MySQL.RootPass = String.Empty;
+
+            SettingsGlobal.Config.MySQL.SavePass = checkBoxSavePass.IsChecked.TranslateNullableBool();
             SettingsGlobal.Config.MySQL.Port = Convert.ToInt32(textBoxPort.Text);
 
             SettingsGlobal.SaveSettings();

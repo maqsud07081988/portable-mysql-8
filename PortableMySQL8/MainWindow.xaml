@@ -22,7 +22,7 @@
 
             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                 <PasswordBox x:Name="passwordBoxMySqlRootPass" PasswordChar="*" Width="200" HorizontalAlignment="Left" Margin="0,0,10,0" />
-                <CheckBox x:Name="checkBoxSavePass" Content="Save Password" HorizontalAlignment="Left"/>
+                <CheckBox x:Name="checkBoxSavePass" Content="Save Password" HorizontalAlignment="Left" Click="checkBoxSavePass_Click"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">

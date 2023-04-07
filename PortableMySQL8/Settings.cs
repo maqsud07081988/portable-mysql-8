@@ -13,7 +13,7 @@ namespace PortableMySQL8
     {
         public static Settings Config = new Settings();
 
-        private static string SettingsFilePath = $"Config{Version.NAME}.json".Replace(" ", "_");
+        public static string SettingsFilePath = $"Config{Version.NAME}.json".Replace(" ", "_");
 
 		#region Load/Save Settings
 
@@ -83,6 +83,7 @@ namespace PortableMySQL8
 	public class SettingsMySQL
 	{
 		public string RootPass { get; set; } = String.Empty;
+		public bool SavePass { get; set; } = false;
 		public int Port { get; set; } = 3306;
 	}
 }
