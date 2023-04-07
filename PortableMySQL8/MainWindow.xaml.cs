@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.IO;
 
+using MySql.Data.MySqlClient;
+
 namespace PortableMySQL8
 {
     /// <summary>
@@ -21,6 +24,7 @@ namespace PortableMySQL8
     public partial class MainWindow : Window
     {
         private string PathMySqlD = "\"" + Path.Combine(Environment.CurrentDirectory, Globals.PathMySqlBase, "bin", "mysqld.exe") + "\"";
+        private string PathMySqlAdmin = "\"" + Path.Combine(Environment.CurrentDirectory, Globals.PathMySqlBase, "bin", "mysqladmin.exe") + "\"";
 
         public MainWindow()
         {
@@ -48,18 +52,37 @@ namespace PortableMySQL8
 
         private void MainWindow_ContentRendered(object sender, EventArgs e)
         {
-            DoMySqlInitIfNeeded();
+            //DoMySqlInitIfNeeded();
         }
 
         private void BtnStartSql_Click(object sender, RoutedEventArgs e)
         {
-            DoMySqlInitIfNeeded();
+            if (String.IsNullOrWhiteSpace(passwordBoxMySqlRootPass.Password))
+            {
+                MessageBox.Show("Can not start with no password set!");
+                return;
+            }
+
+            bool didInit = DoMySqlInitIfNeeded();
+
             StartMySql();
+
+            if (didInit)
+            {
+                bool success = SetPassword("root", "localhost", String.Empty, passwordBoxMySqlRootPass.Password);
+
+                if (!success)
+                {
+                    MessageBox.Show("Was not able to set root password!", "Password Error");
+                    return;
+                }
+            }
         }
 
         private void BtnStopSql_Click(object sender, RoutedEventArgs e)
         {
-
+            string prams = $"-u root -p{passwordBoxMySqlRootPass.Password} shutdown";
+            ProcessHelpers.RunCommand(PathMySqlAdmin, prams, true, false);
         }
 
         #endregion Events
@@ -121,7 +144,7 @@ namespace PortableMySQL8
             }
         }
 
-        private void DoMySqlInitIfNeeded()
+        private bool DoMySqlInitIfNeeded()
         {
             try
             {
@@ -135,7 +158,7 @@ namespace PortableMySQL8
 
                         //User did anything except click "Yes"; stop here
                         if (result != MessageBoxResult.Yes)
-                            return;
+                            return false;
 
                         Directory.Delete(Globals.PathMySqlData, true);
                     }
@@ -152,16 +175,52 @@ namespace PortableMySQL8
                     Console.WriteLine("Initializing MySQL data directory...");
                     ProcessHelpers.RunCommand(PathMySqlD, prams, true, false);
                     Console.WriteLine("Initialization done!");
+                    return true;
                 }
 
                 else
+                {
                     Console.WriteLine("MySQL data directory exists with files in it. No need to init.");
+                    return false;
+                }
             }
 
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
+                return false;
             }
+        }
+
+        private bool SetPassword(string user, string server, string curPass, string newPass)
+        {
+            bool success = false;
+            string connectString = $"server={server};user={user};database=mysql;password={curPass}";
+            MySqlConnection connection = new MySqlConnection(connectString);
+
+            try
+            {
+                connection.Open();
+
+                string sql = $"alter user '{user}'@'{server}' identified with mysql_native_password by '{newPass}'; flush privileges;";
+                MySqlCommand myCmd = new MySqlCommand(sql, connection);
+
+                int rows = myCmd.ExecuteNonQuery();
+
+                //Console.WriteLine($"Password set to '{pass}', {rows} rows affected");
+                Console.Write("Password set sucessfully");
+
+                success = true;
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                success = false;
+            }
+
+            connection.Close();
+            return success;
         }
 
         private void StartMySql()
@@ -191,9 +250,11 @@ namespace PortableMySQL8
         {
             string prams = "--defaults-file=" + "\"" + Path.Combine(Environment.CurrentDirectory, Globals.PathMyIniFile) + "\" --standalone --explicit_defaults_for_timestamp";
 
-            //No MySQL data directory found, let's initialize it
+            //No MySQL data directory found, let's initialize it.
+            //Doing an insecure initialization because we will set
+            //a password for it immediately after.
             if (!Directory.Exists(Globals.PathMySqlData))
-                prams += " --initialize";
+                prams += " --initialize-insecure";
 
             return prams;
         }

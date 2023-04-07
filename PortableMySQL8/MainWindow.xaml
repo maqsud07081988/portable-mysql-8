@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PortableMySQL8"
         mc:Ignorable="d"
-        Title="MainWindow" Width="450" Height="350" MinWidth="250" MinHeight="150">
+        Title="MainWindow" Width="500" Height="350" MinWidth="250" MinHeight="150">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.5*"/>
@@ -15,6 +15,15 @@
         <StackPanel Grid.Column="0" Margin="10">
             <Button x:Name="btnStartSql" Content="Start SQL" Margin="0,0,0,10" Click="BtnStartSql_Click"/>
             <Button x:Name="btnStopSql" Content="Stop SQL" Click="BtnStopSql_Click"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Margin="10">
+            <Label Content="Root Password"/>
+
+            <StackPanel Orientation="Horizontal">
+                <PasswordBox x:Name="passwordBoxMySqlRootPass" PasswordChar="*" Width="200" Margin="0,0,10,0" />
+                <CheckBox x:Name="checkBoxSavePass" Content="Save Password"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>
