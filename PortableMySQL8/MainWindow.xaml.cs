@@ -43,6 +43,11 @@ namespace PortableMySQL8
         private DispatcherTimer ProcessCheckTimer = null;
         private const int ProcessCheckTimerInterval = 5000;
 
+        private bool IsMySqlRunning
+        {
+            get { return ProcessHelpers.ProcessExists("mysqld"); }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -78,9 +83,7 @@ namespace PortableMySQL8
 
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            string proc = "mysqld";
-
-            if (ProcessHelpers.ProcessExists(proc))
+            if (IsMySqlRunning)
             {
                 e.Cancel = true;
 
@@ -95,7 +98,7 @@ namespace PortableMySQL8
 
                     //Wait until mysqld exits
                     Console.WriteLine("Waiting until MySQL has stopped...");
-                    System.Threading.SpinWait.SpinUntil(() => !ProcessHelpers.ProcessExists(proc));
+                    System.Threading.SpinWait.SpinUntil(() => !IsMySqlRunning);
                     Console.WriteLine("MySQL stopped! Exiting...");
 
                     SaveUIConfig();
@@ -123,6 +126,12 @@ namespace PortableMySQL8
 
         private void BtnStartSql_Click(object sender, RoutedEventArgs e)
         {
+            if (IsMySqlRunning)
+            {
+                MessageBox.Show("MySQL is already running!", "Information");
+                return;
+            }
+
             bool needsInit = NeedsInit(GetStartParams());
 
             if (needsInit && String.IsNullOrWhiteSpace(passwordBoxMySqlRootPass.Password))
@@ -155,6 +164,12 @@ namespace PortableMySQL8
 
         private void BtnStopSql_Click(object sender, RoutedEventArgs e)
         {
+            if (!IsMySqlRunning)
+            {
+                MessageBox.Show("MySQL is not running!", "Information");
+                return;
+            }
+
             if (String.IsNullOrWhiteSpace(passwordBoxMySqlRootPass.Password))
             {
                 MessageBox.Show("Can not stop with no password set!");
@@ -203,9 +218,7 @@ namespace PortableMySQL8
 
         private void ProcessCheckTimer_Tick(object sender, EventArgs e)
         {
-            bool isMySqlRunning = ProcessHelpers.ProcessExists("mysqld");
-
-            if (isMySqlRunning)
+            if (IsMySqlRunning)
             {
                 labelMySqlStatus.Content = "MySQL is running";
                 labelMySqlStatus.Foreground = Brushes.Green;
