@@ -41,9 +41,13 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Right" Margin="5">
+                <Label x:Name="labelMySqlStatus" Content="MySQL is NOT running" FontWeight="Bold" Foreground="Red" />
+            </StackPanel>
+
             <StackPanel Grid.Row="1" Margin="5">
-                <Button x:Name="btnStartSql" Content="Start SQL" Margin="0,0,0,10" Click="BtnStartSql_Click"/>
-                <Button x:Name="btnStopSql" Content="Stop SQL" Click="BtnStopSql_Click"/>
+                <Button x:Name="btnStartSql" Content="Start MySQL" Margin="0,0,0,10" Click="BtnStartSql_Click"/>
+                <Button x:Name="btnStopSql" Content="Stop MySQL" Click="BtnStopSql_Click"/>
             </StackPanel>
         </Grid>
     </Grid>

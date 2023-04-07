@@ -17,6 +17,7 @@ using System.IO;
 using MySql.Data.MySqlClient;
 
 using PortableMySQL8.Themes;
+using System.Windows.Threading;
 
 namespace PortableMySQL8
 {
@@ -38,6 +39,9 @@ namespace PortableMySQL8
         #endregion MySQL Paths
 
         private readonly WindowTheming WindowTheme = new WindowTheming();
+
+        private DispatcherTimer ProcessCheckTimer = null;
+        private const int ProcessCheckTimerInterval = 5000;
 
         public MainWindow()
         {
@@ -66,6 +70,8 @@ namespace PortableMySQL8
                 Environment.Exit(0);
                 return;
             }
+
+            StartProcessCheckTimer();
         }
 
         #region Events
@@ -93,6 +99,7 @@ namespace PortableMySQL8
                     Console.WriteLine("MySQL stopped! Exiting...");
 
                     SaveUIConfig();
+                    StopProcessCheckTimer();
 
                     Environment.Exit(0);
                 }
@@ -171,6 +178,47 @@ namespace PortableMySQL8
         }
 
         #endregion Events
+
+        #region Timers
+
+        private void StartProcessCheckTimer()
+        {
+            StopProcessCheckTimer();
+
+            if (ProcessCheckTimer == null)
+            {
+                ProcessCheckTimer = new DispatcherTimer();
+                ProcessCheckTimer.Tick += ProcessCheckTimer_Tick;
+            }
+
+            ProcessCheckTimer.Interval = TimeSpan.FromMilliseconds(ProcessCheckTimerInterval);
+            ProcessCheckTimer.Start();
+        }
+
+        private void StopProcessCheckTimer()
+        {
+            if (ProcessCheckTimer != null)
+                ProcessCheckTimer.Stop();
+        }
+
+        private void ProcessCheckTimer_Tick(object sender, EventArgs e)
+        {
+            bool isMySqlRunning = ProcessHelpers.ProcessExists("mysqld");
+
+            if (isMySqlRunning)
+            {
+                labelMySqlStatus.Content = "MySQL is running";
+                labelMySqlStatus.Foreground = Brushes.Green;
+            }
+
+            else
+            {
+                labelMySqlStatus.Content = "MySQL is NOT running";
+                labelMySqlStatus.Foreground = Brushes.Red;
+            }
+        }
+
+        #endregion Timers
 
         #region Methods
 
