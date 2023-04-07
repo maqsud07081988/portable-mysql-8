@@ -34,6 +34,7 @@ namespace PortableMySQL8
 
             this.Title = $"{Version.NAME} {Version.VersionPretty}";
 
+            this.Closing += MainWindow_Closing;
             this.ContentRendered += MainWindow_ContentRendered;
 
             #endregion Setup
@@ -49,6 +50,31 @@ namespace PortableMySQL8
         }
 
         #region Events
+
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            string proc = "mysqld";
+
+            if (ProcessHelpers.ProcessExists(proc))
+            {
+                e.Cancel = true;
+
+                MessageBoxResult result = MessageBox.Show($"Closing {Version.NAME} will also shutdown MySQL\r\n\r\nAre you sure you want to do this?", "Confirm Close", MessageBoxButton.YesNo);
+
+                //User did anything but click "Yes"
+                if (result != MessageBoxResult.Yes)
+                    return;
+
+                StopMySql();
+
+                //Wait until mysqld exits
+                Console.WriteLine("Waiting until MySQL has stopped...");
+                System.Threading.SpinWait.SpinUntil(() => !ProcessHelpers.ProcessExists(proc));
+                Console.WriteLine("MySQL stopped! Exiting...");
+
+                Environment.Exit(0);
+            }
+        }
 
         private void MainWindow_ContentRendered(object sender, EventArgs e)
         {

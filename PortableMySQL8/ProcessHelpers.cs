@@ -54,5 +54,23 @@ namespace PortableMySQL8
 
             return output;
         }
+
+        /// <summary>
+		/// Check if process exists by name
+		/// </summary>
+		/// <param name="name">Name of process (without .exe)</param>
+		/// <returns>true if process is running; false if not</returns>
+		public static bool ProcessExists(string name)
+        {
+            try
+            {
+                return Process.GetProcessesByName(name).Length > 0;
+            }
+
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }
