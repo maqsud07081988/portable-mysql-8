@@ -6,19 +6,14 @@
         xmlns:local="clr-namespace:PortableMySQL8"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
-        Title="MainWindow" Width="515" Height="300" MinWidth="515" MinHeight="150">
+        Title="MainWindow" Width="515" Height="200" MinWidth="515" MinHeight="200">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.5*"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="0.5*"/>
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Column="0" Margin="10">
-            <Button x:Name="btnStartSql" Content="Start SQL" Margin="0,0,0,10" Click="BtnStartSql_Click"/>
-            <Button x:Name="btnStopSql" Content="Stop SQL" Click="BtnStopSql_Click"/>
-        </StackPanel>
-
-        <StackPanel Grid.Column="1" Margin="10">
             <Label Content="Root Password" HorizontalAlignment="Left"/>
 
             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
@@ -39,5 +34,17 @@
                     ParsingNumberStyle="Integer"/>
             </StackPanel>
         </StackPanel>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="1" Margin="5">
+                <Button x:Name="btnStartSql" Content="Start SQL" Margin="0,0,0,10" Click="BtnStartSql_Click"/>
+                <Button x:Name="btnStopSql" Content="Stop SQL" Click="BtnStopSql_Click"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Controls:MetroWindow>
