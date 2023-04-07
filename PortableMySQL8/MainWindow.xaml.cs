@@ -48,6 +48,16 @@ namespace PortableMySQL8
             get { return ProcessHelpers.ProcessExists("mysqld"); }
         }
 
+        private bool IsRobustRunning
+        {
+            get { return ProcessHelpers.ProcessExists("Robust") || ProcessHelpers.ProcessExists("Robust32"); }
+        }
+
+        private bool IsOpenSimRunning
+        {
+            get { return ProcessHelpers.ProcessExists("OpenSim") || ProcessHelpers.ProcessExists("OpenSim32"); }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -91,6 +101,9 @@ namespace PortableMySQL8
 
                 //User did anything but click "Yes"
                 if (result != MessageBoxResult.Yes)
+                    return;
+
+                if (!ConfirmStopMySqlWhileOpenSimRunning())
                     return;
 
                 if (StopMySql() == 0)
@@ -183,6 +196,9 @@ namespace PortableMySQL8
                 return;
             }
 
+            if (!ConfirmStopMySqlWhileOpenSimRunning())
+                return;
+
             if (StopMySql() != 0)
                 MessageBox.Show("Could not stop MySQL!");
         }
@@ -233,8 +249,32 @@ namespace PortableMySQL8
 
             else
             {
-                labelMySqlStatus.Content = "MySQL is NOT running";
+                labelMySqlStatus.Content = "MySQL is not running";
                 labelMySqlStatus.Foreground = Brushes.Red;
+            }
+
+            if (IsRobustRunning)
+            {
+                labelRobustStatus.Content = "ROBUST is running";
+                labelRobustStatus.Foreground = Brushes.Green;
+            }
+
+            else
+            {
+                labelRobustStatus.Content = "ROBUST is not running";
+                labelRobustStatus.Foreground = Brushes.Red;
+            }
+
+            if (IsOpenSimRunning)
+            {
+                labelOpenSimStatus.Content = "OpenSim is running";
+                labelOpenSimStatus.Foreground = Brushes.Green;
+            }
+
+            else
+            {
+                labelOpenSimStatus.Content = "OpenSim is not running";
+                labelOpenSimStatus.Foreground = Brushes.Red;
             }
         }
 
@@ -428,6 +468,20 @@ namespace PortableMySQL8
                 Console.WriteLine($"Could not stop MySQL! Command returned code {code}.");
 
             return code;
+        }
+
+        private bool ConfirmStopMySqlWhileOpenSimRunning()
+        {
+            if (IsRobustRunning || IsOpenSimRunning)
+            {
+                MessageBoxResult result = MessageBox.Show("OpenSim and/or ROBUST seems to still be running. You should shut them down first before shutting MySQL down.\r\n\r\nAre you sure you want to continue with MySQL shutdown?", "Confirm Shutdown", MessageBoxButton.YesNo);
+
+                //User did anything but click "Yes")
+                if (result != MessageBoxResult.Yes)
+                    return false;
+            }
+
+            return true;
         }
 
         private bool NeedsInit(string prams)
