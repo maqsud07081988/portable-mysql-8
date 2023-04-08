@@ -124,8 +124,6 @@ namespace PortableMySQL8
             }
 
             #endregion Directory Setup
-
-            StartProcessCheckTimer();
         }
 
         #region Events
@@ -175,7 +173,8 @@ namespace PortableMySQL8
 
         private void MainWindow_ContentRendered(object sender, EventArgs e)
         {
-
+            CheckProcessesAndUpdateStatus();
+            StartProcessCheckTimer();
         }
 
         private void BtnStartSql_Click(object sender, RoutedEventArgs e)
@@ -285,41 +284,7 @@ namespace PortableMySQL8
 
         private void ProcessCheckTimer_Tick(object sender, EventArgs e)
         {
-            if (IsMySqlRunning)
-            {
-                labelMySqlStatus.Content = "MySQL is running";
-                labelMySqlStatus.Foreground = Brushes.Green;
-            }
-
-            else
-            {
-                labelMySqlStatus.Content = "MySQL is not running";
-                labelMySqlStatus.Foreground = Brushes.Red;
-            }
-
-            if (IsRobustRunning)
-            {
-                labelRobustStatus.Content = "ROBUST is running";
-                labelRobustStatus.Foreground = Brushes.Green;
-            }
-
-            else
-            {
-                labelRobustStatus.Content = "ROBUST is not running";
-                labelRobustStatus.Foreground = Brushes.Red;
-            }
-
-            if (IsOpenSimRunning)
-            {
-                labelOpenSimStatus.Content = "OpenSim is running";
-                labelOpenSimStatus.Foreground = Brushes.Green;
-            }
-
-            else
-            {
-                labelOpenSimStatus.Content = "OpenSim is not running";
-                labelOpenSimStatus.Foreground = Brushes.Red;
-            }
+            CheckProcessesAndUpdateStatus();
         }
 
         #endregion Timers
@@ -531,6 +496,45 @@ namespace PortableMySQL8
             }
 
             return true;
+        }
+
+        private void CheckProcessesAndUpdateStatus()
+        {
+            if (IsMySqlRunning)
+            {
+                labelMySqlStatus.Content = "MySQL is running";
+                labelMySqlStatus.Foreground = Brushes.Green;
+            }
+
+            else
+            {
+                labelMySqlStatus.Content = "MySQL is not running";
+                labelMySqlStatus.Foreground = Brushes.Red;
+            }
+
+            if (IsRobustRunning)
+            {
+                labelRobustStatus.Content = "ROBUST is running";
+                labelRobustStatus.Foreground = Brushes.Green;
+            }
+
+            else
+            {
+                labelRobustStatus.Content = "ROBUST is not running";
+                labelRobustStatus.Foreground = Brushes.Red;
+            }
+
+            if (IsOpenSimRunning)
+            {
+                labelOpenSimStatus.Content = "OpenSim is running";
+                labelOpenSimStatus.Foreground = Brushes.Green;
+            }
+
+            else
+            {
+                labelOpenSimStatus.Content = "OpenSim is not running";
+                labelOpenSimStatus.Foreground = Brushes.Red;
+            }
         }
 
         private void SetMySqlStatusToStart()
