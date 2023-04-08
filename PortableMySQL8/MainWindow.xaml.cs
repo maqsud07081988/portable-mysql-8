@@ -204,6 +204,7 @@ namespace PortableMySQL8
                 return;
             }
 
+            SetMySqlStatusToStart();
             StartMySql();
 
             if (didInit)
@@ -523,6 +524,14 @@ namespace PortableMySQL8
             }
 
             return true;
+        }
+
+        private void SetMySqlStatusToStart()
+        {
+            StopProcessCheckTimer();
+            labelMySqlStatus.Foreground = Brushes.Green;
+            labelMySqlStatus.Content = "Starting MySQL...";
+            StartProcessCheckTimer();
         }
 
         private void SetMySqlStatusToStop()
