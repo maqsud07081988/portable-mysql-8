@@ -13,7 +13,7 @@ namespace PortableMySQL8
     {
         public static Settings Config = new Settings();
 
-        public static string SettingsFilePath = $"Config{Version.NAME}.json".Replace(" ", "_");
+        public static string SettingsFilePath = $"Config.json";
 
 		#region Load/Save Settings
 
