@@ -143,6 +143,8 @@ namespace PortableMySQL8
                 if (!ConfirmStopMySqlWhileOpenSimRunning())
                     return;
 
+                SetMySqlStatusToStop();
+
                 if (StopMySql() == 0)
                 {
 
@@ -235,6 +237,8 @@ namespace PortableMySQL8
 
             if (!ConfirmStopMySqlWhileOpenSimRunning())
                 return;
+
+            SetMySqlStatusToStop();
 
             if (StopMySql() != 0)
                 MessageBox.Show("Could not stop MySQL!");
@@ -519,6 +523,14 @@ namespace PortableMySQL8
             }
 
             return true;
+        }
+
+        private void SetMySqlStatusToStop()
+        {
+            StopProcessCheckTimer();
+            labelMySqlStatus.Foreground = Brushes.Red;
+            labelMySqlStatus.Content = "Stopping MySQL...";
+            StartProcessCheckTimer();
         }
 
         private bool NeedsInit(string prams)
