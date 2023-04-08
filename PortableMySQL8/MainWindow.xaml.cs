@@ -36,6 +36,8 @@ namespace PortableMySQL8
         private static readonly string PathMySqlD = "\"" + Path.Combine(Environment.CurrentDirectory, PathMySqlBase, "bin", "mysqld.exe") + "\"";
         private static readonly string PathMySqlAdmin = "\"" + Path.Combine(Environment.CurrentDirectory, PathMySqlBase, "bin", "mysqladmin.exe") + "\"";
 
+        private static readonly string PathMySqlLauncher = Path.Combine(Environment.CurrentDirectory, "MySQLLauncher.exe");
+
         #endregion MySQL Paths
 
         #region Process Monitor
@@ -491,7 +493,12 @@ namespace PortableMySQL8
             if (!needsInit)
             {
                 Console.WriteLine($"Started MySQL");
-                ProcessHelpers.RunCommand(PathMySqlD, prams, false);
+
+                //Starts the process attached to this one
+                //ProcessHelpers.RunCommand(PathMySqlD, prams, false);
+
+                //Starts the process detached from this one
+                ProcessHelpers.RunCommand(PathMySqlLauncher, $"{PathMySqlD} {prams}", true);
             }
 
             else
