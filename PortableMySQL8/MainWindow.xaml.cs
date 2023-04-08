@@ -66,29 +66,19 @@ namespace PortableMySQL8
 
         #endregion Window
 
-        #region Config
+        #region Settings
 
         private readonly SettingsHelper SettingsHelper = new SettingsHelper();
         private static Settings Config = new Settings();
         private readonly string PathConfig = $"Config.json";
 
-        #endregion Config
+        #endregion Settings
 
         public MainWindow()
         {
             InitializeComponent();
 
-            Config = SettingsHelper.LoadSettings(PathConfig, Config);
-
-            if (Config == null)
-            {
-                //Malformed settings detected; end ourself
-                MessageBox.Show("There was a problem loading settings: The file is possibly malformed. To fix it you can attempt to repair " + Path.GetFileName(PathConfig) + " by hand or delete it and let the program recreate it.");
-                Environment.Exit(0);
-                return;
-            }
-
-            #region Setup
+            #region Window Setup
 
             WindowTheme.ApplyTheme("Blue", "Light");
 
@@ -97,18 +87,41 @@ namespace PortableMySQL8
             this.Closing += MainWindow_Closing;
             this.ContentRendered += MainWindow_ContentRendered;
 
-            #endregion Setup
+            #endregion Window Setup
 
+            #region Config Loading
+
+            //Load the configuration file
+            Config = SettingsHelper.LoadSettings(PathConfig, Config);
+
+            //Got bad config; stop here
+            if (Config == null)
+            {
+                //Malformed settings detected; end ourself
+                MessageBox.Show("There was a problem loading settings: The file is possibly malformed. To fix it you can attempt to repair " + Path.GetFileName(PathConfig) + " by hand or delete it and let the program recreate it.");
+                Environment.Exit(0);
+                return;
+            }
+
+            //Now setup the UI with the loaded configuration
             LoadUIConfig();
 
+            #endregion Config Loading
+
+            #region Directory Setup
+
+            //Create the directory structure needed to work
             bool success = CreateServiceFiles();
 
+            //Couldn't create it; stop here
             if (!success)
             {
                 MessageBox.Show("Could not create the required files to start!", "Error");
                 Environment.Exit(0);
                 return;
             }
+
+            #endregion Directory Setup
 
             StartProcessCheckTimer();
         }
