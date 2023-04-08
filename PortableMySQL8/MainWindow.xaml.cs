@@ -498,7 +498,7 @@ namespace PortableMySQL8
                 //ProcessHelpers.RunCommand(PathMySqlD, prams, false);
 
                 //Starts the process detached from this one
-                ProcessHelpers.RunCommand(PathMySqlLauncher, $"{PathMySqlD} {prams}", true);
+                ProcessHelpers.RunCommand(PathMySqlLauncher, $"{PathMySqlD} {prams}", false);
             }
 
             else
