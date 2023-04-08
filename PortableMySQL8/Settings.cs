@@ -9,53 +9,48 @@ using System.Windows;
 
 namespace PortableMySQL8
 {
-    public class SettingsGlobal
+    public class SettingsHelper
     {
-        public static Settings Config = new Settings();
-
-        public static string SettingsFilePath = $"Config.json";
-
-		#region Load/Save Settings
-
-		private static void CreateSettingsIfNotExists()
+		private void CreateSettingsIfNotExists(string path, Settings settings)
 		{
-			if (!File.Exists(SettingsFilePath))
+			if (!File.Exists(path))
 			{
 				try
 				{
-					if (Config == null)
-						Config = new Settings();
+					if (settings == null)
+						settings = new Settings();
 
-					SaveSettings();
+					SaveSettings(path, settings);
 				}
 
 				catch { }
 			}
 		}
 
-		public static void LoadSettings()
+		public Settings LoadSettings(string path, Settings settings)
 		{
 			try
 			{
-				CreateSettingsIfNotExists();
+				CreateSettingsIfNotExists(path, settings);
 
-				if (File.Exists(SettingsFilePath))
-					Config = JsonConvert.DeserializeObject<Settings>(File.ReadAllText(SettingsFilePath));
+				if (File.Exists(path))
+					settings = JsonConvert.DeserializeObject<Settings>(File.ReadAllText(path));
+
+				return settings;
 			}
 
 			catch (Exception ex)
 			{
-				//Malformed settings detected; end ourself
-				MessageBox.Show("There was a problem loading settings: The file is possibly malformed. To fix it you can attempt to repair " + Path.GetFileName(SettingsFilePath) + " by hand or delete it and let the program recreate it.\r\n\r\nException:\r\n\r\n" + ex.ToString());
-				Environment.Exit(0);
+				Console.WriteLine(ex.ToString());
+				return null;
 			}
 		}
 
-		public static bool SaveSettings()
+		public bool SaveSettings(string path, Settings settings)
 		{
 			try
 			{
-				File.WriteAllText(SettingsFilePath, JsonConvert.SerializeObject(Config, Formatting.Indented));
+				File.WriteAllText(path, JsonConvert.SerializeObject(settings, Formatting.Indented));
 				return true;
 			}
 
@@ -64,8 +59,6 @@ namespace PortableMySQL8
 				return false;
 			}
 		}
-
-		#endregion Load/Save Settings
 	}
 
 	public class Settings

@@ -66,11 +66,27 @@ namespace PortableMySQL8
 
         #endregion Window
 
+        #region Config
+
+        private readonly SettingsHelper SettingsHelper = new SettingsHelper();
+        private static Settings Config = new Settings();
+        private readonly string PathConfig = $"Config.json";
+
+        #endregion Config
+
         public MainWindow()
         {
             InitializeComponent();
 
-            SettingsGlobal.LoadSettings();
+            Config = SettingsHelper.LoadSettings(PathConfig, Config);
+
+            if (Config == null)
+            {
+                //Malformed settings detected; end ourself
+                MessageBox.Show("There was a problem loading settings: The file is possibly malformed. To fix it you can attempt to repair " + Path.GetFileName(PathConfig) + " by hand or delete it and let the program recreate it.");
+                Environment.Exit(0);
+                return;
+            }
 
             #region Setup
 
@@ -179,7 +195,7 @@ namespace PortableMySQL8
             {
                 bool success = SetPassword(
                     "root", "localhost",
-                    SettingsGlobal.Config.MySQL.Port.ToString(),
+                    Config.MySQL.Port.ToString(),
                     String.Empty, passwordBoxMySqlRootPass.Password);
 
                 if (!success)
@@ -215,7 +231,7 @@ namespace PortableMySQL8
         {
             if (checkBoxSavePass.IsChecked == true)
             {
-                MessageBoxResult result = MessageBox.Show($"Your MySQL root user password will be stored in CLEAR TEXT in {Path.GetFileName(SettingsGlobal.SettingsFilePath)}!\r\n\r\nAre you sure you want to do this?", "Confirm Allow Save Password", MessageBoxButton.YesNo);
+                MessageBoxResult result = MessageBox.Show($"Your MySQL root user password will be stored in CLEAR TEXT in {Path.GetFileName(PathConfig)}!\r\n\r\nAre you sure you want to do this?", "Confirm Allow Save Password", MessageBoxButton.YesNo);
 
                 //User did anything but click "Yes"
                 if (result != MessageBoxResult.Yes)
@@ -398,8 +414,8 @@ namespace PortableMySQL8
             try
             {
                 Console.WriteLine($"Writing port config to {PathMyIniFile}...");
-                IniFile.WriteValue("client", "port", SettingsGlobal.Config.MySQL.Port.ToString(), PathMyIniFile);
-                IniFile.WriteValue("mysqld", "port", SettingsGlobal.Config.MySQL.Port.ToString(), PathMyIniFile);
+                IniFile.WriteValue("client", "port", Config.MySQL.Port.ToString(), PathMyIniFile);
+                IniFile.WriteValue("mysqld", "port", Config.MySQL.Port.ToString(), PathMyIniFile);
 
                 Console.WriteLine($"Updating basedir and datadir in {PathMyIniFile}...");
                 IniFile.WriteValue("mysqld", "basedir", "\"" + Path.GetFullPath(PathMySqlBase) + "\"", PathMyIniFile);
@@ -466,7 +482,7 @@ namespace PortableMySQL8
 
         private int StopMySql()
         {
-            string prams = $"-u root -p{passwordBoxMySqlRootPass.Password} --port {SettingsGlobal.Config.MySQL.Port} shutdown";
+            string prams = $"-u root -p{passwordBoxMySqlRootPass.Password} --port {Config.MySQL.Port} shutdown";
             int code = ProcessHelpers.RunCommand(PathMySqlAdmin, prams, true);
 
             if (code == 0)
@@ -512,12 +528,12 @@ namespace PortableMySQL8
 
         private void LoadUIConfig()
         {
-            this.Width = SettingsGlobal.Config.General.WindowSize.Width;
-            this.Height = SettingsGlobal.Config.General.WindowSize.Height;
+            this.Width = Config.General.WindowSize.Width;
+            this.Height = Config.General.WindowSize.Height;
 
             //Start in the center of the screen if our location is 0
-            if (SettingsGlobal.Config.General.WindowLocation.X == 0
-            && SettingsGlobal.Config.General.WindowLocation.Y == 0)
+            if (Config.General.WindowLocation.X == 0
+            && Config.General.WindowLocation.Y == 0)
             {
                 this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             }
@@ -526,30 +542,30 @@ namespace PortableMySQL8
             else
             {
                 this.WindowStartupLocation = WindowStartupLocation.Manual;
-                this.Left = SettingsGlobal.Config.General.WindowLocation.X;
-                this.Top = SettingsGlobal.Config.General.WindowLocation.Y;
+                this.Left = Config.General.WindowLocation.X;
+                this.Top = Config.General.WindowLocation.Y;
             }
 
-            passwordBoxMySqlRootPass.Password = SettingsGlobal.Config.MySQL.RootPass;
-            checkBoxSavePass.IsChecked = SettingsGlobal.Config.MySQL.SavePass;
-            nudPort.Value = SettingsGlobal.Config.MySQL.Port;
+            passwordBoxMySqlRootPass.Password = Config.MySQL.RootPass;
+            checkBoxSavePass.IsChecked = Config.MySQL.SavePass;
+            nudPort.Value = Config.MySQL.Port;
         }
 
         private void SaveUIConfig()
         {
-            SettingsGlobal.Config.General.WindowSize = new Size(this.Width, this.Height);
-            SettingsGlobal.Config.General.WindowLocation = new Point(this.Left, this.Top);
+            Config.General.WindowSize = new Size(this.Width, this.Height);
+            Config.General.WindowLocation = new Point(this.Left, this.Top);
 
             if (checkBoxSavePass.IsChecked == true)
-                SettingsGlobal.Config.MySQL.RootPass = passwordBoxMySqlRootPass.Password;
+                Config.MySQL.RootPass = passwordBoxMySqlRootPass.Password;
 
             else
-                SettingsGlobal.Config.MySQL.RootPass = String.Empty;
+                Config.MySQL.RootPass = String.Empty;
 
-            SettingsGlobal.Config.MySQL.SavePass = checkBoxSavePass.IsChecked.TranslateNullableBool();
-            SettingsGlobal.Config.MySQL.Port = (int)nudPort.Value;
+            Config.MySQL.SavePass = checkBoxSavePass.IsChecked.TranslateNullableBool();
+            Config.MySQL.Port = (int)nudPort.Value;
 
-            SettingsGlobal.SaveSettings();
+            SettingsHelper.SaveSettings(PathConfig, Config);
         }
 
         #endregion Methods
