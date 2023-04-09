@@ -69,7 +69,6 @@ namespace PortableMySQL8
 
     public class SettingsGeneral
     {
-        public Size WindowSize { get; set; } = new Size(515, 200);
         public Point WindowLocation { get; set; } = new Point();
     }
 

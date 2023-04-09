@@ -504,9 +504,6 @@ namespace PortableMySQL8
 
         private void LoadUIConfig()
         {
-            this.Width = Config.General.WindowSize.Width;
-            this.Height = Config.General.WindowSize.Height;
-
             //Start in the center of the screen if our location is 0
             if (Config.General.WindowLocation.X == 0
             && Config.General.WindowLocation.Y == 0)
@@ -529,9 +526,6 @@ namespace PortableMySQL8
 
         private void SaveUIConfig()
         {
-            Config.General.WindowSize = new Size(this.Width, this.Height);
-            Config.General.WindowLocation = new Point(this.Left, this.Top);
-
             if (checkBoxSavePass.IsChecked == true)
                 Config.MySQL.RootPass = passwordBoxMySqlRootPass.Password;
 
