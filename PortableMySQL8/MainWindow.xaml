@@ -6,24 +6,27 @@
         xmlns:local="clr-namespace:PortableMySQL8"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
-        Title="MainWindow" Width="515" Height="200" ResizeMode="CanMinimize">
+        Title="MainWindow" Width="515" Height="230" ResizeMode="CanMinimize">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="0.5*"/>
-        </Grid.ColumnDefinitions>
+        <Controls:MetroAnimatedTabControl Controls:HeaderedControlHelper.HeaderFontSize="16">
+            <TabItem Header="Main">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="0.5*"/>
+                    </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="0" Margin="10">
-            <Label Content="Root Password" HorizontalAlignment="Left"/>
+                    <StackPanel Grid.Column="0" Margin="10">
+                        <Label Content="Root Password" HorizontalAlignment="Left"/>
 
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                <PasswordBox x:Name="passwordBoxMySqlRootPass" PasswordChar="*" Width="200" HorizontalAlignment="Left" Margin="0,0,10,0" />
-                <CheckBox x:Name="checkBoxSavePass" Content="Save Password" HorizontalAlignment="Left" Click="CheckBoxSavePass_Click"/>
-            </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <PasswordBox x:Name="passwordBoxMySqlRootPass" PasswordChar="*" Width="200" HorizontalAlignment="Left" Margin="0,0,10,0" />
+                            <CheckBox x:Name="checkBoxSavePass" Content="Save Password" HorizontalAlignment="Left" Click="CheckBoxSavePass_Click"/>
+                        </StackPanel>
 
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Port" HorizontalAlignment="Left"/>
-                <Controls:NumericUpDown
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Port" HorizontalAlignment="Left"/>
+                            <Controls:NumericUpDown
                     x:Name="nudPort"
                     Value="3306"
                     Minimum="1"
@@ -32,25 +35,32 @@
                     VerticalAlignment="Center"
                     SwitchUpDownButtons="True"
                     ParsingNumberStyle="Integer"/>
-            </StackPanel>
-        </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
 
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
 
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
-                <Label x:Name="labelMySqlStatus" Content="MySQL is not running" FontWeight="Bold" Foreground="Red" />
-                <Label x:Name="labelRobustStatus" Content="ROBUST is not running" FontWeight="Bold" Foreground="Red" />
-                <Label x:Name="labelOpenSimStatus" Content="OpenSim is not running" FontWeight="Bold" Foreground="Red" />
-            </StackPanel>
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
+                            <Label x:Name="labelMySqlStatus" Content="MySQL is not running" FontWeight="Bold" Foreground="Red" />
+                            <Label x:Name="labelRobustStatus" Content="ROBUST is not running" FontWeight="Bold" Foreground="Red" />
+                            <Label x:Name="labelOpenSimStatus" Content="OpenSim is not running" FontWeight="Bold" Foreground="Red" />
+                        </StackPanel>
 
-            <StackPanel Grid.Row="1" Margin="10,8,10,0">
-                <Button x:Name="btnStartSql" Content="Start MySQL" Margin="0,0,0,10" Click="BtnStartSql_Click"/>
-                <Button x:Name="btnStopSql" Content="Stop MySQL" Click="BtnStopSql_Click"/>
-            </StackPanel>
-        </Grid>
+                        <StackPanel Grid.Row="1" Margin="10,8,10,0">
+                            <Button x:Name="btnStartSql" Content="Start MySQL" Margin="0,0,0,10" Click="BtnStartSql_Click"/>
+                            <Button x:Name="btnStopSql" Content="Stop MySQL" Click="BtnStopSql_Click"/>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Database">
+                
+            </TabItem>
+        </Controls:MetroAnimatedTabControl>
     </Grid>
 </Controls:MetroWindow>
