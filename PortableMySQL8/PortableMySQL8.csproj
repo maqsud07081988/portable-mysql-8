@@ -119,6 +119,7 @@
     <Compile Include="Helpers\ProcessHelpers.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Themes\WindowTheming.cs" />
+    <Compile Include="Helpers\SQLTools.cs" />
     <Compile Include="Version.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

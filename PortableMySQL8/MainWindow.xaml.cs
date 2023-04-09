@@ -185,7 +185,7 @@ namespace PortableMySQL8
                 return;
             }
 
-            bool needsInit = NeedsInit(GetStartParams());
+            bool needsInit = SQLTools.NeedsInit(SQLTools.GetStartParams(PathMyIniFile, PathMySqlData));
 
             if (needsInit && String.IsNullOrWhiteSpace(passwordBoxMySqlRootPass.Password))
             {
@@ -197,7 +197,7 @@ namespace PortableMySQL8
 
             bool didInit = DoMySqlInitIfNeeded();
 
-            bool updateIniSuccess = UpdateMyIni();
+            bool updateIniSuccess = SQLTools.UpdateMyIni(PathMyIniFile, Config.MySQL.Port, PathMySqlBase, PathMySqlData);
 
             if (!updateIniSuccess)
             {
@@ -210,7 +210,7 @@ namespace PortableMySQL8
 
             if (didInit)
             {
-                bool success = SetPassword(
+                bool success = SQLTools.SetUserPassword(
                     "root", "localhost",
                     Config.MySQL.Port.ToString(),
                     String.Empty, passwordBoxMySqlRootPass.Password);
@@ -366,8 +366,8 @@ namespace PortableMySQL8
                     }
                 }
 
-                string prams = GetStartParams();
-                bool needsInit = NeedsInit(prams);
+                string prams = SQLTools.GetStartParams(PathMyIniFile, PathMySqlData);
+                bool needsInit = SQLTools.NeedsInit(prams);
 
                 Console.WriteLine($"{PathMySqlD} {prams} Needs Init = {needsInit}");
                 Console.WriteLine();
@@ -394,63 +394,10 @@ namespace PortableMySQL8
             }
         }
 
-        private bool UpdateMyIni()
-        {
-            try
-            {
-                Console.WriteLine($"Writing port config to {PathMyIniFile}...");
-                IniFile.WriteValue("client", "port", Config.MySQL.Port.ToString(), PathMyIniFile);
-                IniFile.WriteValue("mysqld", "port", Config.MySQL.Port.ToString(), PathMyIniFile);
-
-                Console.WriteLine($"Updating basedir and datadir in {PathMyIniFile}...");
-                IniFile.WriteValue("mysqld", "basedir", "\"" + Path.GetFullPath(PathMySqlBase) + "\"", PathMyIniFile);
-                IniFile.WriteValue("mysqld", "datadir", "\"" + Path.GetFullPath(PathMySqlData) + "\"", PathMyIniFile);
-
-                return true;
-            }
-
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                return false;
-            }
-        }
-
-        private bool SetPassword(string user, string server, string port, string curPass, string newPass)
-        {
-            bool success;
-            string connectString = $"server={server};user={user};database=mysql;port={port};password={curPass}";
-            MySqlConnection connection = new MySqlConnection(connectString);
-
-            try
-            {
-                connection.Open();
-
-                string sql = $"alter user '{user}'@'{server}' identified with mysql_native_password by '{newPass}'; flush privileges;";
-                MySqlCommand myCmd = new MySqlCommand(sql, connection);
-
-                int rows = myCmd.ExecuteNonQuery();
-
-                //Console.WriteLine($"Password set to '{pass}', {rows} rows affected");
-                Console.Write("Password set sucessfully");
-
-                success = true;
-            }
-
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                success = false;
-            }
-
-            connection.Close();
-            return success;
-        }
-
         private void StartMySql()
         {
-            string prams = GetStartParams();
-            bool needsInit = NeedsInit(prams);
+            string prams = SQLTools.GetStartParams(PathMyIniFile, PathMySqlData);
+            bool needsInit = SQLTools.NeedsInit(prams);
 
             Console.WriteLine($"{PathMySqlD} {prams} Needs Init = {needsInit}");
             Console.WriteLine();
@@ -551,24 +498,6 @@ namespace PortableMySQL8
             labelMySqlStatus.Foreground = Brushes.Red;
             labelMySqlStatus.Content = "Stopping MySQL...";
             StartProcessCheckTimer();
-        }
-
-        private bool NeedsInit(string prams)
-        {
-            return prams.Contains("--initialize");
-        }
-
-        private string GetStartParams()
-        {
-            string prams = "--defaults-file=" + "\"" + Path.Combine(Environment.CurrentDirectory, PathMyIniFile) + "\" --standalone --explicit_defaults_for_timestamp";
-
-            //No MySQL data directory found, let's initialize it.
-            //Doing an insecure initialization because we will set
-            //a password for it immediately after.
-            if (!Directory.Exists(PathMySqlData))
-                prams += " --initialize-insecure";
-
-            return prams;
         }
 
         private void LoadUIConfig()
