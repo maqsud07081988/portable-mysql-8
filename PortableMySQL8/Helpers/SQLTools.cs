@@ -64,10 +64,18 @@ namespace PortableMySQL8
                     "",
                     "port=3306",
                     "",
+                    "# The character set MySQL client will use",
+                    "# MySQL defaults to utf8mb4 but OpenSim needs utf8mb3",
+                    "default-character-set=utf8mb3",
+                    "",
                     "[mysqld]",
                     "",
                     "# The TCP/IP Port the MySQL Server will listen on",
                     "port=3306",
+                    "",
+                    "# The character set MySQL client will use",
+                    "# MySQL defaults to utf8mb4 but OpenSim needs utf8mb3",
+                    "character-set-server=utf8mb3",
                     "",
                     "#Path to installation directory. All paths are usually resolved relative to this.",
                     "basedir=" + "\"" + myBase + "\"",
@@ -79,7 +87,7 @@ namespace PortableMySQL8
                     "default-authentication-plugin=mysql_native_password",
                     "",
                     "#Max packetlength to send/receive from to server.",
-                    "#MySQL's default seems to be 1 MB but OpenSim needs more than that",
+                    "#MySQL's default seems to be 1, 4, or 16 MB depending on version, but OpenSim needs more than that",
                     "max_allowed_packet=128M"
                 };
 
