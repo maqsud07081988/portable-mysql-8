@@ -14,8 +14,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.IO;
 
-using MySql.Data.MySqlClient;
-
 using PortableMySQL8.Themes;
 using System.Windows.Threading;
 
