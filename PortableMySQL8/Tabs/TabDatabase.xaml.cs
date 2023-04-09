@@ -52,6 +52,12 @@ namespace PortableMySQL8
 
         private void btnCreateDb_Click(object sender, RoutedEventArgs e)
         {
+            if (!ProcessHelpers.ProcessExists("mysqld"))
+            {
+                MessageBox.Show("Can't create database(s) because MySQL is not running", "Error");
+                return;
+            }
+
             string user = "root";
             string server = "localhost";
             string pass = Instance.passwordBoxMySqlRootPass.Password;
