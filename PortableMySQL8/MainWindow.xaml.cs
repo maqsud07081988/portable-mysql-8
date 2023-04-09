@@ -44,6 +44,10 @@ namespace PortableMySQL8
 
         private DispatcherTimer ProcessCheckTimer = null;
         private const int ProcessCheckTimerInterval = 5000;
+        private const int ProcessCheckTimerIntervalFast = 500;
+
+        private bool MySQLIsStarting = false;
+        private bool MySQLIsStopping = false;
 
         private bool IsMySqlRunning
         {
@@ -159,7 +163,7 @@ namespace PortableMySQL8
         private void MainWindow_ContentRendered(object sender, EventArgs e)
         {
             CheckProcessesAndUpdateStatus();
-            StartProcessCheckTimer();
+            StartProcessCheckTimer(ProcessCheckTimerInterval);
         }
 
         private void BtnStartSql_Click(object sender, RoutedEventArgs e)
@@ -204,6 +208,9 @@ namespace PortableMySQL8
             SetMySqlStatusToStart();
             StartMySql();
 
+            MySQLIsStarting = true;
+            StartProcessCheckTimer(ProcessCheckTimerIntervalFast);
+
             //If we newly initialized MySQL then set the root password
             if (didInit)
             {
@@ -239,8 +246,15 @@ namespace PortableMySQL8
 
             SetMySqlStatusToStop();
 
+            MySQLIsStopping = true;
+            StartProcessCheckTimer(ProcessCheckTimerIntervalFast);
+
             if (StopMySql() != 0)
+            {
                 MessageBox.Show("Could not stop MySQL!");
+                StartProcessCheckTimer(ProcessCheckTimerInterval);
+                Console.WriteLine("Reset ProcessCheckTimerInterval because StopMySQL() failed");
+            }
         }
 
         private void CheckBoxSavePass_Click(object sender, RoutedEventArgs e)
@@ -259,7 +273,7 @@ namespace PortableMySQL8
 
         #region Timers
 
-        private void StartProcessCheckTimer()
+        private void StartProcessCheckTimer(int intervalMS)
         {
             StopProcessCheckTimer();
 
@@ -269,7 +283,7 @@ namespace PortableMySQL8
                 ProcessCheckTimer.Tick += ProcessCheckTimer_Tick;
             }
 
-            ProcessCheckTimer.Interval = TimeSpan.FromMilliseconds(ProcessCheckTimerInterval);
+            ProcessCheckTimer.Interval = TimeSpan.FromMilliseconds(intervalMS);
             ProcessCheckTimer.Start();
         }
 
@@ -281,7 +295,23 @@ namespace PortableMySQL8
 
         private void ProcessCheckTimer_Tick(object sender, EventArgs e)
         {
-            CheckProcessesAndUpdateStatus();
+            //Reset the timer intervals on MySQL run state change
+            if (MySQLIsStarting && IsMySqlRunning)
+            {
+                MySQLIsStarting = false;
+                StartProcessCheckTimer(ProcessCheckTimerInterval);
+                Console.WriteLine("Reset ProcessCheckTimerInterval on MySQL start");
+            }
+
+            if (MySQLIsStopping && !IsMySqlRunning)
+            {
+                MySQLIsStopping = false;
+                StartProcessCheckTimer(ProcessCheckTimerInterval);
+                Console.WriteLine("Reset ProcessCheckTimerInterval on MySQL stop");
+            }
+
+            if (!MySQLIsStarting && !MySQLIsStopping)
+                CheckProcessesAndUpdateStatus();
         }
 
         #endregion Timers
@@ -461,7 +491,7 @@ namespace PortableMySQL8
             StopProcessCheckTimer();
             labelMySqlStatus.Foreground = Brushes.Green;
             labelMySqlStatus.Content = "Starting MySQL...";
-            StartProcessCheckTimer();
+            StartProcessCheckTimer(ProcessCheckTimerInterval);
         }
 
         private void SetMySqlStatusToStop()
@@ -469,7 +499,7 @@ namespace PortableMySQL8
             StopProcessCheckTimer();
             labelMySqlStatus.Foreground = Brushes.Red;
             labelMySqlStatus.Content = "Stopping MySQL...";
-            StartProcessCheckTimer();
+            StartProcessCheckTimer(ProcessCheckTimerInterval);
         }
 
         private void LoadUIConfig()
