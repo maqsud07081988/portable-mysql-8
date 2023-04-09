@@ -82,6 +82,8 @@ namespace PortableMySQL8
 
     public class SettingsTabDatabase
     {
-        
+        public string DatabaseMain { get; set; } = String.Empty;
+        public string DatabaseProfiles { get; set; } = String.Empty;
+        public string DatabaseGroups { get; set; } = String.Empty;
     }
 }

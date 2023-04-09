@@ -29,6 +29,25 @@ namespace PortableMySQL8
 
             Instance = _instance;
             Config = _config;
+
+            LoadUIConfig();
+        }
+
+        #region Events
+
+        private void textBoxMainName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Config.DatabaseMain = textBoxMainName.Text.Trim();
+        }
+
+        private void textBoxProfilesName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Config.DatabaseProfiles = textBoxProfilesName.Text.Trim();
+        }
+
+        private void textBoxGroupsName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Config.DatabaseGroups = textBoxGroupsName.Text.Trim();
         }
 
         private void btnCreateDb_Click(object sender, RoutedEventArgs e)
@@ -40,34 +59,45 @@ namespace PortableMySQL8
 
             string creationStatus = String.Empty;
 
-            bool success = CreateDatabaseIfNotExists(user, server, port, pass, textBoxOpenSimName.Text);
+            bool success = CreateDatabaseIfNotExists(user, server, port, pass, Config.DatabaseMain);
 
             //Main DB
             if (!success)
-                Console.WriteLine($"Could not create database '{textBoxOpenSimName.Text}'");
+                Console.WriteLine($"Could not create database '{Config.DatabaseMain}'");
 
-            creationStatus += CreateStatusString(textBoxOpenSimName.Text, success) + "\r\n";
+            creationStatus += CreateStatusString(Config.DatabaseMain, success) + "\r\n";
 
             //Profiles DB
-            success = CreateDatabaseIfNotExists(user, server, port, pass, textBoxProfilesName.Text);
+            success = CreateDatabaseIfNotExists(user, server, port, pass, Config.DatabaseProfiles);
 
             if (!success)
-                Console.WriteLine($"Could not create database '{textBoxProfilesName.Text}'");
+                Console.WriteLine($"Could not create database '{Config.DatabaseProfiles}'");
 
-            creationStatus += CreateStatusString(textBoxProfilesName.Text, success) + "\r\n";
+            creationStatus += CreateStatusString(Config.DatabaseProfiles, success) + "\r\n";
 
             //Groups DB
-            success = CreateDatabaseIfNotExists(user, server, port, pass, textBoxGroupsName.Text);
+            success = CreateDatabaseIfNotExists(user, server, port, pass, Config.DatabaseGroups);
 
             if (!success)
-                Console.WriteLine($"Could not create database '{textBoxGroupsName.Text}'");
+                Console.WriteLine($"Could not create database '{Config.DatabaseGroups}'");
 
-            creationStatus += CreateStatusString(textBoxGroupsName.Text, success);
+            creationStatus += CreateStatusString(Config.DatabaseGroups, success);
 
             pass = null;
 
             //Results
             MessageBox.Show(creationStatus, "Database Creation Results");
+        }
+
+        #endregion Events
+
+        #region Methods
+
+        private void LoadUIConfig()
+        {
+            textBoxMainName.Text = Config.DatabaseMain;
+            textBoxProfilesName.Text = Config.DatabaseProfiles;
+            textBoxGroupsName.Text = Config.DatabaseGroups;
         }
 
         private string CreateStatusString(string name, bool success)
@@ -97,5 +127,7 @@ namespace PortableMySQL8
 
             return false;
         }
+
+        #endregion Methods
     }
 }
