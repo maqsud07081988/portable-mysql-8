@@ -118,6 +118,9 @@
     <Compile Include="Helpers\IniFile.cs" />
     <Compile Include="Helpers\ProcessHelpers.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="Tabs\TabDatabase.xaml.cs">
+      <DependentUpon>TabDatabase.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Themes\WindowTheming.cs" />
     <Compile Include="Helpers\SQLTools.cs" />
     <Compile Include="Version.cs" />
@@ -133,6 +136,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Tabs\TabDatabase.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

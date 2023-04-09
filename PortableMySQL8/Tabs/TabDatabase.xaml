@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="PortableMySQL8.TabDatabase"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PortableMySQL8"
+             mc:Ignorable="d" 
+             d:DesignWidth="800" d:DesignHeight="450">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="0.3*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="0" Margin="10,0,10,0">
+            <StackPanel Orientation="Vertical" Margin="0,0,0,10">
+                <Label Content="OpenSim Schema Name"/>
+                <TextBox x:Name="textBoxOpenSimName"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Vertical" Margin="0,0,0,10">
+                <Label Content="Profiles Schema Name"/>
+                <TextBox x:Name="textBoxProfilesName"/>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Grid.Row="0" Margin="10,0,10,0">
+            <StackPanel Orientation="Vertical" Margin="0,0,0,10">
+                <Label Content="Groups Schema Name"/>
+                <TextBox x:Name="textBoxGroupsName"/>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Grid.Row="1" Margin="10,0,10,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+                <Button x:Name="btnCreateDb" Content="Create Databases" Click="btnCreateDb_Click"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

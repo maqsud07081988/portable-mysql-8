@@ -113,6 +113,12 @@ namespace PortableMySQL8
             LoadUIConfig();
 
             #endregion Config Loading
+
+            #region Tab Setup
+
+            tabDatabase.Content = new TabDatabase(this, Config.Database);
+
+            #endregion Tab Setup
         }
 
         #region Events

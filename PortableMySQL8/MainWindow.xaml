@@ -9,7 +9,7 @@
         Title="MainWindow" Width="515" Height="230" ResizeMode="CanMinimize">
     <Grid>
         <Controls:MetroAnimatedTabControl Controls:HeaderedControlHelper.HeaderFontSize="16">
-            <TabItem Header="Main">
+            <TabItem x:Name="tabMain" Header="Main">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -58,9 +58,7 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Header="Database">
-                
-            </TabItem>
+            <TabItem x:Name="tabDatabase" Header="Database"/>
         </Controls:MetroAnimatedTabControl>
     </Grid>
 </Controls:MetroWindow>

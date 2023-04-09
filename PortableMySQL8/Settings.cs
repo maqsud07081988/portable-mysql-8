@@ -65,6 +65,7 @@ namespace PortableMySQL8
     {
         public SettingsGeneral General { get; set; } = new SettingsGeneral();
         public SettingsMySQL MySQL { get; set; } = new SettingsMySQL();
+        public SettingsTabDatabase Database { get; set; } = new SettingsTabDatabase();
     }
 
     public class SettingsGeneral
@@ -77,5 +78,10 @@ namespace PortableMySQL8
         public string RootPass { get; set; } = String.Empty;
         public bool SavePass { get; set; } = false;
         public int Port { get; set; } = 3306;
+    }
+
+    public class SettingsTabDatabase
+    {
+        
     }
 }
