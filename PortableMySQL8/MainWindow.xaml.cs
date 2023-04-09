@@ -109,21 +109,6 @@ namespace PortableMySQL8
             LoadUIConfig();
 
             #endregion Config Loading
-
-            #region Directory Setup
-
-            //Create the directory structure needed to work
-            bool success = CreateServiceFiles();
-
-            //Couldn't create it; stop here
-            if (!success)
-            {
-                MessageBox.Show("Could not create the required files to start!", "Error");
-                Environment.Exit(0);
-                return;
-            }
-
-            #endregion Directory Setup
         }
 
         #region Events
@@ -185,6 +170,17 @@ namespace PortableMySQL8
                 return;
             }
 
+            //Create the directory structure needed to work
+            bool createdFiles = CreateServiceFiles();
+
+            //Couldn't create it; stop here
+            if (!createdFiles)
+            {
+                MessageBox.Show("Could not create the required files for MySQL to start!", "Error");
+                return;
+            }
+
+            //Do MySQL initialization if needed
             bool needsInit = SQLTools.NeedsInit(SQLTools.GetStartParams(PathMyIniFile, PathMySqlData));
 
             if (needsInit && String.IsNullOrWhiteSpace(passwordBoxMySqlRootPass.Password))
@@ -208,6 +204,7 @@ namespace PortableMySQL8
             SetMySqlStatusToStart();
             StartMySql();
 
+            //If we newly initialized MySQL then set the root password
             if (didInit)
             {
                 bool success = SQLTools.SetUserPassword(
