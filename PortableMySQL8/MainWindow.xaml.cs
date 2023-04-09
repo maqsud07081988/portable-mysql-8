@@ -305,35 +305,10 @@ namespace PortableMySQL8
 
                 if (!File.Exists(PathMyIniFile))
                 {
-                    //Set up default my.ini file contents
-                    //I'm sure there's probably a better way to do this but this is simple enough for now.
-                    List<string> myIni = new List<string>()
-                    {
-                        "[client]",
-                        "",
-                        "port=3306",
-                        "",
-                        "[mysqld]",
-                        "",
-                        "# The TCP/IP Port the MySQL Server will listen on",
-                        "port=3306",
-                        "",
-                        "#Path to installation directory. All paths are usually resolved relative to this.",
-                        "basedir=" + "\"" + Path.GetFullPath(PathMySqlBase) + "\"",
-                        "",
-                        "#Path to the database root",
-                        "datadir=" + "\"" + Path.GetFullPath(PathMySqlData) + "\"",
-                        "",
-                        "#OpenSim needs this on MySQL 8.0.4+",
-                        "default-authentication-plugin=mysql_native_password",
-                        "",
-                        "#Max packetlength to send/receive from to server.",
-                        "#MySQL's default seems to be 1 MB but OpenSim needs more than that",
-                        "max_allowed_packet=128M"
-                    };
+                    bool success = SQLTools.CreateNewMyIni(PathMyIniFile, Path.GetFullPath(PathMySqlBase), Path.GetFullPath(PathMySqlData));
 
-                    //Dump the new my.ini file to the proper location
-                    File.WriteAllLines(PathMyIniFile, myIni);
+                    if (!success)
+                        return false;
                 }
 
                 return true;

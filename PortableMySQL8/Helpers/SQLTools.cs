@@ -46,6 +46,57 @@ namespace PortableMySQL8
         }
 
         /// <summary>
+        /// Creates a new my.ini at the path specified
+        /// </summary>
+        /// <param name="myIni">Path to new my.ini</param>
+        /// <param name="myBase">Base directory for MySQL install</param>
+        /// <param name="myData">Data directory for MySQL database</param>
+        /// <returns></returns>
+        public static bool CreateNewMyIni(string myIni, string myBase, string myData)
+        {
+            try
+            {
+                //Set up default my.ini file contents
+                //I'm sure there's probably a better way to do this but this is simple enough for now.
+                List<string> contents = new List<string>()
+                {
+                    "[client]",
+                    "",
+                    "port=3306",
+                    "",
+                    "[mysqld]",
+                    "",
+                    "# The TCP/IP Port the MySQL Server will listen on",
+                    "port=3306",
+                    "",
+                    "#Path to installation directory. All paths are usually resolved relative to this.",
+                    "basedir=" + "\"" + myBase + "\"",
+                    "",
+                    "#Path to the database root",
+                    "datadir=" + "\"" + myData + "\"",
+                    "",
+                    "#OpenSim needs this on MySQL 8.0.4+",
+                    "default-authentication-plugin=mysql_native_password",
+                    "",
+                    "#Max packetlength to send/receive from to server.",
+                    "#MySQL's default seems to be 1 MB but OpenSim needs more than that",
+                    "max_allowed_packet=128M"
+                };
+
+                //Dump the new my.ini file to the proper location
+                File.WriteAllLines(myIni, contents);
+
+                return true;
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Updates my.ini configuration with values critical to running MySQL
         /// </summary>
         /// <param name="myIni">Path to my.ini config to update</param>
