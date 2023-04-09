@@ -185,7 +185,7 @@ namespace PortableMySQL8
             }
 
             //Do MySQL initialization if needed
-            bool needsInit = SQLTools.NeedsInit(SQLTools.GetStartParams(PathMyIniFile, PathMySqlData));
+            bool needsInit = SQLTools.NeedsInit(SQLTools.GetStartParams(Path.GetFullPath(PathMyIniFile), PathMySqlData));
 
             if (needsInit && String.IsNullOrWhiteSpace(passwordBoxMySqlRootPass.Password))
             {
@@ -197,7 +197,7 @@ namespace PortableMySQL8
 
             bool didInit = DoMySqlInitIfNeeded();
 
-            bool updateIniSuccess = SQLTools.UpdateMyIni(PathMyIniFile, Config.MySQL.Port, PathMySqlBase, PathMySqlData);
+            bool updateIniSuccess = SQLTools.UpdateMyIni(PathMyIniFile, Config.MySQL.Port, Path.GetFullPath(PathMySqlBase), Path.GetFullPath(PathMySqlData));
 
             if (!updateIniSuccess)
             {
@@ -368,7 +368,7 @@ namespace PortableMySQL8
                     }
                 }
 
-                string prams = SQLTools.GetStartParams(PathMyIniFile, PathMySqlData);
+                string prams = SQLTools.GetStartParams(Path.GetFullPath(PathMyIniFile), PathMySqlData);
                 bool needsInit = SQLTools.NeedsInit(prams);
 
                 Console.WriteLine($"{PathMySqlD} {prams} Needs Init = {needsInit}");
@@ -398,7 +398,7 @@ namespace PortableMySQL8
 
         private void StartMySql()
         {
-            string prams = SQLTools.GetStartParams(PathMyIniFile, PathMySqlData);
+            string prams = SQLTools.GetStartParams(Path.GetFullPath(PathMyIniFile), PathMySqlData);
             bool needsInit = SQLTools.NeedsInit(prams);
 
             Console.WriteLine($"{PathMySqlD} {prams} Needs Init = {needsInit}");

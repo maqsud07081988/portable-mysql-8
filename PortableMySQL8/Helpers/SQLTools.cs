@@ -27,14 +27,14 @@ namespace PortableMySQL8
         /// <summary>
         /// Get the MySQL start paramters given a my.ini path and MySQL data path
         /// </summary>
-        /// <param name="myIni">Path to my.ini</param>
+        /// <param name="myIni">Path to my.ini (MUST be full path)</param>
         /// <param name="myDataPath">Path to MySQL data directory</param>
         /// <returns>
         /// MySQL start parameters string
         /// </returns>
         public static string GetStartParams(string myIni, string myDataPath)
         {
-            string prams = "--defaults-file=" + "\"" + Path.Combine(Environment.CurrentDirectory, myIni) + "\" --standalone --explicit_defaults_for_timestamp";
+            string prams = "--defaults-file=" + "\"" + myIni + "\" --standalone --explicit_defaults_for_timestamp";
 
             //No MySQL data directory found, let's initialize it.
             //Doing an insecure initialization because we will set
@@ -49,8 +49,8 @@ namespace PortableMySQL8
         /// Creates a new my.ini at the path specified
         /// </summary>
         /// <param name="myIni">Path to new my.ini</param>
-        /// <param name="myBase">Base directory for MySQL install</param>
-        /// <param name="myData">Data directory for MySQL database</param>
+        /// <param name="myBase">Base directory for MySQL install (MUST be full path)</param>
+        /// <param name="myData">Data directory for MySQL database (MUST be full path)</param>
         /// <returns></returns>
         public static bool CreateNewMyIni(string myIni, string myBase, string myData)
         {
@@ -101,8 +101,8 @@ namespace PortableMySQL8
         /// </summary>
         /// <param name="myIni">Path to my.ini config to update</param>
         /// <param name="port">Port to run MySQL on</param>
-        /// <param name="myBase">Base directory for MySQL install</param>
-        /// <param name="myData">Data directory for MySQL database</param>
+        /// <param name="myBase">Base directory for MySQL install (MUST be full path)</param>
+        /// <param name="myData">Data directory for MySQL database (MUST be full path)</param>
         /// <returns>
         /// true if successful, false if not
         /// </returns>
@@ -115,8 +115,8 @@ namespace PortableMySQL8
                 IniFile.WriteValue("mysqld", "port", port.ToString(), myIni);
 
                 Console.WriteLine($"Updating basedir and datadir in {myIni}...");
-                IniFile.WriteValue("mysqld", "basedir", "\"" + Path.GetFullPath(myBase) + "\"", myIni);
-                IniFile.WriteValue("mysqld", "datadir", "\"" + Path.GetFullPath(myData) + "\"", myIni);
+                IniFile.WriteValue("mysqld", "basedir", "\"" + myBase + "\"", myIni);
+                IniFile.WriteValue("mysqld", "datadir", "\"" + myData + "\"", myIni);
 
                 return true;
             }
