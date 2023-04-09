@@ -177,5 +177,78 @@ namespace PortableMySQL8
             connection.Close();
             return success;
         }
+
+        /// <summary>
+        /// Check if a given database exists by name
+        /// </summary>
+        /// <param name="user">The user to set password for</param>
+        /// <param name="server">The server name to connect to</param>
+        /// <param name="port">The port number to use</param>
+        /// <param name="password">User's password</param>
+        /// <param name="name">Name of database to check for</param>
+        /// <returns>
+        /// true if database exists, false if not, and null if there was an error checking it
+        /// </returns>
+        public static bool? DatabaseExists(string user, string server, string port, string password, string name)
+        {
+            bool? exists;
+            string connectString = $"server={server};user={user};database=mysql;port={port};password={password}";
+            MySqlConnection connection = new MySqlConnection(connectString);
+
+            try
+            {
+                connection.Open();
+
+                string sql = $"select count(schema_name) from information_schema.SCHEMATA where schema_name like '{name}';";
+                //string sql = $"select schema_name from information_schema.SCHEMATA where schema_name like '{databaseName}';";
+
+                MySqlCommand cmd = new MySqlCommand(sql, connection);
+                cmd.Parameters.Add(name, MySqlDbType.VarChar).Value = name;
+
+                int numLikeName = Convert.ToInt32(cmd.ExecuteScalar());
+
+                exists = numLikeName > 0;
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                exists = null;
+            }
+
+            connection.Close();
+            return exists;
+        }
+
+        public static bool CreateDatabase(string user, string server, string port, string password, string name)
+        {
+            bool success;
+            string connectString = $"server={server};user={user};database=mysql;port={port};password={password}";
+            MySqlConnection connection = new MySqlConnection(connectString);
+
+            try
+            {
+                connection.Open();
+
+                string sql = $"create database if not exists `{name}`;";
+
+                MySqlCommand cmd = new MySqlCommand(sql, connection);
+                cmd.ExecuteNonQuery();
+                cmd.Dispose();
+
+                return true;
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                success = false;
+            }
+
+            connection.Close();
+            connection.Dispose();
+
+            return success;
+        }
     }
 }
