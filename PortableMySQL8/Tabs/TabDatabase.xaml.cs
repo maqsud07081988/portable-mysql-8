@@ -112,6 +112,9 @@ namespace PortableMySQL8
 
             foreach (string db in databases)
             {
+                if (String.IsNullOrWhiteSpace(db))
+                    continue;
+
                 bool success = SQLTools.CreateDatabaseIfNotExists(
                     user, server, (int)Instance.nudPort.Value, Config.DatabasePassword, db);
 
