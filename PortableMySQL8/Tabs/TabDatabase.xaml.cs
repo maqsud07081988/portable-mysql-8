@@ -35,6 +35,8 @@ namespace PortableMySQL8
 
         #region Events
 
+        #region User Details
+
         private void textBoxDbUser_TextChanged(object sender, TextChangedEventArgs e)
         {
             Config.DatabaseUser = textBoxDbUser.Text.Trim();
@@ -50,6 +52,10 @@ namespace PortableMySQL8
             Config.DatabasePassword = passWordBoxDbUserPass.Password.Trim();
         }
 
+        #endregion User Details
+
+        #region Database Details
+
         private void textBoxMainName_TextChanged(object sender, TextChangedEventArgs e)
         {
             Config.DatabaseMain = textBoxMainName.Text.Trim();
@@ -64,6 +70,10 @@ namespace PortableMySQL8
         {
             Config.DatabaseGroups = textBoxGroupsName.Text.Trim();
         }
+
+        #endregion Database Details
+
+        #region Buttons
 
         private void btnCreateDb_Click(object sender, RoutedEventArgs e)
         {
@@ -91,6 +101,8 @@ namespace PortableMySQL8
             //Results
             MessageBox.Show(creationStatus, "Database Creation Results");
         }
+
+        #endregion Buttons
 
         #endregion Events
 
