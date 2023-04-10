@@ -97,6 +97,15 @@ namespace PortableMySQL8
                 return;
             }
 
+            string user = "root";
+            string server = "localhost";
+
+            if (!String.IsNullOrWhiteSpace(Config.DatabaseUser))
+                user = Config.DatabaseUser;
+
+            if (!string.IsNullOrWhiteSpace(Config.DatabaseServer))
+                server = Config.DatabaseServer;
+
             string creationStatus = String.Empty;
 
             List<string> databases = new List<string>() { Config.DatabaseMain, Config.DatabaseProfiles, Config.DatabaseGroups };
@@ -104,7 +113,7 @@ namespace PortableMySQL8
             foreach (string db in databases)
             {
                 bool success = SQLTools.CreateDatabaseIfNotExists(
-                    "root", "localhost", (int)Instance.nudPort.Value, Instance.passwordBoxMySqlRootPass.Password, db);
+                    user, server, (int)Instance.nudPort.Value, Config.DatabasePassword, db);
 
                 if (!success)
                     Console.WriteLine($"Could not create database '{db}'");
