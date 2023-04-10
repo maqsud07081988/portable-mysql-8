@@ -44,13 +44,13 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
-                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,0,5,0">
                             <Label x:Name="labelMySqlStatus" Content="MySQL is not running" FontWeight="Bold" Foreground="Red" />
                             <Label x:Name="labelRobustStatus" Content="ROBUST is not running" FontWeight="Bold" Foreground="Red" />
                             <Label x:Name="labelOpenSimStatus" Content="OpenSim is not running" FontWeight="Bold" Foreground="Red" />
                         </StackPanel>
 
-                        <StackPanel Grid.Row="1" Margin="10,8,10,0">
+                        <StackPanel Grid.Row="1" Margin="10,35,10,0">
                             <Button x:Name="btnStartSql" Content="Start MySQL" Margin="0,0,0,10" Click="BtnStartSql_Click"/>
                             <Button x:Name="btnStopSql" Content="Stop MySQL" Click="BtnStopSql_Click"/>
                         </StackPanel>
