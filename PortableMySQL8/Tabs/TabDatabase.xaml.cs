@@ -90,7 +90,7 @@ namespace PortableMySQL8
             foreach (string db in databases)
             {
                 bool success = SQLTools.CreateDatabaseIfNotExists(
-                    "root", "localhost", Instance.nudPort.Value.ToString(), Instance.passwordBoxMySqlRootPass.Password, db);
+                    "root", "localhost", (int)Instance.nudPort.Value, Instance.passwordBoxMySqlRootPass.Password, db);
 
                 if (!success)
                     Console.WriteLine($"Could not create database '{db}'");

@@ -147,7 +147,7 @@ namespace PortableMySQL8
         /// <returns>
         /// true if successful, false if not
         /// </returns>
-        public static bool SetUserPassword(string user, string server, string port, string curPass, string newPass)
+        public static bool SetUserPassword(string user, string server, int port, string curPass, string newPass)
         {
             bool success;
             string connectString = $"server={server};user={user};database=mysql;port={port};password={curPass}";
@@ -192,7 +192,7 @@ namespace PortableMySQL8
         /// <returns>
         /// true if database exists, false if not, and null if there was an error checking it
         /// </returns>
-        public static bool? DatabaseExists(string user, string server, string port, string password, string name)
+        public static bool? DatabaseExists(string user, string server, int port, string password, string name)
         {
             bool? exists;
             string connectString = $"server={server};user={user};database=mysql;port={port};password={password}";
@@ -238,7 +238,7 @@ namespace PortableMySQL8
         /// <returns>
         /// true if database creation successful, and false if not
         /// </returns>
-        public static bool CreateDatabase(string user, string server, string port, string password, string name)
+        public static bool CreateDatabase(string user, string server, int port, string password, string name)
         {
             bool success;
             string connectString = $"server={server};user={user};database=mysql;port={port};password={password}";
@@ -280,7 +280,7 @@ namespace PortableMySQL8
         /// <returns>
         /// true if database creation successful, and false if not
         /// </returns>
-        public static bool CreateDatabaseIfNotExists(string user, string server, string port, string password, string dbName)
+        public static bool CreateDatabaseIfNotExists(string user, string server, int port, string password, string dbName)
         {
             if (String.IsNullOrWhiteSpace(dbName))
                 return false;

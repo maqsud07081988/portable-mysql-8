@@ -220,7 +220,7 @@ namespace PortableMySQL8
             {
                 bool success = SQLTools.SetUserPassword(
                     "root", "localhost",
-                    Config.MySQL.Port.ToString(),
+                    Config.MySQL.Port,
                     String.Empty, passwordBoxMySqlRootPass.Password);
 
                 if (!success)
