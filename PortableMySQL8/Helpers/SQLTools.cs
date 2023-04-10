@@ -161,9 +161,10 @@ namespace PortableMySQL8
                 MySqlCommand myCmd = new MySqlCommand(sql, connection);
 
                 int rows = myCmd.ExecuteNonQuery();
+                myCmd.Dispose();
 
                 //Console.WriteLine($"Password set to '{pass}', {rows} rows affected");
-                Console.Write("Password set sucessfully");
+                Console.WriteLine("Password set sucessfully");
 
                 success = true;
             }
@@ -175,6 +176,8 @@ namespace PortableMySQL8
             }
 
             connection.Close();
+            connection.Dispose();
+
             return success;
         }
 
@@ -207,6 +210,8 @@ namespace PortableMySQL8
 
                 int numLikeName = Convert.ToInt32(cmd.ExecuteScalar());
 
+                cmd.Dispose();
+
                 exists = numLikeName > 0;
             }
 
@@ -217,6 +222,8 @@ namespace PortableMySQL8
             }
 
             connection.Close();
+            connection.Dispose();
+
             return exists;
         }
 
