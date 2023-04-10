@@ -35,6 +35,21 @@ namespace PortableMySQL8
 
         #region Events
 
+        private void textBoxDbUser_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Config.DatabaseUser = textBoxDbUser.Text.Trim();
+        }
+
+        private void textBoxDbServer_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Config.DatabaseServer = textBoxDbServer.Text.Trim();
+        }
+
+        private void passWordBoxDbUserPass_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            Config.DatabasePassword = passWordBoxDbUserPass.Password.Trim();
+        }
+
         private void textBoxMainName_TextChanged(object sender, TextChangedEventArgs e)
         {
             Config.DatabaseMain = textBoxMainName.Text.Trim();
@@ -83,6 +98,10 @@ namespace PortableMySQL8
 
         private void LoadUIConfig()
         {
+            textBoxDbUser.Text = Config.DatabaseUser;
+            textBoxDbServer.Text = Config.DatabaseServer;
+            passWordBoxDbUserPass.Password = Config.DatabasePassword;
+
             textBoxMainName.Text = Config.DatabaseMain;
             textBoxProfilesName.Text = Config.DatabaseProfiles;
             textBoxGroupsName.Text = Config.DatabaseGroups;

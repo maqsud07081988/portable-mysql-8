@@ -5,19 +5,33 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PortableMySQL8"
              mc:Ignorable="d" 
-             d:DesignWidth="800" d:DesignHeight="450">
+             d:DesignWidth="515" d:DesignHeight="400">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="0.3*"/>
-        </Grid.RowDefinitions>
+        <!-- Left -->
+        <StackPanel Orientation="Vertical" Grid.Column="0" VerticalAlignment="Top"  Margin="10,0,10,0">
+            <StackPanel Orientation="Vertical" Margin="0,0,0,10">
+                <Label Content="DB User Name (If left blank, 'root')"/>
+                <TextBox x:Name="textBoxDbUser" TextChanged="textBoxDbUser_TextChanged"/>
+            </StackPanel>
 
-        <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="0" Margin="10,0,10,0">
+            <StackPanel Orientation="Vertical" Margin="0,0,0,10">
+                <Label Content="DB Server Name (If left blank, 'localhost')"/>
+                <TextBox x:Name="textBoxDbServer" TextChanged="textBoxDbServer_TextChanged"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Vertical" Margin="0,0,0,10">
+                <Label Content="DB User Password"/>
+                <PasswordBox x:Name="passWordBoxDbUserPass" PasswordChar="*" PasswordChanged="passWordBoxDbUserPass_PasswordChanged"/>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Right -->
+        <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="10,0,10,0">
             <StackPanel Orientation="Vertical" Margin="0,0,0,10">
                 <Label Content="OpenSim Schema Name"/>
                 <TextBox x:Name="textBoxMainName" TextChanged="textBoxMainName_TextChanged"/>
@@ -27,17 +41,13 @@
                 <Label Content="Profiles Schema Name"/>
                 <TextBox x:Name="textBoxProfilesName" TextChanged="textBoxProfilesName_TextChanged"/>
             </StackPanel>
-        </StackPanel>
-
-        <StackPanel Grid.Column="1" Grid.Row="0" Margin="10,0,10,0">
+            
             <StackPanel Orientation="Vertical" Margin="0,0,0,10">
                 <Label Content="Groups Schema Name"/>
                 <TextBox x:Name="textBoxGroupsName" TextChanged="textBoxGroupsName_TextChanged"/>
             </StackPanel>
-        </StackPanel>
 
-        <StackPanel Grid.Column="1" Grid.Row="1" Margin="10,0,10,0">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button x:Name="btnCreateDb" Content="Create Databases" Click="btnCreateDb_Click"/>
             </StackPanel>
         </StackPanel>
