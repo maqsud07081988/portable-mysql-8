@@ -118,6 +118,9 @@
     <Compile Include="Helpers\IniFile.cs" />
     <Compile Include="Helpers\ProcessHelpers.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="Tabs\TabAbout.xaml.cs">
+      <DependentUpon>TabAbout.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Tabs\TabDatabase.xaml.cs">
       <DependentUpon>TabDatabase.xaml</DependentUpon>
     </Compile>
@@ -136,6 +139,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Tabs\TabAbout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Tabs\TabDatabase.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

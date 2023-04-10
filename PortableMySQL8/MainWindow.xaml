@@ -59,6 +59,9 @@
             </TabItem>
 
             <TabItem x:Name="tabDatabase" Header="Database"/>
+            <TabItem x:Name="tabAbout" Header="About">
+                <local:TabAbout/>
+            </TabItem>
         </Controls:MetroAnimatedTabControl>
     </Grid>
 </Controls:MetroWindow>

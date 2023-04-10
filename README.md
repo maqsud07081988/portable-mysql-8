@@ -1,22 +1,24 @@
 # portable-mysql-8
-This is a portable MySQL frontend meant to provide a quick and easy to use base to build an OpenSim install on.
+This is a portable MySQL frontend to provide a quick and easy to use base to build an OpenSim install on.
 
 It is intended to be a partial replacement for MOWES and Sim-on-a-Stick, both of which have not been maintained for a long time.
 
 This is (currently) a Windows only project and does not contain a MySQL install or an OpenSim install. You will need to provide those files yourself and know how to set up OpenSim yourself. This software is only a frontend to make a lot of the painful MySQL stuff easier to set up, startup, shutdown, and provide ease of portability for those things.
 
-### What this project is meant for
+### What this project is intended for
 * ***OpenSim specific*** MySQL use
 * Quick and easy portability of your OpenSim install and database on your medium of choice
 * Small, local, or personal grids where all services are on the same system
 
-### What this project is ***NOT*** meant for
+### What this project is ***NOT*** intended for
 * Commercial use
 * Government use
 * Large scale use
 * General purpose MySQL use not related to OpenSim
 * Storage of data where security practices are paramount
 * Any use where failure of the software could result in bodily harm and/or financial damage
+
+**See [LICENSE.txt](./LICENSE.txt) for the license agreement.**
 
 ### How To Use
 **Note: I'll be using mysql-8.0.32-winx64.zip as an example for this how to**
