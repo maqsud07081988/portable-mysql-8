@@ -58,38 +58,20 @@ namespace PortableMySQL8
                 return;
             }
 
-            string user = "root";
-            string server = "localhost";
-            string pass = Instance.passwordBoxMySqlRootPass.Password;
-            string port = Instance.nudPort.Value.ToString();
-
             string creationStatus = String.Empty;
 
-            bool success = SQLTools.CreateDatabaseIfNotExists(user, server, port, pass, Config.DatabaseMain);
+            List<string> databases = new List<string>() { Config.DatabaseMain, Config.DatabaseProfiles, Config.DatabaseGroups };
 
-            //Main DB
-            if (!success)
-                Console.WriteLine($"Could not create database '{Config.DatabaseMain}'");
+            foreach (string db in databases)
+            {
+                bool success = SQLTools.CreateDatabaseIfNotExists(
+                    "root", "localhost", Instance.nudPort.Value.ToString(), Instance.passwordBoxMySqlRootPass.Password, db);
 
-            creationStatus += CreateStatusString(Config.DatabaseMain, success) + "\r\n";
+                if (!success)
+                    Console.WriteLine($"Could not create database '{db}'");
 
-            //Profiles DB
-            success = SQLTools.CreateDatabaseIfNotExists(user, server, port, pass, Config.DatabaseProfiles);
-
-            if (!success)
-                Console.WriteLine($"Could not create database '{Config.DatabaseProfiles}'");
-
-            creationStatus += CreateStatusString(Config.DatabaseProfiles, success) + "\r\n";
-
-            //Groups DB
-            success = SQLTools.CreateDatabaseIfNotExists(user, server, port, pass, Config.DatabaseGroups);
-
-            if (!success)
-                Console.WriteLine($"Could not create database '{Config.DatabaseGroups}'");
-
-            creationStatus += CreateStatusString(Config.DatabaseGroups, success);
-
-            pass = null;
+                creationStatus += CreateStatusString(db, success) + "\r\n";
+            }
 
             //Results
             MessageBox.Show(creationStatus, "Database Creation Results");
