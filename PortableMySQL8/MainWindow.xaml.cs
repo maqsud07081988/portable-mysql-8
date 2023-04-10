@@ -74,7 +74,7 @@ namespace PortableMySQL8
 
         private readonly SettingsHelper SettingsHelper = new SettingsHelper();
         private static Settings Config = new Settings();
-        private readonly string PathConfig = $"Config.json";
+        public readonly string PathConfig = $"Config.json";
 
         #endregion Settings
 
@@ -146,6 +146,7 @@ namespace PortableMySQL8
                     System.Threading.SpinWait.SpinUntil(() => !IsMySqlRunning);
                     Console.WriteLine("MySQL stopped! Exiting...");
 
+                    ClearSensitiveData();
                     SaveUIConfig();
                     StopProcessCheckTimer();
 
@@ -159,6 +160,7 @@ namespace PortableMySQL8
             else
             {
                 e.Cancel = true;
+                ClearSensitiveData();
                 SaveUIConfig();
                 Environment.Exit(0);
             }
@@ -540,6 +542,16 @@ namespace PortableMySQL8
             Config.MySQL.Port = (int)nudPort.Value;
 
             SettingsHelper.SaveSettings(PathConfig, Config);
+        }
+
+        private void ClearSensitiveData()
+        {
+            if (!Config.Database.SaveLoginInfo)
+            {
+                Config.Database.DatabaseUser = String.Empty;
+                Config.Database.DatabaseServer = String.Empty;
+                Config.Database.DatabasePassword = String.Empty;
+            }
         }
 
         #endregion Methods

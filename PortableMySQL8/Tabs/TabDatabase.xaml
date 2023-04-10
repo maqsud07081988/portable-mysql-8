@@ -28,6 +28,10 @@
                 <Label Content="DB User Password"/>
                 <PasswordBox x:Name="passWordBoxDbUserPass" PasswordChar="*" PasswordChanged="passWordBoxDbUserPass_PasswordChanged"/>
             </StackPanel>
+
+            <StackPanel Orientation="Vertical" Margin="0,0,0,10">
+                <CheckBox x:Name="checkBoxSaveLoginInfo" Content="Save Login Info" Click="checkBoxSaveLoginInfo_Click"/>
+            </StackPanel>
         </StackPanel>
 
         <!-- Right -->

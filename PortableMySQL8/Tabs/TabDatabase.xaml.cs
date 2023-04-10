@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +12,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PortableMySQL8
 {
@@ -35,7 +35,7 @@ namespace PortableMySQL8
 
         #region Events
 
-        #region User Details
+        #region Login Info
 
         private void textBoxDbUser_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -52,7 +52,21 @@ namespace PortableMySQL8
             Config.DatabasePassword = passWordBoxDbUserPass.Password.Trim();
         }
 
-        #endregion User Details
+        private void checkBoxSaveLoginInfo_Click(object sender, RoutedEventArgs e)
+        {
+            if (checkBoxSaveLoginInfo.IsChecked == true)
+            {
+                MessageBoxResult result = MessageBox.Show($"Your database login info (user name, server name, and user password) will be stored in CLEAR TEXT in {Path.GetFileName(Instance.PathConfig)}!\r\n\r\nPlease note that these details have to be stored in clear text in OpenSim's various .ini config files anyway, so this may be a non-issue for some. If this is an issue for you, or you are unsure, click 'No'.\r\n\r\nAre you sure you want to do this?", "Confirm Allow Save Login Info", MessageBoxButton.YesNo);
+
+                //User did anything but click "Yes"
+                if (result != MessageBoxResult.Yes)
+                    checkBoxSaveLoginInfo.IsChecked = false;
+            }
+
+            Config.SaveLoginInfo = checkBoxSaveLoginInfo.IsChecked.TranslateNullableBool();
+        }
+
+        #endregion Login Info
 
         #region Database Details
 
@@ -113,6 +127,7 @@ namespace PortableMySQL8
             textBoxDbUser.Text = Config.DatabaseUser;
             textBoxDbServer.Text = Config.DatabaseServer;
             passWordBoxDbUserPass.Password = Config.DatabasePassword;
+            checkBoxSaveLoginInfo.IsChecked = Config.SaveLoginInfo;
 
             textBoxMainName.Text = Config.DatabaseMain;
             textBoxProfilesName.Text = Config.DatabaseProfiles;

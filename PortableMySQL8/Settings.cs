@@ -85,6 +85,7 @@ namespace PortableMySQL8
         public string DatabaseUser { get; set; } = String.Empty;
         public string DatabaseServer { get; set; } = String.Empty;
         public string DatabasePassword { get; set; } = String.Empty;
+        public bool SaveLoginInfo { get; set; } = false;
 
         public string DatabaseMain { get; set; } = String.Empty;
         public string DatabaseProfiles { get; set; } = String.Empty;
