@@ -220,6 +220,17 @@ namespace PortableMySQL8
             return exists;
         }
 
+        /// <summary>
+        /// Creates a database by name
+        /// </summary>
+        /// <param name="user">The user to set password for</param>
+        /// <param name="server">The server name to connect to</param>
+        /// <param name="port">The port number to use</param>
+        /// <param name="password">User's password</param>
+        /// <param name="name">Name of database to create</param>
+        /// <returns>
+        /// true if database creation successful, and false if not
+        /// </returns>
         public static bool CreateDatabase(string user, string server, string port, string password, string name)
         {
             bool success;
@@ -249,6 +260,30 @@ namespace PortableMySQL8
             connection.Dispose();
 
             return success;
+        }
+
+        /// <summary>
+        /// Creates a database by name if it doesn't already exist
+        /// </summary>
+        /// <param name="user">The user to set password for</param>
+        /// <param name="server">The server name to connect to</param>
+        /// <param name="port">The port number to use</param>
+        /// <param name="password">User's password</param>
+        /// <param name="dbName">Name of database to create</param>
+        /// <returns>
+        /// true if database creation successful, and false if not
+        /// </returns>
+        public static bool CreateDatabaseIfNotExists(string user, string server, string port, string password, string dbName)
+        {
+            if (String.IsNullOrWhiteSpace(dbName))
+                return false;
+
+            bool? exists = DatabaseExists(user, server, port, password, dbName);
+
+            if (exists != null && exists == false)
+                return CreateDatabase(user, server, port, password, dbName);
+
+            return false;
         }
     }
 }

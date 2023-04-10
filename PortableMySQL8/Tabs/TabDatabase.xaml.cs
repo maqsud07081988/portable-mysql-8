@@ -65,7 +65,7 @@ namespace PortableMySQL8
 
             string creationStatus = String.Empty;
 
-            bool success = CreateDatabaseIfNotExists(user, server, port, pass, Config.DatabaseMain);
+            bool success = SQLTools.CreateDatabaseIfNotExists(user, server, port, pass, Config.DatabaseMain);
 
             //Main DB
             if (!success)
@@ -74,7 +74,7 @@ namespace PortableMySQL8
             creationStatus += CreateStatusString(Config.DatabaseMain, success) + "\r\n";
 
             //Profiles DB
-            success = CreateDatabaseIfNotExists(user, server, port, pass, Config.DatabaseProfiles);
+            success = SQLTools.CreateDatabaseIfNotExists(user, server, port, pass, Config.DatabaseProfiles);
 
             if (!success)
                 Console.WriteLine($"Could not create database '{Config.DatabaseProfiles}'");
@@ -82,7 +82,7 @@ namespace PortableMySQL8
             creationStatus += CreateStatusString(Config.DatabaseProfiles, success) + "\r\n";
 
             //Groups DB
-            success = CreateDatabaseIfNotExists(user, server, port, pass, Config.DatabaseGroups);
+            success = SQLTools.CreateDatabaseIfNotExists(user, server, port, pass, Config.DatabaseGroups);
 
             if (!success)
                 Console.WriteLine($"Could not create database '{Config.DatabaseGroups}'");
@@ -119,19 +119,6 @@ namespace PortableMySQL8
                 ret += ": Creation failed! (Perhaps it already exists?)";
 
             return ret;
-        }
-
-        private bool CreateDatabaseIfNotExists(string user, string server, string port, string password, string dbName)
-        {
-            if (String.IsNullOrWhiteSpace(dbName))
-                return false;
-
-            bool? exists = SQLTools.DatabaseExists(user, server, port, password, dbName);
-
-            if (exists != null && exists == false)
-                return SQLTools.CreateDatabase(user, server, port, password, dbName);
-
-            return false;
         }
 
         #endregion Methods
