@@ -24,7 +24,9 @@ namespace PortableMySQL8
         {
             InitializeComponent();
 
-            textBlockLicense.Text = @"Copyright 2023 mewtwo0641
+            textBlockLicense.Text = $"{Version.NAME} {Version.VersionPretty}\r\n\r\n";
+
+            textBlockLicense.Text += @"Copyright 2023 mewtwo0641
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
