@@ -188,6 +188,7 @@ namespace PortableMySQL8
 
         private void MainWindow_ContentRendered(object sender, EventArgs e)
         {
+            CreateServiceFiles();
             CheckProcessesAndUpdateStatus();
             StartProcessCheckTimer(ProcessCheckTimerInterval);
         }
