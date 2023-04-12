@@ -5,6 +5,8 @@ It is intended to be a partial replacement for MOWES and Sim-on-a-Stick, both of
 
 This is (currently) a Windows only project and does not contain a MySQL install or an OpenSim install. You will need to provide those files yourself and know how to set up OpenSim yourself. This software is only a frontend to make a lot of the painful MySQL stuff easier to set up, startup, shutdown, and provide ease of portability for those things.
 
+Right now this project should be considered **alpha software**. Bugs, issues, quirks, and even unimplemented features should be expected. While I have taken care to reasonably test this to make sure there are no major issues; I am just one person and can't account for every situation this sofware could be ran under.
+
 ### What this project is intended for
 * ***OpenSim specific*** MySQL use
 * Quick and easy portability of your OpenSim install and database on your medium of choice
