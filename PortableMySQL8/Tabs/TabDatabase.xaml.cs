@@ -40,8 +40,8 @@ namespace PortableMySQL8
     /// </summary>
     public partial class TabDatabase : UserControl
     {
-        private MainWindow Instance = null;
-        private Settings Config = null;
+        private readonly MainWindow Instance = null;
+        private readonly Settings Config = null;
 
         public TabDatabase(MainWindow _instance, Settings _config)
         {
@@ -57,22 +57,22 @@ namespace PortableMySQL8
 
         #region Login Info
 
-        private void textBoxDbUser_TextChanged(object sender, TextChangedEventArgs e)
+        private void TextBoxDbUser_TextChanged(object sender, TextChangedEventArgs e)
         {
             Config.Database.LoginUser = textBoxDbUser.Text.Trim();
         }
 
-        private void textBoxDbServer_TextChanged(object sender, TextChangedEventArgs e)
+        private void TextBoxDbServer_TextChanged(object sender, TextChangedEventArgs e)
         {
             Config.Database.LoginServer = textBoxDbServer.Text.Trim();
         }
 
-        private void passWordBoxDbUserPass_PasswordChanged(object sender, RoutedEventArgs e)
+        private void PassWordBoxDbUserPass_PasswordChanged(object sender, RoutedEventArgs e)
         {
             Config.Database.LoginPassword = passWordBoxDbUserPass.Password.Trim();
         }
 
-        private void checkBoxSaveLoginInfo_Click(object sender, RoutedEventArgs e)
+        private void CheckBoxSaveLoginInfo_Click(object sender, RoutedEventArgs e)
         {
             if (checkBoxSaveLoginInfo.IsChecked == true)
             {
@@ -90,17 +90,17 @@ namespace PortableMySQL8
 
         #region Database Details
 
-        private void textBoxMainName_TextChanged(object sender, TextChangedEventArgs e)
+        private void TextBoxMainName_TextChanged(object sender, TextChangedEventArgs e)
         {
             Config.Database.OSMain = textBoxMainName.Text.Trim();
         }
 
-        private void textBoxProfilesName_TextChanged(object sender, TextChangedEventArgs e)
+        private void TextBoxProfilesName_TextChanged(object sender, TextChangedEventArgs e)
         {
             Config.Database.OSProfiles = textBoxProfilesName.Text.Trim();
         }
 
-        private void textBoxGroupsName_TextChanged(object sender, TextChangedEventArgs e)
+        private void TextBoxGroupsName_TextChanged(object sender, TextChangedEventArgs e)
         {
             Config.Database.OSGroups = textBoxGroupsName.Text.Trim();
         }
@@ -109,7 +109,7 @@ namespace PortableMySQL8
 
         #region Buttons
 
-        private void btnCreateDb_Click(object sender, RoutedEventArgs e)
+        private void BtnCreateDb_Click(object sender, RoutedEventArgs e)
         {
             if (!ProcessHelpers.ProcessExists("mysqld"))
             {

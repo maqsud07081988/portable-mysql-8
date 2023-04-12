@@ -16,21 +16,21 @@
         <StackPanel Orientation="Vertical" Grid.Column="0" VerticalAlignment="Top"  Margin="10,0,10,0">
             <StackPanel Orientation="Vertical" Margin="0,0,0,10">
                 <Label Content="DB User Name (If left blank, 'root')"/>
-                <TextBox x:Name="textBoxDbUser" TextChanged="textBoxDbUser_TextChanged"/>
+                <TextBox x:Name="textBoxDbUser" TextChanged="TextBoxDbUser_TextChanged"/>
             </StackPanel>
 
             <StackPanel Orientation="Vertical" Margin="0,0,0,10">
                 <Label Content="DB Server Name (If left blank, 'localhost')"/>
-                <TextBox x:Name="textBoxDbServer" TextChanged="textBoxDbServer_TextChanged"/>
+                <TextBox x:Name="textBoxDbServer" TextChanged="TextBoxDbServer_TextChanged"/>
             </StackPanel>
 
             <StackPanel Orientation="Vertical" Margin="0,0,0,10">
                 <Label Content="DB User Password"/>
-                <PasswordBox x:Name="passWordBoxDbUserPass" PasswordChar="*" PasswordChanged="passWordBoxDbUserPass_PasswordChanged"/>
+                <PasswordBox x:Name="passWordBoxDbUserPass" PasswordChar="*" PasswordChanged="PassWordBoxDbUserPass_PasswordChanged"/>
             </StackPanel>
 
             <StackPanel Orientation="Vertical" Margin="0,0,0,10">
-                <CheckBox x:Name="checkBoxSaveLoginInfo" Content="Save Login Info" Click="checkBoxSaveLoginInfo_Click"/>
+                <CheckBox x:Name="checkBoxSaveLoginInfo" Content="Save Login Info" Click="CheckBoxSaveLoginInfo_Click"/>
             </StackPanel>
         </StackPanel>
 
@@ -38,21 +38,21 @@
         <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="10,0,10,0">
             <StackPanel Orientation="Vertical" Margin="0,0,0,10">
                 <Label Content="OpenSim Schema Name"/>
-                <TextBox x:Name="textBoxMainName" TextChanged="textBoxMainName_TextChanged"/>
+                <TextBox x:Name="textBoxMainName" TextChanged="TextBoxMainName_TextChanged"/>
             </StackPanel>
 
             <StackPanel Orientation="Vertical" Margin="0,0,0,10">
                 <Label Content="Profiles Schema Name"/>
-                <TextBox x:Name="textBoxProfilesName" TextChanged="textBoxProfilesName_TextChanged"/>
+                <TextBox x:Name="textBoxProfilesName" TextChanged="TextBoxProfilesName_TextChanged"/>
             </StackPanel>
             
             <StackPanel Orientation="Vertical" Margin="0,0,0,10">
                 <Label Content="Groups Schema Name"/>
-                <TextBox x:Name="textBoxGroupsName" TextChanged="textBoxGroupsName_TextChanged"/>
+                <TextBox x:Name="textBoxGroupsName" TextChanged="TextBoxGroupsName_TextChanged"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button x:Name="btnCreateDb" Content="Create Databases" Click="btnCreateDb_Click"/>
+                <Button x:Name="btnCreateDb" Content="Create Databases" Click="BtnCreateDb_Click"/>
             </StackPanel>
         </StackPanel>
     </Grid>
