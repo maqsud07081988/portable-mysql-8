@@ -1,0 +1,29 @@
+﻿<Controls:MetroWindow x:Class="PortableMySQL8.LicenseWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PortableMySQL8"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        mc:Ignorable="d"
+        Title="License Agreement" Width="550" Height="400" ResizeMode="CanResizeWithGrip">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="0.25*"/>
+        </Grid.RowDefinitions>
+
+        <ScrollViewer Grid.Row="0" MaxHeight="500" Width="Auto" Margin="10,5,10,5">
+            <TextBlock x:Name="textBlockLicense" Text="License Text Here" IsManipulationEnabled="False" TextWrapping="Wrap"/>
+        </ScrollViewer>
+
+        <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10,5,10,5">
+            <Label Content="Please read, understand, and agree to the above license before clicking AGREE"/>
+            
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,5,10,5">
+                <Button x:Name="btnAgree" Content="Agree" Click="BtnAgree_Click"/>
+                <Button x:Name="btnDisagree" Content="Disagree" Margin="10,0,0,0" Click="btnDisagree_Click"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Controls:MetroWindow>

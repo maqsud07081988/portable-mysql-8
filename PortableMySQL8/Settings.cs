@@ -91,6 +91,7 @@ namespace PortableMySQL8
     public class SettingsGeneral
     {
         public Point WindowLocation { get; set; } = new Point();
+        public bool AgreedToLicense { get; set; } = false;
     }
 
     public class SettingsMySQL

@@ -117,6 +117,9 @@
     <Compile Include="Extensions\BoolExtensions.cs" />
     <Compile Include="Helpers\IniFile.cs" />
     <Compile Include="Helpers\ProcessHelpers.cs" />
+    <Compile Include="LicenseWindow.xaml.cs">
+      <DependentUpon>LicenseWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="Tabs\TabAbout.xaml.cs">
       <DependentUpon>TabAbout.xaml</DependentUpon>
@@ -127,6 +130,10 @@
     <Compile Include="Themes\WindowTheming.cs" />
     <Compile Include="Helpers\SQLTools.cs" />
     <Compile Include="Version.cs" />
+    <Page Include="LicenseWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

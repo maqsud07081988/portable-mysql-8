@@ -128,6 +128,23 @@ namespace PortableMySQL8
 
             #endregion Config Loading
 
+            #region License Agreement
+
+            if (!Config.General.AgreedToLicense)
+            {
+                LicenseWindow lw = new LicenseWindow(this, Config);
+                lw.ShowDialog();
+                lw = null;
+
+                if (!Config.General.AgreedToLicense)
+                {
+                    Environment.Exit(-1);
+                    return;
+                }
+            }
+
+            #endregion License Agreement
+
             #region Window Setup
 
             WindowTheme.ApplyTheme("Blue", "Light");
