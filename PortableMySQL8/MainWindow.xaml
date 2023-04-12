@@ -27,15 +27,15 @@
                         <StackPanel Orientation="Horizontal">
                             <Label Content="Port" HorizontalAlignment="Left"/>
                             <Controls:NumericUpDown
-                    x:Name="nudPort"
-                    Value="3306"
-                    Minimum="1"
-                    Maximum="65535"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    SwitchUpDownButtons="True"
-                    ParsingNumberStyle="Integer"
-                    ValueChanged="NudPort_ValueChanged"/>
+                                x:Name="nudPort"
+                                Value="3306"
+                                Minimum="1"
+                                Maximum="65535"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                SwitchUpDownButtons="True"
+                                ParsingNumberStyle="Integer"
+                                ValueChanged="NudPort_ValueChanged"/>
                         </StackPanel>
                     </StackPanel>
 
