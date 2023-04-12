@@ -32,6 +32,12 @@ namespace PortableMySQL8
 {
     public static class SQLTools
     {
+        public enum MySqlAdminExitCode : int
+        {
+            OK = 0,
+            InvalidPassword = 1
+        }
+
         /// <summary>
         /// Check for the --initialize string in a given MySQL start parameter string
         /// </summary>

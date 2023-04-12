@@ -168,7 +168,9 @@ namespace PortableMySQL8
 
                 SetMySqlStatusToStop();
 
-                if (StopMySql() == 0)
+                int code = StopMySql();
+
+                if (code == (int)SQLTools.MySqlAdminExitCode.OK)
                 {
 
                     //Wait until mysqld exits
@@ -184,7 +186,7 @@ namespace PortableMySQL8
                 }
 
                 else
-                    MessageBox.Show("Could not stop MySQL!");
+                    ShowCouldNotStopMySqlMessage(code);
             }
 
             else
@@ -288,9 +290,11 @@ namespace PortableMySQL8
             MySQLIsStopping = true;
             StartProcessCheckTimer(ProcessCheckTimerIntervalFast);
 
-            if (StopMySql() != 0)
+            int code = StopMySql();
+
+            if (code != (int)SQLTools.MySqlAdminExitCode.OK)
             {
-                MessageBox.Show("Could not stop MySQL!");
+                ShowCouldNotStopMySqlMessage(code);
                 StartProcessCheckTimer(ProcessCheckTimerInterval);
                 Console.WriteLine("Reset ProcessCheckTimerInterval because StopMySQL() failed");
             }
@@ -477,6 +481,16 @@ namespace PortableMySQL8
             return code;
         }
 
+        private string GetMySqlAdminCodeReason(int code)
+        {
+            string reason = "Unknown error";
+
+            if (code == (int)SQLTools.MySqlAdminExitCode.InvalidPassword)
+                reason = "Invalid root password";
+
+            return reason;
+        }
+
         private bool ConfirmStopMySqlWhileOpenSimRunning()
         {
             if (IsRobustRunning || IsOpenSimRunning)
@@ -489,6 +503,16 @@ namespace PortableMySQL8
             }
 
             return true;
+        }
+
+        private void ShowCouldNotStopMySqlMessage(int code)
+        {
+            string reason = GetMySqlAdminCodeReason(code);
+
+            if (code == (int)SQLTools.MySqlAdminExitCode.InvalidPassword)
+                HighlightPasswordBox();
+
+            MessageBox.Show($"Could not stop MySQL!\r\n\r\nReason: {reason}");
         }
 
         private void CheckProcessesAndUpdateStatus()
