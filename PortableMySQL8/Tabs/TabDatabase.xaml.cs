@@ -136,7 +136,7 @@ namespace PortableMySQL8
                     continue;
 
                 bool success = SQLTools.CreateDatabaseIfNotExists(
-                    user, server, (int)Instance.nudPort.Value, Config.Database.LoginPassword, db);
+                    user, server, Config.MySQL.Port, Config.Database.LoginPassword, db);
 
                 if (!success)
                     Console.WriteLine($"Could not create database '{db}'");
