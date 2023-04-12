@@ -33,7 +33,7 @@ namespace PortableMySQL8
         public const int MAJOR   = 0;
         public const int MINOR   = 0;
         public const int RELEASE = 1;
-        public const int BUILD   = 77;
+        public const int BUILD   = 85;
 
         public static string VersionPretty
         {

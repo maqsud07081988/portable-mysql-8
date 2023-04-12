@@ -109,20 +109,6 @@ namespace PortableMySQL8
         {
             InitializeComponent();
 
-            #region Window Setup
-
-            WindowTheme.ApplyTheme("Blue", "Light");
-
-            this.Title = $"{Version.NAME} {Version.VersionPretty}";
-
-            this.Closing += MainWindow_Closing;
-            this.ContentRendered += MainWindow_ContentRendered;
-
-            PrevPassBorderColor = passwordBoxMySqlRootPass.BorderBrush;
-            PrevPassBorderThickness = passwordBoxMySqlRootPass.BorderThickness;
-
-            #endregion Window Setup
-
             #region Config Loading
 
             //Load the configuration file
@@ -141,6 +127,24 @@ namespace PortableMySQL8
             LoadUIConfig();
 
             #endregion Config Loading
+
+            #region Window Setup
+
+            WindowTheme.ApplyTheme("Blue", "Light");
+
+            this.Title = $"{Version.NAME} {Version.VersionPretty}";
+
+            this.Closing += MainWindow_Closing;
+            this.ContentRendered += MainWindow_ContentRendered;
+
+            this.passwordBoxMySqlRootPass.PasswordChanged += PasswordBoxMySqlRootPass_PasswordChanged;
+            this.checkBoxSavePass.Click += CheckBoxSavePass_Click;
+            this.nudPort.ValueChanged += NudPort_ValueChanged;
+
+            PrevPassBorderColor = passwordBoxMySqlRootPass.BorderBrush;
+            PrevPassBorderThickness = passwordBoxMySqlRootPass.BorderThickness;
+
+            #endregion Window Setup
 
             #region Tab Setup
 

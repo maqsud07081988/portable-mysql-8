@@ -20,8 +20,8 @@
                         <Label Content="Root Password" HorizontalAlignment="Left"/>
 
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                            <PasswordBox x:Name="passwordBoxMySqlRootPass" PasswordChar="*" Width="200" HorizontalAlignment="Left" Margin="0,0,10,0" PasswordChanged="PasswordBoxMySqlRootPass_PasswordChanged" />
-                            <CheckBox x:Name="checkBoxSavePass" Content="Save Password" HorizontalAlignment="Left" Click="CheckBoxSavePass_Click"/>
+                            <PasswordBox x:Name="passwordBoxMySqlRootPass" PasswordChar="*" Width="200" HorizontalAlignment="Left" Margin="0,0,10,0"/>
+                            <CheckBox x:Name="checkBoxSavePass" Content="Save Password" HorizontalAlignment="Left"/>
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
@@ -34,8 +34,7 @@
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 SwitchUpDownButtons="True"
-                                ParsingNumberStyle="Integer"
-                                ValueChanged="NudPort_ValueChanged"/>
+                                ParsingNumberStyle="Integer"/>
                         </StackPanel>
                     </StackPanel>
 
