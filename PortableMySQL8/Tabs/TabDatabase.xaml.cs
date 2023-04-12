@@ -41,9 +41,9 @@ namespace PortableMySQL8
     public partial class TabDatabase : UserControl
     {
         private MainWindow Instance = null;
-        private SettingsTabDatabase Config = null;
+        private Settings Config = null;
 
-        public TabDatabase(MainWindow _instance, SettingsTabDatabase _config)
+        public TabDatabase(MainWindow _instance, Settings _config)
         {
             InitializeComponent();
 
@@ -59,17 +59,17 @@ namespace PortableMySQL8
 
         private void textBoxDbUser_TextChanged(object sender, TextChangedEventArgs e)
         {
-            Config.DatabaseUser = textBoxDbUser.Text.Trim();
+            Config.Database.DatabaseUser = textBoxDbUser.Text.Trim();
         }
 
         private void textBoxDbServer_TextChanged(object sender, TextChangedEventArgs e)
         {
-            Config.DatabaseServer = textBoxDbServer.Text.Trim();
+            Config.Database.DatabaseServer = textBoxDbServer.Text.Trim();
         }
 
         private void passWordBoxDbUserPass_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            Config.DatabasePassword = passWordBoxDbUserPass.Password.Trim();
+            Config.Database.DatabasePassword = passWordBoxDbUserPass.Password.Trim();
         }
 
         private void checkBoxSaveLoginInfo_Click(object sender, RoutedEventArgs e)
@@ -83,7 +83,7 @@ namespace PortableMySQL8
                     checkBoxSaveLoginInfo.IsChecked = false;
             }
 
-            Config.SaveLoginInfo = checkBoxSaveLoginInfo.IsChecked.TranslateNullableBool();
+            Config.Database.SaveLoginInfo = checkBoxSaveLoginInfo.IsChecked.TranslateNullableBool();
         }
 
         #endregion Login Info
@@ -92,17 +92,17 @@ namespace PortableMySQL8
 
         private void textBoxMainName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            Config.DatabaseMain = textBoxMainName.Text.Trim();
+            Config.Database.DatabaseMain = textBoxMainName.Text.Trim();
         }
 
         private void textBoxProfilesName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            Config.DatabaseProfiles = textBoxProfilesName.Text.Trim();
+            Config.Database.DatabaseProfiles = textBoxProfilesName.Text.Trim();
         }
 
         private void textBoxGroupsName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            Config.DatabaseGroups = textBoxGroupsName.Text.Trim();
+            Config.Database.DatabaseGroups = textBoxGroupsName.Text.Trim();
         }
 
         #endregion Database Details
@@ -120,15 +120,15 @@ namespace PortableMySQL8
             string user = "root";
             string server = "localhost";
 
-            if (!String.IsNullOrWhiteSpace(Config.DatabaseUser))
-                user = Config.DatabaseUser;
+            if (!String.IsNullOrWhiteSpace(Config.Database.DatabaseUser))
+                user = Config.Database.DatabaseUser;
 
-            if (!string.IsNullOrWhiteSpace(Config.DatabaseServer))
-                server = Config.DatabaseServer;
+            if (!string.IsNullOrWhiteSpace(Config.Database.DatabaseServer))
+                server = Config.Database.DatabaseServer;
 
             string creationStatus = String.Empty;
 
-            List<string> databases = new List<string>() { Config.DatabaseMain, Config.DatabaseProfiles, Config.DatabaseGroups };
+            List<string> databases = new List<string>() { Config.Database.DatabaseMain, Config.Database.DatabaseProfiles, Config.Database.DatabaseGroups };
 
             foreach (string db in databases)
             {
@@ -136,7 +136,7 @@ namespace PortableMySQL8
                     continue;
 
                 bool success = SQLTools.CreateDatabaseIfNotExists(
-                    user, server, (int)Instance.nudPort.Value, Config.DatabasePassword, db);
+                    user, server, (int)Instance.nudPort.Value, Config.Database.DatabasePassword, db);
 
                 if (!success)
                     Console.WriteLine($"Could not create database '{db}'");
@@ -156,14 +156,14 @@ namespace PortableMySQL8
 
         private void LoadUIConfig()
         {
-            textBoxDbUser.Text = Config.DatabaseUser;
-            textBoxDbServer.Text = Config.DatabaseServer;
-            passWordBoxDbUserPass.Password = Config.DatabasePassword;
-            checkBoxSaveLoginInfo.IsChecked = Config.SaveLoginInfo;
+            textBoxDbUser.Text = Config.Database.DatabaseUser;
+            textBoxDbServer.Text = Config.Database.DatabaseServer;
+            passWordBoxDbUserPass.Password = Config.Database.DatabasePassword;
+            checkBoxSaveLoginInfo.IsChecked = Config.Database.SaveLoginInfo;
 
-            textBoxMainName.Text = Config.DatabaseMain;
-            textBoxProfilesName.Text = Config.DatabaseProfiles;
-            textBoxGroupsName.Text = Config.DatabaseGroups;
+            textBoxMainName.Text = Config.Database.DatabaseMain;
+            textBoxProfilesName.Text = Config.Database.DatabaseProfiles;
+            textBoxGroupsName.Text = Config.Database.DatabaseGroups;
         }
 
         private string CreateStatusString(string name, bool success)

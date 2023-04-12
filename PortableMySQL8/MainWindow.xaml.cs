@@ -144,7 +144,7 @@ namespace PortableMySQL8
 
             #region Tab Setup
 
-            tabDatabase.Content = new TabDatabase(this, Config.Database);
+            tabDatabase.Content = new TabDatabase(this, Config);
 
             #endregion Tab Setup
         }
