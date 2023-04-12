@@ -33,7 +33,7 @@ namespace MySQLLauncher
         {
             if (args == null)
             {
-                Console.WriteLine("Can not start with null arguments!\r\nPress the any key to exit.");
+                Console.WriteLine("Error: Arguments were null\r\nPress the any key to exit.");
                 Console.ReadKey();
                 Environment.Exit(-1);
                 return;
@@ -41,7 +41,7 @@ namespace MySQLLauncher
 
             if (args.Length < 2)
             {
-                Console.WriteLine("Wrong number of arguments given! (Expected: 2)\r\nPress the any key to exit.");
+                Console.WriteLine("Wrong number of arguments given! (Expected: 2)\r\n\r\nThis application is not intended to be ran manually.\r\n\r\nPress the any key to exit.");
                 Console.ReadKey();
                 Environment.Exit(-2);
                 return;
