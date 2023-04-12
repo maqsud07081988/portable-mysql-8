@@ -151,6 +151,8 @@ namespace PortableMySQL8
 
         #region Events
 
+        #region Window
+
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (IsMySqlRunning)
@@ -179,7 +181,7 @@ namespace PortableMySQL8
                     Console.WriteLine("MySQL stopped! Exiting...");
 
                     ClearSensitiveData();
-                    SaveUIConfig();
+                    SettingsHelper.SaveSettings(PathConfig, Config);
                     StopProcessCheckTimer();
 
                     Environment.Exit(0);
@@ -193,7 +195,7 @@ namespace PortableMySQL8
             {
                 e.Cancel = true;
                 ClearSensitiveData();
-                SaveUIConfig();
+                SettingsHelper.SaveSettings(PathConfig, Config);
                 Environment.Exit(0);
             }
         }
@@ -204,6 +206,10 @@ namespace PortableMySQL8
             CheckProcessesAndUpdateStatus();
             StartProcessCheckTimer(ProcessCheckTimerInterval);
         }
+
+        #endregion Window
+
+        #region Buttons
 
         private void BtnStartSql_Click(object sender, RoutedEventArgs e)
         {
@@ -232,8 +238,6 @@ namespace PortableMySQL8
                 MessageBox.Show("MySQL needs to be initialized and can not start with no root password set!", "Error");
                 return;
             }
-
-            SaveUIConfig();
 
             bool didInit = DoMySqlInitIfNeeded();
 
@@ -300,9 +304,14 @@ namespace PortableMySQL8
             }
         }
 
+        #endregion Buttons
+
+        #region User Controls
+
         private void PasswordBoxMySqlRootPass_PasswordChanged(object sender, RoutedEventArgs e)
         {
             UnHighlightPasswordBox();
+            SaveOrRemoveRootPassword();
         }
 
         private void CheckBoxSavePass_Click(object sender, RoutedEventArgs e)
@@ -315,7 +324,16 @@ namespace PortableMySQL8
                 if (result != MessageBoxResult.Yes)
                     checkBoxSavePass.IsChecked = false;
             }
+
+            SaveOrRemoveRootPassword();
         }
+
+        private void NudPort_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)
+        {
+            Config.MySQL.Port = (int)nudPort.Value;
+        }
+
+        #endregion User Controls
 
         #endregion Events
 
@@ -604,20 +622,6 @@ namespace PortableMySQL8
             nudPort.Value = Config.MySQL.Port;
         }
 
-        private void SaveUIConfig()
-        {
-            if (checkBoxSavePass.IsChecked == true)
-                Config.MySQL.RootPass = passwordBoxMySqlRootPass.Password;
-
-            else
-                Config.MySQL.RootPass = String.Empty;
-
-            Config.MySQL.SavePass = checkBoxSavePass.IsChecked.TranslateNullableBool();
-            Config.MySQL.Port = (int)nudPort.Value;
-
-            SettingsHelper.SaveSettings(PathConfig, Config);
-        }
-
         private void ClearSensitiveData()
         {
             if (!Config.Database.SaveLoginInfo)
@@ -626,6 +630,17 @@ namespace PortableMySQL8
                 Config.Database.LoginServer = String.Empty;
                 Config.Database.LoginPassword = String.Empty;
             }
+        }
+
+        private void SaveOrRemoveRootPassword()
+        {
+            Config.MySQL.SavePass = checkBoxSavePass.IsChecked.TranslateNullableBool();
+
+            if (Config.MySQL.SavePass)
+                Config.MySQL.RootPass = passwordBoxMySqlRootPass.Password;
+
+            else
+                Config.MySQL.RootPass = String.Empty;
         }
 
         #endregion Methods

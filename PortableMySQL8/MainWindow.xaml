@@ -34,7 +34,8 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     SwitchUpDownButtons="True"
-                    ParsingNumberStyle="Integer"/>
+                    ParsingNumberStyle="Integer"
+                    ValueChanged="NudPort_ValueChanged"/>
                         </StackPanel>
                     </StackPanel>
 
