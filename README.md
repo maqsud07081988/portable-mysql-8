@@ -5,7 +5,7 @@ It is intended to be a partial replacement for MOWES and Sim-on-a-Stick, both of
 
 This is (currently) a Windows only project and does not contain a MySQL install or an OpenSim install. You will need to provide those files yourself and know how to set up OpenSim yourself. This software is only a frontend to make a lot of the painful MySQL stuff easier to set up, startup, shutdown, and provide ease of portability for those things.
 
-Right now this project should be considered **alpha software**. Bugs, issues, quirks, and even unimplemented features should be expected. While I have taken care to reasonably test this to make sure there are no major issues; I am just one person and can't account for every situation this sofware could be ran under.
+Right now this project should be considered **alpha software**. Bugs, issues, quirks, and even unimplemented features should be expected. While I have taken care to reasonably test this to make sure there are no major issues; I am just one person and can not account for every situation this sofware could be ran under.
 
 ### What this project is intended for
 * ***OpenSim specific*** MySQL use
@@ -56,7 +56,7 @@ When done you should have a directory structure that looks a bit like this:
 
 **... then you did it wrong.**
 
-6. Run PortableMySQL8.exe again. Enter the a new password for the root MySQL user, set the port you want MySQL to run on (The default 3306 is fine if you have no other MySQL instances), and click the 'Start MySQL' button. It should do first time initialization for MySQL, set the password you chose a moment ago for the root user, and then the status should show "MySQL is running" in green text.
+6. Run PortableMySQL8.exe again. Enter a new password for the root MySQL user, set the port you want MySQL to run on (The default 3306 is fine if you have no other MySQL instances), and click the 'Start MySQL' button. It should do first time initialization for MySQL, set the password you chose a moment ago for the root user, and then the status should show "MySQL is running" in green text.
 
 7. That's it! You can go to the Database tab and create your new opensim schemas from there (be sure to give it the proper user credentials, by default it's User: root, Server: localhost, and Password: <password you picked in step 6>), or use your favorite MySQL tool of choice to do that.
 
