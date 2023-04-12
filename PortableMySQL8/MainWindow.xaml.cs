@@ -98,6 +98,13 @@ namespace PortableMySQL8
 
         #endregion Settings
 
+        #region Controls
+
+        private readonly Brush PrevPassBorderColor = null;
+        private readonly Thickness PrevPassBorderThickness = new Thickness();
+
+        #endregion Controls
+
         public MainWindow()
         {
             InitializeComponent();
@@ -110,6 +117,9 @@ namespace PortableMySQL8
 
             this.Closing += MainWindow_Closing;
             this.ContentRendered += MainWindow_ContentRendered;
+
+            PrevPassBorderColor = passwordBoxMySqlRootPass.BorderBrush;
+            PrevPassBorderThickness = passwordBoxMySqlRootPass.BorderThickness;
 
             #endregion Window Setup
 
@@ -216,7 +226,8 @@ namespace PortableMySQL8
 
             if (needsInit && String.IsNullOrWhiteSpace(passwordBoxMySqlRootPass.Password))
             {
-                MessageBox.Show("MySQL needs to be initialized and can not start with no password set!", "Error");
+                HighlightPasswordBox();
+                MessageBox.Show("MySQL needs to be initialized and can not start with no root password set!", "Error");
                 return;
             }
 
@@ -264,7 +275,8 @@ namespace PortableMySQL8
 
             if (String.IsNullOrWhiteSpace(passwordBoxMySqlRootPass.Password))
             {
-                MessageBox.Show("Can not stop with no password set!");
+                HighlightPasswordBox();
+                MessageBox.Show("Can not stop MySQL with no root password set!");
                 return;
             }
 
@@ -282,6 +294,11 @@ namespace PortableMySQL8
                 StartProcessCheckTimer(ProcessCheckTimerInterval);
                 Console.WriteLine("Reset ProcessCheckTimerInterval because StopMySQL() failed");
             }
+        }
+
+        private void PasswordBoxMySqlRootPass_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            UnHighlightPasswordBox();
         }
 
         private void CheckBoxSavePass_Click(object sender, RoutedEventArgs e)
@@ -527,6 +544,18 @@ namespace PortableMySQL8
             labelMySqlStatus.Foreground = Brushes.Red;
             labelMySqlStatus.Content = "Stopping MySQL...";
             StartProcessCheckTimer(ProcessCheckTimerInterval);
+        }
+
+        private void HighlightPasswordBox()
+        {
+            passwordBoxMySqlRootPass.BorderBrush = Brushes.Red;
+            passwordBoxMySqlRootPass.BorderThickness = new Thickness(3.0);
+        }
+
+        private void UnHighlightPasswordBox()
+        {
+            passwordBoxMySqlRootPass.BorderBrush = PrevPassBorderColor;
+            passwordBoxMySqlRootPass.BorderThickness = PrevPassBorderThickness;
         }
 
         private void LoadUIConfig()
