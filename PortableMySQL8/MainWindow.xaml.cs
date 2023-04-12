@@ -622,9 +622,9 @@ namespace PortableMySQL8
         {
             if (!Config.Database.SaveLoginInfo)
             {
-                Config.Database.DatabaseUser = String.Empty;
-                Config.Database.DatabaseServer = String.Empty;
-                Config.Database.DatabasePassword = String.Empty;
+                Config.Database.LoginUser = String.Empty;
+                Config.Database.LoginServer = String.Empty;
+                Config.Database.LoginPassword = String.Empty;
             }
         }
 

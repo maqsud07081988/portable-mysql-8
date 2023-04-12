@@ -102,13 +102,13 @@ namespace PortableMySQL8
 
     public class SettingsTabDatabase
     {
-        public string DatabaseUser { get; set; } = String.Empty;
-        public string DatabaseServer { get; set; } = String.Empty;
-        public string DatabasePassword { get; set; } = String.Empty;
+        public string LoginUser { get; set; } = String.Empty;
+        public string LoginServer { get; set; } = String.Empty;
+        public string LoginPassword { get; set; } = String.Empty;
         public bool SaveLoginInfo { get; set; } = false;
 
-        public string DatabaseMain { get; set; } = String.Empty;
-        public string DatabaseProfiles { get; set; } = String.Empty;
-        public string DatabaseGroups { get; set; } = String.Empty;
+        public string OSMain { get; set; } = String.Empty;
+        public string OSProfiles { get; set; } = String.Empty;
+        public string OSGroups { get; set; } = String.Empty;
     }
 }
