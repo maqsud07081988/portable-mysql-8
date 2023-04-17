@@ -1,0 +1,23 @@
+This software uses code and components provided and copyrighted by:
+
+(If I have missed anyone in this list, or you do not wish your code/software/component(s)
+to be a part of this project, please let me know on GitHub and I will be happy to address it)
+
+As part of MahApps theming:
+	Mahapps.Metro - Jan Karger, Dennis Daume, Brendan Forster, Paul Jenkins, Jake Ginnivan, Alex Mitchell
+	ControlzEx - Jan Karger, Bastian Schmidt, James Willock
+	
+As part of MySQL handling:
+	MySql.Data - Oracle
+	Google.Protobuf - Google Inc.
+	K4os.Compression.LZ4 - Milosz Krajewski
+	K4os.Compression.Streams - Milosz Krajewski
+	K4os.Hash.xxHash - Milosz Krajewski
+	Portable.BouncyCastle - Claire Novotny
+
+As part of .NET ecosystem:
+	System, .NET, and XAML components - Microsoft
+
+As part of general data handling:
+	Newtonsoft.Json - James Newton-King
+	IniFile - Microsoft
