@@ -48,6 +48,8 @@ namespace PortableMySQL8
             textBlockLicense.Text = $"{Version.NAME} {Version.VersionPretty}\r\n\r\n";
             textBlockLicense.Text += "Copyright 2023 mewtwo0641\r\n\r\n";
             textBlockLicense.Text += $"License:\r\n{Version.LicenseText}";
+
+            textBlockCopyRights.Text = Version.CopyrightText;
         }
     }
 }

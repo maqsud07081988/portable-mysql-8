@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Width="515" Height="280" ResizeMode="CanMinimize">
     <Grid>
-        <Controls:MetroAnimatedTabControl Controls:HeaderedControlHelper.HeaderFontSize="16">
+        <Controls:MetroAnimatedTabControl Controls:HeaderedControlHelper.HeaderFontSize="16" Controls:TabControlHelper.Underlined="SelectedTabItem">
             <TabItem x:Name="tabMain" Header="Main">
                 <Grid>
                     <Grid.ColumnDefinitions>

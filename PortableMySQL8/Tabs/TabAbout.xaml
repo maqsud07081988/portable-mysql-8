@@ -4,11 +4,22 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PortableMySQL8"
+             xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              mc:Ignorable="d" 
              d:DesignWidth="515" d:DesignHeight="280">
     <Grid>
-        <ScrollViewer MaxHeight="500" Width="Auto" Margin="10,5,10,5">
-            <TextBlock x:Name="textBlockLicense" Text="License Text Here" IsManipulationEnabled="False" TextWrapping="Wrap"/>
-        </ScrollViewer>
+        <Controls:MetroAnimatedTabControl Controls:HeaderedControlHelper.HeaderFontSize="12" Controls:TabControlHelper.Underlined="SelectedTabItem">
+            <TabItem x:Name="tabLicense" Header="License">
+                <ScrollViewer MaxHeight="500" Width="Auto" Margin="10,5,10,5">
+                    <TextBlock x:Name="textBlockLicense" Text="License Text Here" IsManipulationEnabled="False" TextWrapping="Wrap"/>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem x:Name="tabCopyrights" Header="Copyrights">
+                <ScrollViewer MaxHeight="500" Width="Auto" Margin="10,5,10,5">
+                    <TextBlock x:Name="textBlockCopyRights" Text="Copyright Text Here" IsManipulationEnabled="False" TextWrapping="Wrap"/>
+                </ScrollViewer>
+            </TabItem>
+        </Controls:MetroAnimatedTabControl>
     </Grid>
 </UserControl>
