@@ -22,6 +22,11 @@ Right now this project should be considered **alpha software**. Bugs, issues, qu
 
 **See [LICENSE.txt](./LICENSE.txt) for the license agreement.**
 
+### Compile Requirements
+* Visual Studio 2019 or higher with .NET desktop development option
+* .NET 4.7.2 targeting pack (May change in the future)
+* Nuget (Should have been automatically installed with VS; if not, install it via the VS installer tool)
+
 ### How To Use
 **Note: I'll be using mysql-8.0.32-winx64.zip as an example for this how to**
 
