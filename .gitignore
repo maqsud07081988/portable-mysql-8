@@ -7,5 +7,10 @@ obj
 *.exe
 *.user
 *.settings
+*.zip
+*.rar
+*.tar
+*.tar.gz
+*.7z
 /packages
 Thumbs.db
