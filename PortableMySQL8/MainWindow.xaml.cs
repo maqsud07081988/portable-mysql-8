@@ -251,6 +251,14 @@ namespace PortableMySQL8
                 return;
             }
 
+            bool updateIniSuccess = SQLTools.UpdateMyIni(PathMyIniFile, Config.MySQL.Port, Path.GetFullPath(PathMySqlBase), Path.GetFullPath(PathMySqlData));
+
+            if (!updateIniSuccess)
+            {
+                MessageBox.Show("Could not update my.ini! Aborting!", "Error");
+                return;
+            }
+
             //Do MySQL initialization if needed
             bool needsInit = SQLTools.NeedsInit(SQLTools.GetStartParams(Path.GetFullPath(PathMyIniFile), PathMySqlData));
 
@@ -262,14 +270,6 @@ namespace PortableMySQL8
             }
 
             bool didInit = DoMySqlInitIfNeeded();
-
-            bool updateIniSuccess = SQLTools.UpdateMyIni(PathMyIniFile, Config.MySQL.Port, Path.GetFullPath(PathMySqlBase), Path.GetFullPath(PathMySqlData));
-
-            if (!updateIniSuccess)
-            {
-                MessageBox.Show("Could not update my.ini! Aborting!", "Error");
-                return;
-            }
 
             SetMySqlStatusToStart();
             StartMySql();
@@ -420,7 +420,7 @@ namespace PortableMySQL8
 
                 if (!File.Exists(PathMyIniFile))
                 {
-                    bool success = SQLTools.CreateNewMyIni(PathMyIniFile, Path.GetFullPath(PathMySqlBase), Path.GetFullPath(PathMySqlData));
+                    bool success = SQLTools.CreateNewMyIni(PathMyIniFile, Config.MySQL.Port, Path.GetFullPath(PathMySqlBase), Path.GetFullPath(PathMySqlData));
 
                     if (!success)
                         return false;

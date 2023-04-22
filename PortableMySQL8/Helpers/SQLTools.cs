@@ -76,10 +76,11 @@ namespace PortableMySQL8
         /// Creates a new my.ini at the path specified
         /// </summary>
         /// <param name="myIni">Path to new my.ini</param>
+        /// <param name="port">Port MySQL will listen on</param>
         /// <param name="myBase">Base directory for MySQL install (MUST be full path)</param>
         /// <param name="myData">Data directory for MySQL database (MUST be full path)</param>
         /// <returns></returns>
-        public static bool CreateNewMyIni(string myIni, string myBase, string myData)
+        public static bool CreateNewMyIni(string myIni, int port, string myBase, string myData)
         {
             try
             {
@@ -89,7 +90,7 @@ namespace PortableMySQL8
                 {
                     "[client]",
                     "",
-                    "port=3306",
+                    $"port={port}",
                     "",
                     "# The character set MySQL client will use",
                     "# MySQL defaults to utf8mb4 but OpenSim needs utf8mb3",
@@ -98,7 +99,7 @@ namespace PortableMySQL8
                     "[mysqld]",
                     "",
                     "# The TCP/IP Port the MySQL Server will listen on",
-                    "port=3306",
+                    $"port={port}",
                     "",
                     "# The character set MySQL client will use",
                     "# MySQL defaults to utf8mb4 but OpenSim needs utf8mb3",
