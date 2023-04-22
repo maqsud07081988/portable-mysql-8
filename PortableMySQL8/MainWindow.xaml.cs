@@ -471,6 +471,8 @@ namespace PortableMySQL8
 
                 if (needsInit)
                 {
+                    MessageBox.Show($"MySQL needs to init its data directory for first run. This may take a few minutes and {Version.NAME} may appear frozen until it is done.\r\n\r\nWhen it is finished you should see \"MySQL is running\" in the status area.", "MySQL First Run", MessageBoxButton.OK);
+
                     Console.WriteLine("Initializing MySQL data directory...");
                     ProcessHelpers.RunCommand(PathMySqlD, prams, true);
                     Console.WriteLine("Initialization done!");
