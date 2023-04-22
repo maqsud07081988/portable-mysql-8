@@ -272,7 +272,7 @@ namespace PortableMySQL8
             bool didInit = DoMySqlInitIfNeeded();
 
             SetMySqlStatusToStart();
-            StartMySql();
+            StartMySql(didInit);
 
             MySQLIsStarting = true;
             StartProcessCheckTimer(ProcessCheckTimerIntervalFast);
@@ -280,6 +280,15 @@ namespace PortableMySQL8
             //If we newly initialized MySQL then set the root password
             if (didInit)
             {
+                //Wait for mysqld to exist before attempting to set password
+                System.Threading.SpinWait.SpinUntil(() => IsMySqlRunning, 10000);
+
+                //Wait a little longer after mysqld exists to give it a chance
+                //to establish connections; else mysqladmin could timeout
+                System.Threading.Thread.Sleep(2500);
+
+                Console.WriteLine("MySQL service running! Attempting to set root password...");
+
                 bool success = SQLTools.SetUserPassword(
                     "root", "localhost",
                     Config.MySQL.Port,
@@ -484,7 +493,7 @@ namespace PortableMySQL8
             }
         }
 
-        private void StartMySql()
+        private void StartMySql(bool attached)
         {
             string prams = SQLTools.GetStartParams(Path.GetFullPath(PathMyIniFile), PathMySqlData);
             bool needsInit = SQLTools.NeedsInit(prams);
@@ -497,10 +506,12 @@ namespace PortableMySQL8
                 Console.WriteLine($"Started MySQL");
 
                 //Starts the process attached to this one
-                //ProcessHelpers.RunCommand(PathMySqlD, prams, false);
+                if (attached)
+                    ProcessHelpers.RunCommand(PathMySqlD, prams, false);
 
                 //Starts the process detached from this one
-                ProcessHelpers.RunCommand(PathMySqlLauncher, $"{PathMySqlD} {prams}", false);
+                else
+                    ProcessHelpers.RunCommand(PathMySqlLauncher, $"{PathMySqlD} {prams}", false);
             }
 
             else
