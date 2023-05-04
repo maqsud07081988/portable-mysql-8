@@ -61,7 +61,7 @@ namespace PortableMySQL8
         /// </returns>
         public static string GetStartParams(string myIni, string myDataPath)
         {
-            string prams = "--defaults-file=" + "\"" + myIni + "\" --standalone --explicit_defaults_for_timestamp";
+            string prams = "--defaults-file=" + "\"" + myIni.FixDirSeperators() + "\" --standalone --explicit_defaults_for_timestamp";
 
             //No MySQL data directory found, let's initialize it.
             //Doing an insecure initialization because we will set
@@ -106,10 +106,10 @@ namespace PortableMySQL8
                     "character-set-server=utf8mb3",
                     "",
                     "#Path to installation directory. All paths are usually resolved relative to this.",
-                    "basedir=" + "\"" + myBase + "\"",
+                    "basedir=" + "\"" + myBase.FixDirSeperators() + "\"",
                     "",
                     "#Path to the database root",
-                    "datadir=" + "\"" + myData + "\"",
+                    "datadir=" + "\"" + myData.FixDirSeperators() + "\"",
                     "",
                     "#OpenSim needs this on MySQL 8.0.4+",
                     "default-authentication-plugin=mysql_native_password",

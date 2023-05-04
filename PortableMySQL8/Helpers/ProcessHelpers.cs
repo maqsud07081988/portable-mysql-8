@@ -41,8 +41,7 @@ namespace PortableMySQL8
                 pws = ProcessWindowStyle.Hidden;
 
             //Fix backslashes
-            exe = exe.Replace(@"\\", "/");
-            exe = exe.Replace(@"\", "/");
+            exe = exe.FixDirSeperators();
 
             ProcessStartInfo startInfo = new ProcessStartInfo()
             {

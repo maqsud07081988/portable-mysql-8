@@ -115,6 +115,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Extensions\BoolExtensions.cs" />
+    <Compile Include="Extensions\PathExtensions.cs" />
     <Compile Include="Helpers\IniFile.cs" />
     <Compile Include="Helpers\ProcessHelpers.cs" />
     <Compile Include="LicenseWindow.xaml.cs">
