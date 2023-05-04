@@ -151,8 +151,8 @@ namespace PortableMySQL8
                 IniFile.WriteValue("mysqld", "port", port.ToString(), myIni);
 
                 Console.WriteLine($"Updating basedir and datadir in {myIni}...");
-                IniFile.WriteValue("mysqld", "basedir", "\"" + myBase + "\"", myIni);
-                IniFile.WriteValue("mysqld", "datadir", "\"" + myData + "\"", myIni);
+                IniFile.WriteValue("mysqld", "basedir", "\"" + myBase.FixDirSeperators() + "\"", myIni);
+                IniFile.WriteValue("mysqld", "datadir", "\"" + myData.FixDirSeperators() + "\"", myIni);
 
                 return true;
             }
