@@ -40,6 +40,10 @@ namespace PortableMySQL8
             if (isHidden)
                 pws = ProcessWindowStyle.Hidden;
 
+            //Fix backslashes
+            exe = exe.Replace(@"\\", "/");
+            exe = exe.Replace(@"\", "/");
+
             ProcessStartInfo startInfo = new ProcessStartInfo()
             {
                 WindowStyle = pws,
