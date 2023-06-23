@@ -21,6 +21,7 @@ Right now this project should be considered **alpha software**. Bugs, issues, qu
 * Any use where failure of the software could result in bodily harm and/or financial damage
 
 **See [LICENSE.txt](./LICENSE.txt) for the license agreement.**
+
 **See [ADDITIONAL_COPYRIGHTS.txt](./ADDITIONAL_COPYRIGHTS.txt) for a list of copyright holders of libraries used in this project.**
 
 ### Compile Requirements
