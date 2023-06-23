@@ -3,7 +3,7 @@ This is a portable MySQL frontend to provide a quick and easy to use base to bui
 
 It is intended to be a partial replacement for MOWES and Sim-on-a-Stick, both of which have not been maintained for a long time.
 
-This is (currently) a Windows only project and does not contain a MySQL install or an OpenSim install. You will need to provide those files yourself and know how to set up OpenSim yourself. This software is only a frontend to make a lot of the painful MySQL stuff easier to set up, startup, shutdown, and provide ease of portability for those things.
+This is (currently) a **Windows only** project and does not contain a MySQL install or an OpenSim install. You will need to provide those files yourself and know how to set up OpenSim yourself. This software is only a frontend to make a lot of the painful MySQL stuff easier to set up, startup, shutdown, and provide ease of portability for those things.
 
 Right now this project should be considered **alpha software**. Bugs, issues, quirks, and even unimplemented features should be expected. While I have taken care to reasonably test this to make sure there are no major issues; I am just one person and can not account for every situation this sofware could be ran under.
 
@@ -21,11 +21,15 @@ Right now this project should be considered **alpha software**. Bugs, issues, qu
 * Any use where failure of the software could result in bodily harm and/or financial damage
 
 **See [LICENSE.txt](./LICENSE.txt) for the license agreement.**
+**See [ADDITIONAL_COPYRIGHTS.txt](./ADDITIONAL_COPYRIGHTS.txt) for a list of copyright holders of libraries used in this project.**
 
 ### Compile Requirements
 * Visual Studio 2019 or higher with .NET desktop development option
 * .NET 4.7.2 targeting pack (May change in the future)
 * Nuget (Should have been automatically installed with VS; if not, install it via the VS installer tool)
+
+### Known Issues
+* Database Tab - User name and password only works with root user and root password. This will be fixed as soon as I can.
 
 ### How To Use
 **Note: I'll be using mysql-8.0.32-winx64.zip as an example for this how to**
