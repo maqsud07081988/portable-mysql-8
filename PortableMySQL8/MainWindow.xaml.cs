@@ -192,7 +192,7 @@ namespace PortableMySQL8
 
                 int code = StopMySql();
 
-                if (code == (int)SQLTools.MySqlAdminExitCode.OK)
+                if (code == (int)SQLCommands.MySqlAdminExitCode.OK)
                 {
 
                     //Wait until mysqld exits
@@ -297,7 +297,7 @@ namespace PortableMySQL8
 
                 Console.WriteLine("MySQL service running! Attempting to set root password...");
 
-                bool success = SQLTools.SetUserPassword(
+                bool success = SQLCommands.SetUserPassword(
                     "root", "localhost",
                     Config.MySQL.Port,
                     String.Empty, passwordBoxMySqlRootPass.Password);
@@ -335,7 +335,7 @@ namespace PortableMySQL8
 
             int code = StopMySql();
 
-            if (code != (int)SQLTools.MySqlAdminExitCode.OK)
+            if (code != (int)SQLCommands.MySqlAdminExitCode.OK)
             {
                 ShowCouldNotStopMySqlMessage(code);
                 StartProcessCheckTimer(ProcessCheckTimerInterval);
@@ -544,7 +544,7 @@ namespace PortableMySQL8
         {
             string reason = "Unknown error";
 
-            if (code == (int)SQLTools.MySqlAdminExitCode.InvalidPassword)
+            if (code == (int)SQLCommands.MySqlAdminExitCode.InvalidPassword)
                 reason = "Invalid root password";
 
             return reason;
@@ -568,7 +568,7 @@ namespace PortableMySQL8
         {
             string reason = GetMySqlAdminCodeReason(code);
 
-            if (code == (int)SQLTools.MySqlAdminExitCode.InvalidPassword)
+            if (code == (int)SQLCommands.MySqlAdminExitCode.InvalidPassword)
                 HighlightPasswordBox();
 
             MessageBox.Show($"Could not stop MySQL!\r\n\r\nReason: {reason}");

@@ -118,6 +118,7 @@
     <Compile Include="Extensions\PathExtensions.cs" />
     <Compile Include="Helpers\IniFile.cs" />
     <Compile Include="Helpers\ProcessHelpers.cs" />
+    <Compile Include="Helpers\SQLCommands.cs" />
     <Compile Include="LicenseWindow.xaml.cs">
       <DependentUpon>LicenseWindow.xaml</DependentUpon>
     </Compile>

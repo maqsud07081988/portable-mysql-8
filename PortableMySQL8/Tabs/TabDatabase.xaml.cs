@@ -136,7 +136,7 @@ namespace PortableMySQL8
                 if (String.IsNullOrWhiteSpace(db))
                     continue;
 
-                bool success = SQLTools.CreateDatabaseIfNotExists(
+                bool success = SQLCommands.CreateDatabaseIfNotExists(
                     user, server, Config.MySQL.Port, Config.Database.LoginPassword, db);
 
                 if (!success)
