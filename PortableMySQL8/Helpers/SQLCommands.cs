@@ -37,9 +37,43 @@ namespace PortableMySQL8
             InvalidPassword = 1
         }
 
+        private MySqlConnection Connection = new MySqlConnection();
+
         public SQLCommands()
         {
             
+        }
+
+        private bool Connect(string user, string server, int port, string password)
+        {
+            try
+            {
+                CloseConnection();
+                Connection.ConnectionString = $"server={server};user={user};database=mysql;port={port};password={password}";
+                Connection.Open();
+
+                return true;
+            }
+
+            catch (Exception ex)
+            {
+                CloseConnection();
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+        }
+
+        private void CloseConnection()
+        {
+            try
+            {
+                Connection.Close();
+            }
+
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         /// <summary>
@@ -53,18 +87,22 @@ namespace PortableMySQL8
         /// <returns>
         /// true if successful, false if not
         /// </returns>
-        public static bool SetUserPassword(string user, string server, int port, string curPass, string newPass)
+        public bool SetUserPassword(string user, string server, int port, string curPass, string newPass)
         {
             bool success;
-            string connectString = $"server={server};user={user};database=mysql;port={port};password={curPass}";
-            MySqlConnection connection = new MySqlConnection(connectString);
 
             try
             {
-                connection.Open();
+                bool connected = Connect(user, server, port, curPass);
+
+                if (!connected)
+                {
+                    CloseConnection();
+                    return false;
+                }
 
                 string sql = $"alter user '{user}'@'{server}' identified with mysql_native_password by '{newPass}'; flush privileges;";
-                MySqlCommand myCmd = new MySqlCommand(sql, connection);
+                MySqlCommand myCmd = new MySqlCommand(sql, Connection);
 
                 int rows = myCmd.ExecuteNonQuery();
                 myCmd.Dispose();
@@ -81,8 +119,7 @@ namespace PortableMySQL8
                 success = false;
             }
 
-            connection.Close();
-            connection.Dispose();
+            CloseConnection();
 
             return success;
         }
@@ -98,20 +135,24 @@ namespace PortableMySQL8
         /// <returns>
         /// true if database exists, false if not, and null if there was an error checking it
         /// </returns>
-        public static bool? DatabaseExists(string user, string server, int port, string password, string name)
+        public bool? DatabaseExists(string user, string server, int port, string password, string name)
         {
             bool? exists;
-            string connectString = $"server={server};user={user};database=mysql;port={port};password={password}";
-            MySqlConnection connection = new MySqlConnection(connectString);
 
             try
             {
-                connection.Open();
+                bool connected = Connect(user, server, port, password);
+
+                if (!connected)
+                {
+                    CloseConnection();
+                    return null;
+                }
 
                 string sql = $"select count(schema_name) from information_schema.SCHEMATA where schema_name like '{name}';";
                 //string sql = $"select schema_name from information_schema.SCHEMATA where schema_name like '{databaseName}';";
 
-                MySqlCommand cmd = new MySqlCommand(sql, connection);
+                MySqlCommand cmd = new MySqlCommand(sql, Connection);
                 cmd.Parameters.Add(name, MySqlDbType.VarChar).Value = name;
 
                 int numLikeName = Convert.ToInt32(cmd.ExecuteScalar());
@@ -127,8 +168,7 @@ namespace PortableMySQL8
                 exists = null;
             }
 
-            connection.Close();
-            connection.Dispose();
+            CloseConnection();
 
             return exists;
         }
@@ -144,19 +184,23 @@ namespace PortableMySQL8
         /// <returns>
         /// true if database creation successful, and false if not
         /// </returns>
-        public static bool CreateDatabase(string user, string server, int port, string password, string name)
+        public bool CreateDatabase(string user, string server, int port, string password, string name)
         {
             bool success;
-            string connectString = $"server={server};user={user};database=mysql;port={port};password={password}";
-            MySqlConnection connection = new MySqlConnection(connectString);
 
             try
             {
-                connection.Open();
+                bool connected = Connect(user, server, port, password);
+
+                if (!connected)
+                {
+                    CloseConnection();
+                    return false;
+                }
 
                 string sql = $"create database if not exists `{name}`;";
 
-                MySqlCommand cmd = new MySqlCommand(sql, connection);
+                MySqlCommand cmd = new MySqlCommand(sql, Connection);
                 cmd.ExecuteNonQuery();
                 cmd.Dispose();
 
@@ -169,8 +213,7 @@ namespace PortableMySQL8
                 success = false;
             }
 
-            connection.Close();
-            connection.Dispose();
+            CloseConnection();
 
             return success;
         }
@@ -186,7 +229,7 @@ namespace PortableMySQL8
         /// <returns>
         /// true if database creation successful, and false if not
         /// </returns>
-        public static bool CreateDatabaseIfNotExists(string user, string server, int port, string password, string dbName)
+        public bool CreateDatabaseIfNotExists(string user, string server, int port, string password, string dbName)
         {
             if (String.IsNullOrWhiteSpace(dbName))
                 return false;

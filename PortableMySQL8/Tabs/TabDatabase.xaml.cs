@@ -43,13 +43,15 @@ namespace PortableMySQL8
     {
         private readonly MainWindow Instance = null;
         private readonly Settings Config = null;
+        private readonly SQLCommands SQL = null;
 
-        public TabDatabase(MainWindow _instance, Settings _config)
+        public TabDatabase(MainWindow _instance, Settings _config, SQLCommands _sql)
         {
             InitializeComponent();
 
             Instance = _instance;
             Config = _config;
+            SQL = _sql;
 
             LoadUIConfig();
         }
@@ -136,7 +138,7 @@ namespace PortableMySQL8
                 if (String.IsNullOrWhiteSpace(db))
                     continue;
 
-                bool success = SQLCommands.CreateDatabaseIfNotExists(
+                bool success = SQL.CreateDatabaseIfNotExists(
                     user, server, Config.MySQL.Port, Config.Database.LoginPassword, db);
 
                 if (!success)

@@ -104,6 +104,8 @@ namespace PortableMySQL8
 
         #endregion Controls
 
+        private SQLCommands SQL = new SQLCommands();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -164,7 +166,7 @@ namespace PortableMySQL8
 
             #region Tab Setup
 
-            tabDatabase.Content = new TabDatabase(this, Config);
+            tabDatabase.Content = new TabDatabase(this, Config, SQL);
 
             #endregion Tab Setup
         }
@@ -297,7 +299,7 @@ namespace PortableMySQL8
 
                 Console.WriteLine("MySQL service running! Attempting to set root password...");
 
-                bool success = SQLCommands.SetUserPassword(
+                bool success = SQL.SetUserPassword(
                     "root", "localhost",
                     Config.MySQL.Port,
                     String.Empty, passwordBoxMySqlRootPass.Password);
