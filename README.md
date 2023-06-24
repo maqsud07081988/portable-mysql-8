@@ -30,7 +30,6 @@ Right now this project should be considered **alpha software**. Bugs, issues, qu
 * Nuget (Should have been automatically installed with VS; if not, install it via the VS installer tool)
 
 ### Known Issues
-* Database Tab - User name and password only works with root user and root password. This will be fixed as soon as I can.
 
 ### How To Use
 **Note: I'll be using mysql-8.0.32-winx64.zip as an example for this how to**
