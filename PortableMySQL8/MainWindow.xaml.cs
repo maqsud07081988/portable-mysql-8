@@ -239,6 +239,18 @@ namespace PortableMySQL8
                 return;
             }
 
+            //Check if mysqld and mysqladmin exist
+            if (!File.Exists(PathMySqlD))
+            {
+                MessageBox.Show($"Could not start because {PathMySqlD} does not exist!", "Error");
+                return;
+            }
+            if (!File.Exists(PathMySqlAdmin))
+            {
+                MessageBox.Show($"Could not start because {PathMySqlAdmin} does not exist!", "Error");
+                return;
+            }
+
             //Create the directory structure needed to work
             bool createdFiles = CreateServiceFiles();
 
