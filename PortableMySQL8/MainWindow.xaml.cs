@@ -242,13 +242,13 @@ namespace PortableMySQL8
             }
 
             //Check if mysqld and mysqladmin exist
-            if (!File.Exists(PathMySqlD))
+            if (!File.Exists(PathMySqlD.Replace("\"", "")))
             {
                 MessageBox.Show($"Could not start because {PathMySqlD} does not exist!", "Error");
                 return;
             }
 
-            if (!File.Exists(PathMySqlAdmin))
+            if (!File.Exists(PathMySqlAdmin.Replace("\"", "")))
             {
                 MessageBox.Show($"Could not start because {PathMySqlAdmin} does not exist!", "Error");
                 return;
