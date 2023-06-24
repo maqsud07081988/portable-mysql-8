@@ -104,7 +104,7 @@ namespace PortableMySQL8
 
         #endregion Controls
 
-        private SQLCommands SQL = new SQLCommands();
+        private readonly SQLCommands SQL = new SQLCommands();
 
         public MainWindow()
         {

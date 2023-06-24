@@ -37,7 +37,7 @@ namespace PortableMySQL8
             InvalidPassword = 1
         }
 
-        private MySqlConnection Connection = new MySqlConnection();
+        private readonly MySqlConnection Connection = new MySqlConnection();
 
         public SQLCommands()
         {
