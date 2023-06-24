@@ -15,7 +15,7 @@
         <!-- Left -->
         <StackPanel Orientation="Vertical" Grid.Column="0" VerticalAlignment="Top"  Margin="10,0,10,0">
             <StackPanel Orientation="Vertical" Margin="0,0,0,10">
-                <Label Content="DB User Name (If left blank, 'root')"/>
+                <Label Content="DB User Name *"/>
                 <TextBox x:Name="textBoxDbUser" TextChanged="TextBoxDbUser_TextChanged"/>
             </StackPanel>
 
@@ -25,7 +25,7 @@
             </StackPanel>
 
             <StackPanel Orientation="Vertical" Margin="0,0,0,10">
-                <Label Content="DB User Password"/>
+                <Label Content="DB User Password *"/>
                 <PasswordBox x:Name="passWordBoxDbUserPass" PasswordChar="*" PasswordChanged="PassWordBoxDbUserPass_PasswordChanged"/>
             </StackPanel>
 
@@ -37,7 +37,7 @@
         <!-- Right -->
         <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="10,0,10,0">
             <StackPanel Orientation="Vertical" Margin="0,0,0,10">
-                <Label Content="OpenSim Schema Name"/>
+                <Label Content="OpenSim Schema Name *"/>
                 <TextBox x:Name="textBoxMainName" TextChanged="TextBoxMainName_TextChanged"/>
             </StackPanel>
 
@@ -52,6 +52,7 @@
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Label Content="(* required)" HorizontalAlignment="Right" Foreground="Red"/>
                 <Button x:Name="btnCreateDb" Content="Create Databases" Click="BtnCreateDb_Click"/>
             </StackPanel>
         </StackPanel>
