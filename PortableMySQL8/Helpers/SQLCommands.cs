@@ -77,23 +77,68 @@ namespace PortableMySQL8
         }
 
         /// <summary>
-        /// Sets the password for a MySQL user
+        /// Creates a new MySQL user
         /// </summary>
-        /// <param name="user">The user to set password for</param>
-        /// <param name="server">The server name to connect to</param>
-        /// <param name="port">The port number to use</param>
-        /// <param name="curPass">Current password</param>
-        /// <param name="newPass">New password</param>
-        /// <returns>
-        /// true if successful, false if not
-        /// </returns>
-        public bool SetUserPassword(string user, string server, int port, string curPass, string newPass)
+        /// <param name="user">User name to create</param>
+        /// <param name="server">MySQL server name to connect to</param>
+        /// <param name="port">MySQL port to connect to</param>
+        /// <param name="rootPass">root user's password</param>
+        /// <param name="newPass">Password for the new user</param>
+        /// <returns>true if successful; false if not</returns>
+        public bool CreateNewUser(string user, string server, int port, string rootPass, string newPass)
         {
             bool success;
 
             try
             {
-                bool connected = Connect(user, server, port, curPass);
+                bool connected = Connect("root", server, port, rootPass);
+
+                if (!connected)
+                {
+                    CloseConnection();
+                    return false;
+                }
+
+                string sql = $"create user if not exists '{user}'@'{server}' identified with mysql_native_password by '{newPass}'; flush privileges;";
+                MySqlCommand myCmd = new MySqlCommand(sql, Connection);
+
+                int rows = myCmd.ExecuteNonQuery();
+                myCmd.Dispose();
+
+                Console.WriteLine($"User '{user}' created sucessfully");
+
+                success = true;
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                success = false;
+            }
+
+            CloseConnection();
+
+            return success;
+        }
+
+        /// <summary>
+        /// Sets the password for a MySQL user
+        /// </summary>
+        /// <param name="user">The user to set password for</param>
+        /// <param name="server">The server name to connect to</param>
+        /// <param name="port">The port number to use</param>
+        /// <param name="rootPass">Current password</param>
+        /// <param name="newPass">New password</param>
+        /// <returns>
+        /// true if successful, false if not
+        /// </returns>
+        public bool SetUserPassword(string user, string server, int port, string rootPass, string newPass)
+        {
+            bool success;
+
+            try
+            {
+                bool connected = Connect("root", server, port, rootPass);
 
                 if (!connected)
                 {
@@ -108,7 +153,7 @@ namespace PortableMySQL8
                 myCmd.Dispose();
 
                 //Console.WriteLine($"Password set to '{pass}', {rows} rows affected");
-                Console.WriteLine("Password set sucessfully");
+                Console.WriteLine($"Password set sucessfully for user '{user}'");
 
                 success = true;
             }
@@ -240,6 +285,40 @@ namespace PortableMySQL8
                 return CreateDatabase(user, server, port, password, dbName);
 
             return false;
+        }
+
+        public bool SetUserGrantsToDatabase(string user, string server, int port, string rootPass, string dbName)
+        {
+            bool success;
+
+            try
+            {
+                bool connected = Connect("root", server, port, rootPass);
+
+                if (!connected)
+                {
+                    CloseConnection();
+                    return false;
+                }
+
+                string sql = $"grant all on `{dbName}`.* to '{user}'@'{server}';";
+
+                MySqlCommand cmd = new MySqlCommand(sql, Connection);
+                cmd.ExecuteNonQuery();
+                cmd.Dispose();
+
+                return true;
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                success = false;
+            }
+
+            CloseConnection();
+
+            return success;
         }
     }
 }

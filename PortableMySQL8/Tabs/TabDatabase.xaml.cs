@@ -21,6 +21,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” 
 
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -120,14 +121,54 @@ namespace PortableMySQL8
                 return;
             }
 
-            string user = "root";
-            string server = "localhost";
+            if (String.IsNullOrWhiteSpace(Config.Database.LoginUser))
+            {
+                MessageBox.Show("The 'DB User Name' field is required!", "Error");
+                return;
+            }
 
-            if (!String.IsNullOrWhiteSpace(Config.Database.LoginUser))
-                user = Config.Database.LoginUser;
+            if (String.IsNullOrWhiteSpace(Config.Database.LoginPassword))
+            {
+                MessageBox.Show("The 'DB User Password' field is required!", "Error");
+                return;
+            }
+
+            if (String.IsNullOrWhiteSpace(Config.Database.OSMain))
+            {
+                MessageBox.Show("The 'OpenSim Schema Name' field is required!", "Error");
+                return;
+            }
+
+            string user = Config.Database.LoginUser;
+            string server = "localhost";
+            string password = Config.Database.LoginPassword;
 
             if (!string.IsNullOrWhiteSpace(Config.Database.LoginServer))
                 server = Config.Database.LoginServer;
+
+            #region Create User and Set Password
+
+            //Create the user
+            bool createdUser = SQL.CreateNewUser(user, server, Config.MySQL.Port, Config.MySQL.RootPass, password);
+
+            if (!createdUser)
+            {
+                MessageBox.Show($"Was not able to create user '{user}'!", "Error");
+                return;
+            }
+
+            //Set the password
+            bool passwordSet = SQL.SetUserPassword(user, server, Config.MySQL.Port, Config.MySQL.RootPass, password);
+
+            if (!passwordSet)
+            {
+                MessageBox.Show($"Was not able to set password for user '{user}'!", "Error");
+                return;
+            }
+
+            #endregion Create User and Set Password
+
+            #region Create Schemas
 
             string creationStatus = String.Empty;
 
@@ -139,16 +180,26 @@ namespace PortableMySQL8
                     continue;
 
                 bool success = SQL.CreateDatabaseIfNotExists(
-                    user, server, Config.MySQL.Port, Config.Database.LoginPassword, db);
+                    "root", server, Config.MySQL.Port, Config.MySQL.RootPass, db);
 
                 if (!success)
                     Console.WriteLine($"Could not create database '{db}'");
+
+                else
+                {
+                    bool grantsSet = SQL.SetUserGrantsToDatabase(user, server, Config.MySQL.Port, Config.MySQL.RootPass, db);
+
+                    if(!grantsSet)
+                        creationStatus += $"Set grants failed on '{db}'\r\n";
+                }
 
                 creationStatus += CreateStatusString(db, success) + "\r\n";
             }
 
             //Results
             MessageBox.Show(creationStatus, "Database Creation Results");
+
+            #endregion Create Schemas
         }
 
         #endregion Buttons
