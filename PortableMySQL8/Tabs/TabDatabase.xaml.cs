@@ -180,7 +180,7 @@ namespace PortableMySQL8
                     continue;
 
                 bool success = SQL.CreateDatabaseIfNotExists(
-                    "root", server, Config.MySQL.Port, Config.MySQL.RootPass, db);
+                    server, Config.MySQL.Port, Config.MySQL.RootPass, db);
 
                 if (!success)
                     Console.WriteLine($"Could not create database '{db}'");

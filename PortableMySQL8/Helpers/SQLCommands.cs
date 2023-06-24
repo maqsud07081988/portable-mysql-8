@@ -172,21 +172,20 @@ namespace PortableMySQL8
         /// <summary>
         /// Check if a given database exists by name
         /// </summary>
-        /// <param name="user">The user to set password for</param>
         /// <param name="server">The server name to connect to</param>
         /// <param name="port">The port number to use</param>
-        /// <param name="password">User's password</param>
+        /// <param name="rootPass">User's password</param>
         /// <param name="name">Name of database to check for</param>
         /// <returns>
         /// true if database exists, false if not, and null if there was an error checking it
         /// </returns>
-        public bool? DatabaseExists(string user, string server, int port, string password, string name)
+        public bool? DatabaseExists(string server, int port, string rootPass, string name)
         {
             bool? exists;
 
             try
             {
-                bool connected = Connect(user, server, port, password);
+                bool connected = Connect("root", server, port, rootPass);
 
                 if (!connected)
                 {
@@ -221,21 +220,20 @@ namespace PortableMySQL8
         /// <summary>
         /// Creates a database by name
         /// </summary>
-        /// <param name="user">The user to set password for</param>
         /// <param name="server">The server name to connect to</param>
         /// <param name="port">The port number to use</param>
-        /// <param name="password">User's password</param>
+        /// <param name="rootPass">User's password</param>
         /// <param name="name">Name of database to create</param>
         /// <returns>
         /// true if database creation successful, and false if not
         /// </returns>
-        public bool CreateDatabase(string user, string server, int port, string password, string name)
+        public bool CreateDatabase(string server, int port, string rootPass, string name)
         {
             bool success;
 
             try
             {
-                bool connected = Connect(user, server, port, password);
+                bool connected = Connect("root", server, port, rootPass);
 
                 if (!connected)
                 {
@@ -266,23 +264,22 @@ namespace PortableMySQL8
         /// <summary>
         /// Creates a database by name if it doesn't already exist
         /// </summary>
-        /// <param name="user">The user to set password for</param>
         /// <param name="server">The server name to connect to</param>
         /// <param name="port">The port number to use</param>
-        /// <param name="password">User's password</param>
+        /// <param name="rootPass">User's password</param>
         /// <param name="dbName">Name of database to create</param>
         /// <returns>
         /// true if database creation successful, and false if not
         /// </returns>
-        public bool CreateDatabaseIfNotExists(string user, string server, int port, string password, string dbName)
+        public bool CreateDatabaseIfNotExists(string server, int port, string rootPass, string dbName)
         {
             if (String.IsNullOrWhiteSpace(dbName))
                 return false;
 
-            bool? exists = DatabaseExists(user, server, port, password, dbName);
+            bool? exists = DatabaseExists(server, port, rootPass, dbName);
 
             if (exists != null && exists == false)
-                return CreateDatabase(user, server, port, password, dbName);
+                return CreateDatabase(server, port, rootPass, dbName);
 
             return false;
         }
