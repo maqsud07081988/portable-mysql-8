@@ -34,7 +34,7 @@ Right now this project should be considered **alpha software**. Bugs, issues, qu
 ### How To Use
 **Note: I'll be using mysql-8.0.32-winx64.zip as an example for this how to**
 
-1. Clone and build this repo or download and extract the latest release zip file of PortableMySQL8
+1. Download and extract the latest release zip file of PortableMySQL8 or clone and build this repo
 
 2. Run PortableMySQL8.exe. It will create a new sub-directory named 'mysql' in the same directory as the exe. Inside the 'mysql' directory there will be a 'config' directory with a new default 'my.ini' config file created within; leave this alone for now. (Note: If it doesn't create the 'mysql' directory then close PortableMySQL8 and create the directory by hand in the same directory as PortableMySQL8.exe without the quotes. You don't have to create the config directory, it will be created automatically)
 
@@ -66,6 +66,9 @@ When done you should have a directory structure that looks a bit like this:
 **... then you did it wrong.**
 
 6. Run PortableMySQL8.exe again. Enter a new password for the root MySQL user, set the port you want MySQL to run on (The default 3306 is fine if you have no other MySQL instances), and click the 'Start MySQL' button. It should do first time initialization for MySQL, set the password you chose a moment ago for the root user, and then the status should show "MySQL is running" in green text.
+
+- **The initialize step can take a few minutes and the program will appear frozen until it is done.**
+- Initialization only needs to be done once (unless the data directory is removed).
 
 7. That's it! You can go to the Database tab and create your opensim schemas as well as the MySQL user associated with those schemas from there (be sure root password and port is set properly on Main tab)... or you can use your favorite MySQL admin tool of choice to do that, the Database tab is simply for convenience.
 
