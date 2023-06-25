@@ -25,6 +25,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -59,10 +60,20 @@ namespace PortableMySQL8
 
         #region Events
 
+        #region General
+
+        private void TextBoxValidation_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !AreCharactersValid(e.Text);
+        }
+
+        #endregion General
+
         #region Login Info
 
         private void TextBoxDbUser_TextChanged(object sender, TextChangedEventArgs e)
         {
+            ConvertTextBoxSpacesToUnderscores(sender as TextBox);
             Config.Database.LoginUser = textBoxDbUser.Text.Trim();
         }
 
@@ -96,16 +107,19 @@ namespace PortableMySQL8
 
         private void TextBoxMainName_TextChanged(object sender, TextChangedEventArgs e)
         {
+            ConvertTextBoxSpacesToUnderscores(sender as TextBox);
             Config.Database.OSMain = textBoxMainName.Text.Trim();
         }
 
         private void TextBoxProfilesName_TextChanged(object sender, TextChangedEventArgs e)
         {
+            ConvertTextBoxSpacesToUnderscores(sender as TextBox);
             Config.Database.OSProfiles = textBoxProfilesName.Text.Trim();
         }
 
         private void TextBoxGroupsName_TextChanged(object sender, TextChangedEventArgs e)
         {
+            ConvertTextBoxSpacesToUnderscores(sender as TextBox);
             Config.Database.OSGroups = textBoxGroupsName.Text.Trim();
         }
 
@@ -233,6 +247,42 @@ namespace PortableMySQL8
                 ret += ": Creation failed! (Perhaps it already exists?)";
 
             return ret;
+        }
+
+        /// <summary>
+        /// Validate string to contain only upper and lower case alphanumeric characters and underscores
+        /// </summary>
+        /// <param name="str">String to validate</param>
+        /// <returns>true if valid; false if not</returns>
+        private bool AreCharactersValid(string str)
+        {
+            Regex regex = new Regex("[a-zA-Z0-9_]", RegexOptions.IgnoreCase);
+
+            foreach (char c in str)
+            {
+                if (!regex.IsMatch(c.ToString()))
+                    return false;
+            }
+
+            return true;
+        }
+
+        private void ConvertTextBoxSpacesToUnderscores(TextBox tb)
+        {
+            try
+            {
+                int pos = tb.CaretIndex;
+
+                if (tb.Text.Contains(" "))
+                    tb.Text = tb.Text.Replace(" ", "_");
+
+                tb.CaretIndex = pos;
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
         }
 
         #endregion Methods

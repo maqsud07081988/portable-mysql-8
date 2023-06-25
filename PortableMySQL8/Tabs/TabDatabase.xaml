@@ -16,7 +16,7 @@
         <StackPanel Orientation="Vertical" Grid.Column="0" VerticalAlignment="Top"  Margin="10,0,10,0">
             <StackPanel Orientation="Vertical" Margin="0,0,0,10">
                 <Label Content="DB User Name *"/>
-                <TextBox x:Name="textBoxDbUser" TextChanged="TextBoxDbUser_TextChanged"/>
+                <TextBox x:Name="textBoxDbUser" TextChanged="TextBoxDbUser_TextChanged" PreviewTextInput="TextBoxValidation_PreviewTextInput"/>
             </StackPanel>
 
             <StackPanel Orientation="Vertical" Margin="0,0,0,10">
@@ -38,17 +38,17 @@
         <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="10,0,10,0">
             <StackPanel Orientation="Vertical" Margin="0,0,0,10">
                 <Label Content="OpenSim Schema Name *"/>
-                <TextBox x:Name="textBoxMainName" TextChanged="TextBoxMainName_TextChanged"/>
+                <TextBox x:Name="textBoxMainName" TextChanged="TextBoxMainName_TextChanged" PreviewTextInput="TextBoxValidation_PreviewTextInput"/>
             </StackPanel>
 
             <StackPanel Orientation="Vertical" Margin="0,0,0,10">
                 <Label Content="Profiles Schema Name"/>
-                <TextBox x:Name="textBoxProfilesName" TextChanged="TextBoxProfilesName_TextChanged"/>
+                <TextBox x:Name="textBoxProfilesName" TextChanged="TextBoxProfilesName_TextChanged" PreviewTextInput="TextBoxValidation_PreviewTextInput"/>
             </StackPanel>
             
             <StackPanel Orientation="Vertical" Margin="0,0,0,10">
                 <Label Content="Groups Schema Name"/>
-                <TextBox x:Name="textBoxGroupsName" TextChanged="TextBoxGroupsName_TextChanged"/>
+                <TextBox x:Name="textBoxGroupsName" TextChanged="TextBoxGroupsName_TextChanged" PreviewTextInput="TextBoxValidation_PreviewTextInput"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
