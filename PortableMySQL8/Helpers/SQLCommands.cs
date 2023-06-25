@@ -146,7 +146,9 @@ namespace PortableMySQL8
                     return false;
                 }
 
-                string sql = $"alter user '{user}'@'{server}' identified with mysql_native_password by '{newPass}'; flush privileges;";
+                string pass_clean = MySqlHelper.EscapeString(newPass);
+
+                string sql = $"alter user '{user}'@'{server}' identified with mysql_native_password by '{pass_clean}'; flush privileges;";
                 MySqlCommand myCmd = new MySqlCommand(sql, Connection);
 
                 int rows = myCmd.ExecuteNonQuery();
