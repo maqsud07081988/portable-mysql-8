@@ -52,8 +52,8 @@
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Label Content="(* required)" HorizontalAlignment="Right" Foreground="Red"/>
-                <Button x:Name="btnCreateDb" Content="Create Databases" Click="BtnCreateDb_Click"/>
+                <Label Content="(* fields required)" HorizontalAlignment="Right" Foreground="Red" Margin="0,0,5,0"/>
+                <Button x:Name="btnCreateAll" Content="Create It All!" Click="BtnCreateAll_Click"/>
             </StackPanel>
         </StackPanel>
     </Grid>

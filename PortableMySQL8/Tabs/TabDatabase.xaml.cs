@@ -127,11 +127,11 @@ namespace PortableMySQL8
 
         #region Buttons
 
-        private void BtnCreateDb_Click(object sender, RoutedEventArgs e)
+        private void BtnCreateAll_Click(object sender, RoutedEventArgs e)
         {
             if (!ProcessHelpers.ProcessExists("mysqld"))
             {
-                MessageBox.Show("Can't create database(s) because MySQL is not running", "Error");
+                MessageBox.Show("Can't create user and/or database(s) because MySQL is not running", "Error");
                 return;
             }
 
