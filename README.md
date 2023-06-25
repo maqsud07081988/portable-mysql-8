@@ -67,7 +67,7 @@ When done you should have a directory structure that looks a bit like this:
 
 6. Run PortableMySQL8.exe again. Enter a new password for the root MySQL user, set the port you want MySQL to run on (The default 3306 is fine if you have no other MySQL instances), and click the 'Start MySQL' button. It should do first time initialization for MySQL, set the password you chose a moment ago for the root user, and then the status should show "MySQL is running" in green text.
 
-7. That's it! You can go to the Database tab and create your new opensim schemas from there (be sure to give it the proper user credentials, by default it's User: root, Server: localhost, and Password: <password you picked in step 6>), or use your favorite MySQL tool of choice to do that.
+7. That's it! You can go to the Database tab and create your opensim schemas as well as the MySQL user associated with those schemas from there (be sure root password and port is set properly on Main tab)... or you can use your favorite MySQL admin tool of choice to do that, the Database tab is simply for convenience.
 
 
 
