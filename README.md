@@ -29,20 +29,18 @@ Right now this project should be considered **alpha software**. Bugs, issues, qu
 * .NET 4.7.2 targeting pack (May change in the future)
 * Nuget (Should have been automatically installed with VS; if not, install it via the VS installer tool)
 
-### Known Issues
-
 ### How To Use
 **Note: I'll be using mysql-8.0.32-winx64.zip as an example for this how to**
 
 1. Download and extract the latest release zip file of PortableMySQL8 or clone and build this repo
 
-2. Run PortableMySQL8.exe. It will create a new sub-directory named 'mysql' in the same directory as the exe. Inside the 'mysql' directory there will be a 'config' directory with a new default 'my.ini' config file created within; leave this alone for now. (Note: If it doesn't create the 'mysql' directory then close PortableMySQL8 and create the directory by hand in the same directory as PortableMySQL8.exe without the quotes. You don't have to create the config directory, it will be created automatically)
+2. Run PortableMySQL8.exe and it should create a new sub-directory named 'mysql' in the same directory as the exe
 
-3. Close PortableMySQL8 if it is still open
+4. Download the latest v8.0.x standalone MySQL Community Server from https://dev.mysql.com/downloads/mysql/
+    - You need the **"Windows (x86, 64-bit), ZIP Archive"** package from the **"Other Downloads"** section, ***NOT*** the installer
 
-4. Download the latest v8.0.x standalone MySQL Community Server from https://dev.mysql.com/downloads/mysql/ . You need the **"Windows (x86, 64-bit), ZIP Archive"** package from the **"Other Downloads"** section (***not*** the installer. In my case, this was mysql-8.0.32-winx64.zip)
-
-5. Open the MySQL zip file you just downloaded and navigate into the mysql-8.0.32-winx64 folder (or whatever version number it is for you). You should see a few other things in here such as bin, docs, include, etc. All of this should be placed in the mysql directory made in PortableMySQL8.exe's directory.
+5. Open the MySQL zip file you just downloaded and navigate into the mysql-8.0.32-winx64 folder (or whatever version number it is for you)
+    - You should see a few things in here such as bin, docs, include, etc. ***All of this*** should be placed in the mysql directory made in PortableMySQL8.exe's directory.
 
 When done you should have a directory structure that looks a bit like this:
 
@@ -65,12 +63,15 @@ When done you should have a directory structure that looks a bit like this:
 
 **... then you did it wrong.**
 
-6. Run PortableMySQL8.exe again. Enter a new password for the root MySQL user, set the port you want MySQL to run on (The default 3306 is fine if you have no other MySQL instances), and click the 'Start MySQL' button. It should do first time initialization for MySQL, set the password you chose a moment ago for the root user, and then the status should show "MySQL is running" in green text.
+5. Enter a new password for the root MySQL user and set the port you want MySQL to run on
+    - The default port 3306 is fine if you have no other MySQL instances
 
-- **The initialize step can take a few minutes and the program will appear frozen until it is done.**
-- Initialization only needs to be done once (unless the data directory is removed).
+7. Click the 'Start MySQL' button
+    - It should do first time initialization for MySQL, set the root password, and then the status should show 'MySQL is running'
+        - **The initialize step can take a few minutes and the program will appear frozen until it is done**
+    - Initialization only needs to be done once (unless the data directory is moved or deleted)
 
-7. That's it! You can go to the Database tab and create your opensim schemas as well as the MySQL user associated with those schemas from there (be sure root password and port is set properly on Main tab)... or you can use your favorite MySQL admin tool of choice to do that, the Database tab is simply for convenience.
+8. That's it! You can go to the Database tab and create your opensim schemas as well as the MySQL user associated with those schemas from there (be sure root password and port is set properly on Main tab)... or you can use your favorite MySQL admin tool of choice to do that, the Database tab is simply for convenience.
 
 
 
