@@ -76,6 +76,16 @@ namespace PortableMySQL8
             }
         }
 
+        private int ExecCmd(string cmd)
+        {
+            MySqlCommand myCmd = new MySqlCommand(cmd, Connection);
+
+            int rowsAffected = myCmd.ExecuteNonQuery();
+            myCmd.Dispose();
+
+            return rowsAffected;
+        }
+
         /// <summary>
         /// Creates a new MySQL user
         /// </summary>
@@ -99,12 +109,7 @@ namespace PortableMySQL8
                     return false;
                 }
 
-                string sql = $"create user if not exists '{user}'@'{server}' identified with mysql_native_password by '{newPass}'; flush privileges;";
-                MySqlCommand myCmd = new MySqlCommand(sql, Connection);
-
-                int rows = myCmd.ExecuteNonQuery();
-                myCmd.Dispose();
-
+                ExecCmd($"create user if not exists '{user}'@'{server}' identified with mysql_native_password by '{newPass}'; flush privileges;");
                 Console.WriteLine($"User '{user}' created sucessfully");
 
                 success = true;
@@ -148,11 +153,7 @@ namespace PortableMySQL8
 
                 string pass_clean = MySqlHelper.EscapeString(newPass);
 
-                string sql = $"alter user '{user}'@'{server}' identified with mysql_native_password by '{pass_clean}'; flush privileges;";
-                MySqlCommand myCmd = new MySqlCommand(sql, Connection);
-
-                int rows = myCmd.ExecuteNonQuery();
-                myCmd.Dispose();
+                ExecCmd($"alter user '{user}'@'{server}' identified with mysql_native_password by '{pass_clean}'; flush privileges;");
 
                 //Console.WriteLine($"Password set to '{pass}', {rows} rows affected");
                 Console.WriteLine($"Password set sucessfully for user '{user}'");
@@ -243,12 +244,7 @@ namespace PortableMySQL8
                     return false;
                 }
 
-                string sql = $"create database if not exists `{name}`;";
-
-                MySqlCommand cmd = new MySqlCommand(sql, Connection);
-                cmd.ExecuteNonQuery();
-                cmd.Dispose();
-
+                ExecCmd($"create database if not exists `{name}`;");
                 return true;
             }
 
@@ -300,12 +296,7 @@ namespace PortableMySQL8
                     return false;
                 }
 
-                string sql = $"grant all on `{dbName}`.* to '{user}'@'{server}';";
-
-                MySqlCommand cmd = new MySqlCommand(sql, Connection);
-                cmd.ExecuteNonQuery();
-                cmd.Dispose();
-
+                ExecCmd($"grant all on `{dbName}`.* to '{user}'@'{server}';");
                 return true;
             }
 
